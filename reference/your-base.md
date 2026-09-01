@@ -42,9 +42,9 @@ See `decisions/2026-09-01_built-airtable-hub-for-staffing-business.md`.
 
 | Note | |
 |---|---|
-| Which table holds your routines | Routines (empty — no routines set up yet, no daily-pass schedule exists) |
+| Which table holds your routines | Routines — 1 active row: "Monthly BambooHR leave-approval reminders". Daily-pass schedule (good-morning-vera, 9am daily) already exists and runs this. |
 | Which table holds your tasks | Tasks (2 open, both "Needs you") |
-| Your timezone | Not recorded yet |
+| Your timezone | America/New_York (Islamorada, FL) |
 | Your currency | Not recorded yet |
 | How you prorate a partial month | Not recorded yet |
 | What a complete application looks like to you | Not recorded yet |
