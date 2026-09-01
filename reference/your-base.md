@@ -16,33 +16,35 @@ note on anything unusual. The agents read it so they know where your data lives 
 
 | | |
 |---|---|
-| Base name | |
-| Base id | |
-| Last read | |
+| Base name | Untitled Base |
+| Base id | apptst9VRUlVdybNZ |
+| Last read | 2026-09-01 |
+
+**⚠️ This base is called "Untitled Base" and had only a generic "Table 1" plus the Skills/Routines/
+Tasks tables when Vera first connected — not the course's TLL Central Hub starter base with client,
+VA and placement tables. Flagged as a task below. Client, VA and financial data may live elsewhere
+(Airtable connector scoped to one base, or the starter base was never duplicated in).**
 
 ## Tables
 
-Vera fills this in from your live base. One row per table, with its fields listed as they are
-actually named.
-
 | Table | Fields |
 |---|---|
-| | |
+| Table 1 | Name, Notes, Assignee, Status, Attachments, Attachment Summary |
+| Skills | Name, What it does, Version, Path in repo, Last updated, Status (Active/Parked) |
+| Routines | Name, What it does, Instructions, How often, Last ran, How it went, Notes, Active, Order, Prepare and wait |
+| Tasks | Title, Status, Note |
 
 ## Notes
 
-Anything an agent should know that the field names do not say on their own. For example which table
-holds the truth when two look similar, what a status value means, or a convention you follow.
-
 | Note | |
 |---|---|
-| Which table holds your routines | |
-| Which table holds your tasks | |
-| Your timezone | |
-| Your currency | |
-| How you prorate a partial month | |
-| What a complete application looks like to you | |
-| How you name documents | |
+| Which table holds your routines | Routines (empty — no routines set up yet, no daily-pass schedule exists) |
+| Which table holds your tasks | Tasks (2 open, both "Needs you") |
+| Your timezone | Not recorded yet |
+| Your currency | Not recorded yet |
+| How you prorate a partial month | Not recorded yet |
+| What a complete application looks like to you | Not recorded yet |
+| How you name documents | Not recorded yet |
 
 ---
 
