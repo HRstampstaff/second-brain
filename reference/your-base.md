@@ -30,9 +30,9 @@ See `decisions/2026-09-01_built-airtable-hub-for-staffing-business.md`.
 | Table | Fields |
 |---|---|
 | Clients | Client Name, Main Contact, Status (Lead/Discovery Scheduled/Candidates Presented/Contracted/Active/Ended), Placement Type (Part-time/Full-time/Both), Monthly Fee, Contract Start Date, 6-Month Minimum Ends, Payment Status (Current/Late/Overdue), Client Success Manager, Notes |
-| VAs | VA Name, Role Type (EA/Creative-SMM/Other), Status (In Training/Active/Pooled/Inactive), Coach, Rate, Start Date, Contact, Notes |
+| VAs | VA Name, Role Type (EA/Creative-SMM/Other — **needs a CSM choice added by hand, see Notes**), Status (In Training/Active/Pooled/Inactive), Coach, Rate, Start Date, Contact, Notes |
 | Placements | Placement, Client (link), VA (link), Type (Part-time/Full-time), Start Date, End Date, Status (Active/Ended/Replaced), Reason Ended |
-| Candidates | Candidate Name, Role Applying For (EA/Creative-SMM/Other), Status (Applied/Screened-Qualified/Screened-Unqualified/Interview 1/Assessment/Interview 2/Passed-Training Date/Passed-Pooled/Regretted), Source, Applied Date, Contact, Notes |
+| Candidates | Candidate Name, Role Applying For (EA/Creative-SMM/Other — **needs a CSM choice added by hand, see Notes**), Status (Applied/Screened-Qualified/Screened-Unqualified/Interview 1/Assessment/Interview 2/Passed-Training Date/Passed-Pooled/Regretted), Source, Applied Date, Contact, Notes |
 | Table 1 | Name, Notes, Assignee, Status, Attachments, Attachment Summary — generic leftover from base creation, empty, not used by anything. Ailynn's call whether to delete it (the connector can't delete fields, only tables). |
 | Skills | Name, What it does, Version, Path in repo, Last updated, Status (Active/Parked) |
 | Routines | Name, What it does, Instructions, How often, Last ran, How it went, Notes, Active, Order, Prepare and wait |
@@ -48,6 +48,7 @@ See `decisions/2026-09-01_built-airtable-hub-for-staffing-business.md`.
 | Your currency | Not recorded yet |
 | How you prorate a partial month | Not recorded yet |
 | What a complete application looks like to you | Not recorded yet |
+| CSM | A VA role type (like EA or Creative/SMM), placed with a client — not an internal Stamp Staff position. The "Client Success Manager" text field on Clients is superseded; track it via Placements instead. "CSM" still needs adding as a choice on Role Type (VAs) and Role Applying For (Candidates) — the connector can't add select options, so this is a manual add in Airtable. |
 | How you name documents | Not recorded yet |
 
 ---

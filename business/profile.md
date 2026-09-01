@@ -74,6 +74,12 @@ Logo is a vintage postage-stamp design: mustard yellow, black, and cream color p
 - Three sample emails provided by the owner: a new-VA onboarding welcome email, a monthly service fee increase notice, and a failed-payment/late-fee notice
 - Direct answers given in this interview
 
+## Roles
+
+- **Client Success Manager (CSM) is a VA role type, not an internal Stamp Staff position.** A CSM is
+  placed with a client to help their customer journey, the same way an EA or a Creative/SMM VA is
+  placed. Confirmed by Ailynn 2026-09-01.
+
 ## Still to confirm
 
-- Client Success Manager role mentioned on the website: who holds it and how it works day to day
+(none open)
