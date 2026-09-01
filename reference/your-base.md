@@ -16,20 +16,24 @@ note on anything unusual. The agents read it so they know where your data lives 
 
 | | |
 |---|---|
-| Base name | Untitled Base |
+| Base name | Untitled Base (Ailynn may want to rename this by hand in Airtable — the connector has no rename tool) |
 | Base id | apptst9VRUlVdybNZ |
 | Last read | 2026-09-01 |
 
-**⚠️ This base is called "Untitled Base" and had only a generic "Table 1" plus the Skills/Routines/
-Tasks tables when Vera first connected — not the course's TLL Central Hub starter base with client,
-VA and placement tables. Flagged as a task below. Client, VA and financial data may live elsewhere
-(Airtable connector scoped to one base, or the starter base was never duplicated in).**
+**This is NOT the course's TLL Central Hub starter base — that one is built for property managers.**
+Ailynn confirmed on 2026-09-01: rather than duplicate the property-manager base in, Vera built
+Clients, VAs, Placements and Candidates tables from scratch to match Stamp Staff's actual business.
+See `decisions/2026-09-01_built-airtable-hub-for-staffing-business.md`.
 
 ## Tables
 
 | Table | Fields |
 |---|---|
-| Table 1 | Name, Notes, Assignee, Status, Attachments, Attachment Summary |
+| Clients | Client Name, Main Contact, Status (Lead/Discovery Scheduled/Candidates Presented/Contracted/Active/Ended), Placement Type (Part-time/Full-time/Both), Monthly Fee, Contract Start Date, 6-Month Minimum Ends, Payment Status (Current/Late/Overdue), Client Success Manager, Notes |
+| VAs | VA Name, Role Type (EA/Creative-SMM/Other), Status (In Training/Active/Pooled/Inactive), Coach, Rate, Start Date, Contact, Notes |
+| Placements | Placement, Client (link), VA (link), Type (Part-time/Full-time), Start Date, End Date, Status (Active/Ended/Replaced), Reason Ended |
+| Candidates | Candidate Name, Role Applying For (EA/Creative-SMM/Other), Status (Applied/Screened-Qualified/Screened-Unqualified/Interview 1/Assessment/Interview 2/Passed-Training Date/Passed-Pooled/Regretted), Source, Applied Date, Contact, Notes |
+| Table 1 | Name, Notes, Assignee, Status, Attachments, Attachment Summary — generic leftover from base creation, empty, not used by anything. Ailynn's call whether to delete it (the connector can't delete fields, only tables). |
 | Skills | Name, What it does, Version, Path in repo, Last updated, Status (Active/Parked) |
 | Routines | Name, What it does, Instructions, How often, Last ran, How it went, Notes, Active, Order, Prepare and wait |
 | Tasks | Title, Status, Note |
