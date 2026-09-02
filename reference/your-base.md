@@ -18,7 +18,7 @@ note on anything unusual. The agents read it so they know where your data lives 
 |---|---|
 | Base name | Untitled Base (Ailynn may want to rename this by hand in Airtable — the connector has no rename tool) |
 | Base id | apptst9VRUlVdybNZ |
-| Last read | 2026-09-01 |
+| Last read | 2026-09-02 |
 
 **This is NOT the course's TLL Central Hub starter base — that one is built for property managers.**
 Ailynn confirmed on 2026-09-01: rather than duplicate the property-manager base in, Vera built
@@ -42,8 +42,8 @@ See `decisions/2026-09-01_built-airtable-hub-for-staffing-business.md`.
 
 | Note | |
 |---|---|
-| Which table holds your routines | Routines — 1 active row: "Monthly BambooHR leave-approval reminders". Daily-pass schedule (good-morning-vera, 9am daily) already exists and runs this. |
-| Which table holds your tasks | Tasks (2 open, both "Needs you") |
+| Which table holds your routines | Routines — 1 active row: "Monthly BambooHR leave-approval reminders". Ran and completed for Sep on 2026-09-01 (row stamped 2026-09-02). Daily-pass schedule (good-morning-vera, 9am daily) already exists and runs this. |
+| Which table holds your tasks | Tasks (0 open — both closed as of 2026-09-02) |
 | Your timezone | America/New_York (Islamorada, FL) |
 | Your currency | Not recorded yet |
 | How you prorate a partial month | Not recorded yet |
