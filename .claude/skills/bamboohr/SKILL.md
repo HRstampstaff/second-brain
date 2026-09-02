@@ -19,8 +19,19 @@ actually true, don't guess.**
   works — that's BambooHR's convention, not a real password). Set up once as a generic Basic Auth
   credential in n8n (named "BambooHR API key"); never re-enter the key anywhere else.
 - **`Accept: application/json` header is required** — BambooHR returns XML by default without it.
-- Working n8n workflow so far: **bamboohr-timesheet-payroll-pull**, one HTTP Request node, tested
-  live against real data (real employee directory, real timesheet entries, real approved PTO).
+- Working n8n workflow: **bamboohr-timesheet-payroll-pull**. Built so far, all live-tested:
+  **Schedule Trigger** (daily, 11am) → **Code in JavaScript** (date-gating, below) → two parallel
+  **HTTP Request** nodes (timesheet entries, approved PTO), both using
+  `{{ $json.periodStart }}`/`{{ $json.periodEnd }}` from the Code node and the shared "BambooHR API
+  key" Basic Auth credential. Both proven against real data for the Aug 26–Sep 10 period (842 real
+  punches, 8 real approved PTO requests).
+- **Date-gating Code node**, tested and correct: computes whether "today" is 24 hours after the
+  weekend-adjusted day-after-cutoff (11th→12th-ish, 26th→28th-ish, skipping Sat/Sun on the reminder
+  day only), matching the separately-built coach-reminder routine from the "In-house team event
+  calendar" session. Returns 0 items on a non-pull day (verified 2026-09-02 is correctly a no-op),
+  returns `{periodStart, periodEnd, cutoffLabel, today}` on a pull day (verified against a hardcoded
+  2026-09-12 test date → correctly produced `2026-08-26`/`2026-09-10`). The exact code is worth
+  copying from the live n8n workflow rather than retyping from memory if this file needs it again.
 
 ## Endpoints proven live
 
