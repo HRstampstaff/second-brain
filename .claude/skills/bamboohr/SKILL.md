@@ -1,15 +1,59 @@
 ---
 name: bamboohr
-description: "PLACEHOLDER, not yet proven. Load before any work touching BambooHR: PTO approvals, timesheets/punches, or the API. Trigger on 'BambooHR', 'timesheet', 'PTO approval', 'coach approved', or any request to pull data out of BambooHR automatically."
+description: "IN PROGRESS — API access proven, join logic not yet built. Load before any work touching BambooHR: PTO approvals, timesheets/punches, or the API. Trigger on 'BambooHR', 'timesheet', 'PTO approval', 'coach approved', or any request to pull data out of BambooHR automatically."
 ---
 
 # BambooHR
 
-**Version: 0.1 (PLACEHOLDER) - 2026-09-02**
+**Version: 0.2 (IN PROGRESS) - 2026-09-02**
 
-**This is a placeholder. It has not been proven against the real BambooHR API. Nothing below is
-tested — it is what was known at the moment this file was created. Fill it in the first time real
-work happens against BambooHR, per the vera skill's placeholder pattern.**
+**Not a placeholder anymore — the API is live-tested and the endpoints below are proven against
+Stamp Staff's real BambooHR account. What's still missing is the join logic (matching punches to
+clients) and the actual n8n build. Fill in the rest the same way: test for real, write down what's
+actually true, don't guess.**
+
+## Account and access — proven 2026-09-02
+
+- **Subdomain:** `stampstaff` — base URL `https://stampstaff.bamboohr.com/api/v1/...`
+- **Auth:** HTTP Basic Auth. Username = the BambooHR API key, password = literal `x` (any string
+  works — that's BambooHR's convention, not a real password). Set up once as a generic Basic Auth
+  credential in n8n (named "BambooHR API key"); never re-enter the key anywhere else.
+- **`Accept: application/json` header is required** — BambooHR returns XML by default without it.
+- Working n8n workflow so far: **bamboohr-timesheet-payroll-pull**, one HTTP Request node, tested
+  live against real data (real employee directory, real timesheet entries, real approved PTO).
+
+## Endpoints proven live
+
+- **`GET /v1/time_off/requests?start=YYYY-MM-DD&end=YYYY-MM-DD&status=approved`** — approved PTO for
+  a date range. **Gives whole days off only**: `amount: {unit: "days", amount: "1"}`. No client, no
+  hours, no notes field populated. `type.name` is either "Paid Time Off" (generic) or "Client Paid
+  Time Off" (still doesn't say *which* client) — confirmed on real data, 2026-09-02.
+- **`GET /v1/time_tracking/timesheet_entries?start=YYYY-MM-DD&end=YYYY-MM-DD`** — real clock
+  punches, one row per punch: `employeeId`, `date`, `start`, `end`, `hours`, `timezone`,
+  `projectInfo`, `note`, `approved`, `approvedAt`. **`projectInfo` and `note` are null on every real
+  entry tested** — BambooHR is not configured to record which client a punch was for. Do not build
+  on the assumption this field will ever be populated without Ailynn changing how VAs clock in.
+- **`GET /v1/meta/fields`** — lists all 269 account fields (id, name, type, alias). Useful for
+  finding custom fields, but see the dead end below.
+- **`GET /v1/employees/{id}?fields=...`** — per BambooHR's own docs, "unknown or unauthorized fields
+  are silently dropped from the response" — a missing key does NOT mean the field is empty, it could
+  also mean the API key lacks permission. Tested field id `4549` ("Schedule", type textarea) against
+  a real employee (id 192, Matthew John Lorizo) and got nothing back either way — inconclusive by
+  design of the API, never treat a missing field as proof it's blank.
+
+## Dead end: no client info inside BambooHR
+
+Went looking for which client a shift/PTO day belongs to, since the payroll sheet needs hours broken
+out per client. **BambooHR itself doesn't have it**, confirmed two ways: timesheet `projectInfo`/
+`note` are null on every real entry, and the "Schedule" custom field (id 4549) on the employee Job
+tab returned nothing via the API (inconclusive whether blank or a permissions gap — not confirmed in
+the BambooHR web UI itself).
+
+**Decided with Ailynn, 2026-09-02: use the payroll Google Sheet's own "Form Responses" tab instead.**
+VAs submit their own schedule there (client, days worked, start/end time, timezone) — see the payroll
+sheet linked in the routines/automations context. That's the source of truth for which client a punch
+or a PTO day belongs to: match a timesheet entry's day-of-week + time-of-day, or a PTO day's
+day-of-week, against the VA's declared schedule for that client.
 
 ## What this is for
 
@@ -35,25 +79,29 @@ it into the payroll folder in the format of the existing payroll Google Sheet.
 
 ## What is NOT known yet — named explicitly
 
-- **The API key.** Ailynn said she was sending it (2026-09-02) but it did not arrive in the message
-  (this has happened twice now — worth checking how she's sending things, something may be getting
-  stripped). It should never be pasted into chat or stored in this repo in plain text — it belongs in
-  whatever system actually calls the API (an n8n credential, most likely), not inside Claude or a
-  skill file. See "Secrets do not live inside Claude" in the vera skill.
-- **Whether Ailynn has an n8n account already connected.** Per the [[n8n]] skill's decision
-  framework, this is an n8n flow (joins two systems that don't talk to each other, runs on a
-  schedule with nobody present) — not a routine Vera runs by hand, and not buildable in this session
-  without n8n access. No BambooHR connector is available here either.
-- **Exact field names/report ID inside BambooHR** for the timesheet entries report — not seen yet,
-  needs the actual API/account to check.
+- **The join logic itself, not yet built.** Need a step (Code node in n8n, most likely) that: reads
+  the Form Responses schedule tab, reads timesheet entries, reads approved PTO requests, and for each
+  VA maps punches/PTO days to a client by day-of-week + time-of-day. Not started.
+- **PTO days → hours conversion.** A PTO request gives whole days (`amount.unit: "days"`), the
+  payroll sheet needs hours per client. Convert using the VA's scheduled hours for that client on
+  that day-of-week from the Form Responses tab — not yet built, and not yet confirmed with Ailynn
+  that this is the right conversion when a VA is scheduled with more than one client on the same day.
 - **What happens if PTO isn't approved by the time a cutoff check runs.** Needs a defined fallback
   (flag and wait vs. pull without it) rather than silently pulling incomplete hours — undecided.
+- **Whether the API key's permissions cover everything needed.** The Job-tab "Schedule" custom field
+  (id 4549) returned nothing for a real employee and BambooHR's own docs say a missing field could
+  mean either "blank" or "unauthorized" — not distinguished yet. Moot for now since the Form
+  Responses sheet is the chosen path instead, but worth knowing if BambooHR-side data is needed again.
+- **Writing the result into the payroll Google Sheet** — not attempted yet. Per the google-sheets
+  skill: never overwrite a sheet Ailynn maintains by hand; this pull-per-VA-per-client output should
+  probably land on its own tab or a sheet built for the purpose, not directly onto her working tab.
+- **The Schedule Trigger, and the two HTTP Request calls, still need to be wired into one flow** —
+  so far this has all been one HTTP Request node in n8n, manually re-pointed and re-run by hand to
+  prove each endpoint works. Nothing runs on its own yet.
 
-## Do not build from this file yet
+## Do not build the rest of this from memory
 
-The requirements above are confirmed, but nothing has been built or tested — no BambooHR access, no
-n8n access yet. Whoever picks this up next should get n8n set up first (or check whether it already
-is), then get the API key attached there directly, never through chat. Once the first real
-automation is built and tested end to end, replace this file with what was actually learned — what
-the API returns, what the webhook/schedule run looks like, what broke — and remove the placeholder
-warning.
+Everything above the "not known yet" section is proven against real data, live, 2026-09-02 — safe to
+build on. Everything in "not known yet" still needs the same treatment: test for real, don't assume.
+Once the flow runs end to end unattended and the payroll sheet actually gets the right numbers,
+replace this whole file with what was actually learned and drop the "in progress" framing.
