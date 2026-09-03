@@ -5,7 +5,7 @@ description: "Load before reading from or writing to a spreadsheet, and BEFORE a
 
 # Google Sheets
 
-**Version: 1.0 - 2026-08-24**
+**Version: 1.1 - 2026-09-02**
 
 Almost every owner arrives with spreadsheets, and they usually contain the only written history of
 the business. This skill is about respecting that, getting it in cleanly, and then being honest about
@@ -58,6 +58,15 @@ The failures here are quiet. Nothing errors, and the data is wrong.
   first, and that is normal rather than a sign of a bad sheet.
 - **One row per thing.** A sheet with a row per month per property has to be reshaped before it can
   become records.
+- **Duplicate column headers silently collide.** A Google Form that asks the same question more than
+  once (e.g. "Days worked" for Client 1, 2 and 3) produces identical header text for each. A tool
+  that reads rows keyed by header name — n8n's Google Sheets node included — has no way to tell the
+  columns apart, and the last one silently overwrites the earlier ones in every row. No error, no
+  warning, and the corrupted value still looks plausible. Caught 2026-09-02 in Stamp Staff's payroll
+  Form Responses tab: Client 1's schedule was being overwritten by Client 3's on every VA with more
+  than one client. **Before reading a sheet by header into anything, check the header row for repeats
+  and rename them unique first** (e.g. "Days worked 1/2/3") — there was no raw/positional read mode
+  available in n8n's Google Sheets node to work around it instead.
 
 **Import a handful of rows first and look at them properly.** Every one of these problems is obvious
 in ten rows and invisible in a thousand.
@@ -93,5 +102,6 @@ worst of both, because they diverge within a week and nobody can say which is ri
 | Everything looks fine but a total is far too low | Blanks were imported as zero, or rows were skipped | Compare the row count and the total against the original |
 | A code lost its leading zeros | It was treated as a number | Import that column as text |
 | The import produced nonsense | Merged cells, or several tables on one sheet | Untangle it by hand first. This is normal |
+| A value is plausible but wrong, and a repeated question is in the sheet | Duplicate header text is colliding when read by header name | Rename the header row to unique names before reading |
 | Writes are failing or reverting | Somebody has the sheet open | Write when nobody is in it, or write elsewhere |
 | Two versions of the truth exist | The same data lives in the hub and in a sheet | Pick one. Half a migration is worse than none |
