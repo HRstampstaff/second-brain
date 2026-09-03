@@ -50,9 +50,8 @@ $15,000.
 
 Signed for Stamp Staff by Kristin Stampini.
 
-## Open item, not yet resolved
+## Note
 
 The document's "Backup Payment Method" section collects a raw card number, CVV, expiry, and billing
-address as document fields rather than through a payment processor. Flagged to Ailynn 2026-09-03 as a
-data-exposure risk worth a look from whoever handles card processing or the business's attorney — not
-yet acted on.
+address as document fields rather than through a payment processor. Flagged to Ailynn 2026-09-03; she
+confirmed it's fine as-is, no change needed.
