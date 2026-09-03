@@ -31,6 +31,45 @@ Google Sheets action → Code by Zapier for the join logic → Google Sheets wri
 Professional plan supports Code steps and Webhooks; confirm that's still the plan Stamp Staff has
 before assuming these are available.
 
+## Zapier build progress — started 2026-09-03
+
+**Built so far, all live-tested in the real Zapier account:**
+
+1. **Trigger: Schedule by Zapier, "Every Day"**, 11:00 AM, Timezone Override `America/New_York`,
+   "Trigger on weekends?" = yes (the date-gating step below decides whether to actually do anything,
+   not the trigger).
+2. **Code by Zapier, "Run JavaScript"** — the same date-gating logic as the n8n version, adapted:
+   Zapier's Code step returns one object (not an array), so instead of returning `[]` on a non-pull
+   day, it returns `{periodStart: '', periodEnd: '', ..., isPullDay: 'false'}` and a separate Filter
+   step (next) does the actual stopping. Exact code is in the live Zap; port from the n8n version
+   above if this file needs it rebuilt.
+3. **Filter by Zapier**: "Only continue if" → `Is Pull Day` (Text) Exactly matches `true`. Verified
+   correctly stops the Zap on a non-pull day (tested live, 2026-09-03 correctly did not continue).
+4. **Webhooks by Zapier, GET**, timesheet entries — **fully working**, verified against real data.
+
+**Bug hit and fixed: Webhooks by Zapier's dedicated "Basic Auth" field could not be made to work.**
+Tried `username:password` format, tried with/without stray characters from browser autofill
+contaminating the field — consistently got 401 regardless of what was entered. This is a documented,
+unresolved issue in Zapier's own community forum (other users report the same thing, no official fix
+posted). **Verified independently that the credential itself was never the problem**: ran
+`curl -u "<key>:x" https://stampstaff.bamboohr.com/api/v1/employees/directory` directly, got 200.
+**Fix: skip the "Basic Auth" field entirely.** Instead, manually compute the Basic Auth header value
+(`Basic ` + base64 of `apikey:x`) and set it as a literal **Headers** row: key `Authorization`, value
+the precomputed string, pasted as static text — not built dynamically per-request via a Code step
+(that path was tried first and repeatedly got corrupted, most likely by manual retyping of the raw
+key into an Input Data field — small 1-2 character differences each attempt, classic typo pattern in
+a 40-character hex string). A static value is fine here since the credential doesn't change between
+runs; if the BambooHR API key is ever rotated, this header value needs recomputing and repasting into
+every Webhooks by Zapier step that uses it (there is no shared/reusable credential store for this
+approach the way n8n's credential system had one — a real downside of this workaround, accepted for
+now given the Basic Auth field doesn't work at all).
+
+**Zapier gotcha: a Code by Zapier step's "Run Code" button (inside the expanded code editor) does
+NOT refresh the sample data other steps see.** Downstream steps' dynamic field references (the
+"insert data" chips) kept showing stale/empty values after editing and running code in the editor.
+Fix: after editing code, close the editor and use the step's own **Test → Retest step** button (not
+"Run Code") to actually register a fresh sample for the rest of the Zap to reference.
+
 ## Account and access — proven 2026-09-02
 
 - **Subdomain:** `stampstaff` — base URL `https://stampstaff.bamboohr.com/api/v1/...`
