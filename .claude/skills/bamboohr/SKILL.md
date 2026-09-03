@@ -45,7 +45,27 @@ before assuming these are available.
    above if this file needs it rebuilt.
 3. **Filter by Zapier**: "Only continue if" → `Is Pull Day` (Text) Exactly matches `true`. Verified
    correctly stops the Zap on a non-pull day (tested live, 2026-09-03 correctly did not continue).
-4. **Webhooks by Zapier, GET**, timesheet entries — **fully working**, verified against real data.
+4. **Webhooks by Zapier, GET**, timesheet entries — **fully working**, verified against real data
+   (same real records as the n8n test: employeeId 192, 2026-08-26, 0.2333 hours).
+5. **Webhooks by Zapier, GET**, approved PTO — **fully working**, same URL/params as the n8n version,
+   status query param must be typed as **literal text** `approved`, not an inserted data chip (easy
+   to fat-finger the wrong thing into that field since Zapier's insert-data UI sits right there).
+   Verified against real data (same record as n8n: id 4752, Rubiemar Dela Torre).
+6. **Webhooks by Zapier, GET**, employee directory (`/v1/employees/directory`, no query params) —
+   **fully working**. Needed because timesheet entries only carry `employeeId`, no name/email; this
+   step's `workEmail` per employee is how a punch gets matched to a VA in the join step later.
+7. **Google Sheets, "Get Many Spreadsheet Rows (Advanced)"**, Form Responses 1 tab, Row count 1500,
+   First row 2 (skips the header) — **fully working**, real data confirmed. Output format is
+   positional/raw (`Rows.1.1`, `Rows.1.2`, etc., not header-keyed), which sidesteps the duplicate-
+   header problem entirely regardless of the header-row fix — column positions (0-indexed from the
+   original 22-column header list): 0 Timestamp, 1 Full Name, 2 Email Address, 3 Client1 Name,
+   4 Employment Type, 5 Days worked 1, 6 Start 1, 7 End 1, 8 Timezone 1, 9 Client2 Name,
+   10 Employment Type 2, 11 Days worked 2, 12 Start 2, 13 End 2, 14 Timezone 2, 15 Client3 Name,
+   16 Employment Type 3, 17 Days worked 3, 18 Start 3, 19 End 3, 20 Timezone 3, 21 Anything else.
+
+**All four data sources are now proven live in Zapier. Not yet built: the join logic (Code by
+Zapier) that actually matches punches/PTO to a client and computes per-VA-per-client hours, and the
+write-back into the payroll sheet.**
 
 **Bug hit and fixed: Webhooks by Zapier's dedicated "Basic Auth" field could not be made to work.**
 Tried `username:password` format, tried with/without stray characters from browser autofill
