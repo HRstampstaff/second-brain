@@ -66,6 +66,19 @@ sheet linked in the routines/automations context. That's the source of truth for
 or a PTO day belongs to: match a timesheet entry's day-of-week + time-of-day, or a PTO day's
 day-of-week, against the VA's declared schedule for that client.
 
+**Bug caught and fixed, 2026-09-02: the Form Responses tab had duplicate column headers.** "Days
+worked", "Scheduled start time", "Scheduled end time", and "Time zone this schedule is in" each
+appear 3 times (once per client block), byte-for-byte identical. n8n's Google Sheets node reads rows
+keyed by header text, so the duplicate headers were silently colliding — Client 2/3's schedule was
+overwriting Client 1's on every VA with more than one client, with no error, no warning. Confirmed
+by comparing pulled data against the raw sheet dump: Vince Charles de Guzman's Client 1 "Days worked"
+came back as "Monday, Wednesday" (his Client 3 value) instead of the correct "Monday, Tuesday,
+Wednesday, Thursday, Friday". **Fixed by renaming the header row in the actual sheet** (not
+workaroundable in the n8n node itself — no raw/positional output mode available in this version):
+`Days worked` → `Days worked 1`/`2`/`3` (cols F/L/R), same pattern for `Scheduled start time`
+(G/M/S), `Scheduled end time` (H/N/T), and `Time zone this schedule is in` (I/O/U). Re-pulled after
+the rename and every VA's data now comes back correct and separated per client.
+
 ## What this is for
 
 Stamp Staff uses BambooHR for VA PTO ([policies/va-paid-time-off.md](../../../policies/va-paid-time-off.md))
