@@ -12,6 +12,15 @@ Stamp Staff's real BambooHR account. What's still missing is the join logic (mat
 clients) and the actual n8n build. Fill in the rest the same way: test for real, write down what's
 actually true, don't guess.**
 
+## Deadline: n8n free trial ends 2026-09-16
+
+Ailynn is on n8n's 14-day trial, started 2026-09-02. **The workflow needs to be finished, tested end
+to end, and Ailynn needs to have decided whether to pay for n8n (or move the flow somewhere else)
+before then.** If the trial lapses before this is done, the credential and the whole workflow go with
+it. Whoever picks this up next should check the trial's actual remaining days first (n8n shows this
+in its own UI) rather than assuming from this date, and flag it to Ailynn early rather than
+discovering it mid-cutoff.
+
 ## Account and access — proven 2026-09-02
 
 - **Subdomain:** `stampstaff` — base URL `https://stampstaff.bamboohr.com/api/v1/...`
