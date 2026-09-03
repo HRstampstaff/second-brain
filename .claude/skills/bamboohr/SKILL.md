@@ -67,6 +67,64 @@ before assuming these are available.
 Zapier) that actually matches punches/PTO to a client and computes per-VA-per-client hours, and the
 write-back into the payroll sheet.**
 
+## Current blocker, 2026-09-03: Zapier can't pass a full array into a Code step
+
+**Tried and confirmed:** step 8 (Code by Zapier, meant to do the join) can access the FULL raw output
+of step 7 (Google Sheets) and step 6 (employee directory) as one blob via `Object.to_json([step].Raw
+Output)`, because those two endpoints return a wrapping object (`{rows: [...]}`, `{employees: [...]}`)
+at the JSON root. **But steps 4 and 5 (timesheet entries, approved PTO) return a bare JSON array at
+the root**, and Zapier's "Step Output" chip for those only exposes the FIRST array element, not the
+full list — confirmed by a diagnostic Code step that logged the actual parsed shape of each input
+(`timesheetShape`/`ptoShape` came back as a single entry's fields, not an array of 842/8 items).
+
+**First fix attempted: have the Code step fetch all three BambooHR endpoints itself** (Code by Zapier
+runs real Node.js, `fetch()` works). This is architecturally clean and worked in isolation on the
+concept, but **hit Zapier's Code step runtime limit: external network calls exceeded it even running
+all three fetches in parallel with `Promise.all`.** The exact code (proven correct as JavaScript, just
+not fast enough within Zapier's default limit) is worth reusing if this gets picked back up:
+
+```javascript
+const authHeader = 'Basic ' + Buffer.from(inputData.apiKey + ':x').toString('base64');
+const headers = { Accept: 'application/json', Authorization: authHeader };
+
+const [timesheetRes, ptoRes, dirRes] = await Promise.all([
+  fetch(`https://stampstaff.bamboohr.com/api/v1/time_tracking/timesheet_entries?start=${inputData.periodStart}&end=${inputData.periodEnd}`, { headers }),
+  fetch(`https://stampstaff.bamboohr.com/api/v1/time_off/requests?start=${inputData.periodStart}&end=${inputData.periodEnd}&status=approved`, { headers }),
+  fetch('https://stampstaff.bamboohr.com/api/v1/employees/directory', { headers })
+]);
+const [timesheet, pto, directory] = await Promise.all([timesheetRes.json(), ptoRes.json(), dirRes.json()]);
+const sheet = JSON.parse(inputData.sheetRaw);
+```
+
+**Checked whether Zapier's "extended runtime" (up to 10 minutes, advertised for Professional/Team/
+Enterprise plans) would fix this**: found the exact UI path — open the Code step, "Open in Code
+Editor," click the **Runtime** icon in the editor's left sidebar, "Extended runtime" dropdown. **On
+Stamp Staff's actual account this showed "Extended runtime is available on paid plans — Upgrade now,"
+meaning the current plan does not include it**, despite general docs saying Professional does. Not
+independently verified why (could be this specific account/plan tier, could be the docs describing a
+different limit than the one this account is gated on) — worth checking Zapier's actual current plan
+details before assuming either way.
+
+**Left as an open decision with Ailynn, 2026-09-03** (asked, she said pause rather than decide now):
+
+1. **Upgrade Zapier** for extended Code runtime — unknown exact cost/tier, not looked into.
+2. **Restructure around the limit** — keep steps 4/5 (timesheet, PTO) as separate Webhooks by Zapier
+   actions rather than fetching them from inside Code, and find a different way to get their full
+   array data into the join step. Not investigated yet: whether Webhooks by Zapier exposes a raw
+   unparsed response-body field (as literal text) separately from the parsed "Step Output" chip —
+   that would sidestep the array-flattening problem without needing extended runtime at all. Worth
+   checking directly in the field browser (scroll through every field Zapier offers for step 4/5,
+   not just the ones visible without scrolling) before assuming it doesn't exist.
+3. **Pause and revisit** — chosen for now. The Zap is left in a safe, non-published draft state: the
+   date-gating Code step (step 2) is reverted to the real `new Date()` line (not the hardcoded test
+   date), so nothing will run against wrong data if anyone touches this Zap. Step 8's `apiKey` value
+   should be double-checked before reuse, given the repeated typo/corruption problems that happened
+   entering it earlier in this same session.
+
+**Whoever picks this back up: try option 2's "raw body" investigation first**, since it costs nothing
+and might make option 1 unnecessary. If that's genuinely not available, bring the concrete cost of
+option 1 back to Ailynn as a real decision rather than assuming she wants to pay for it.
+
 **Bug hit and fixed: Webhooks by Zapier's dedicated "Basic Auth" field could not be made to work.**
 Tried `username:password` format, tried with/without stray characters from browser autofill
 contaminating the field — consistently got 401 regardless of what was entered. This is a documented,
