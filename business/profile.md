@@ -27,7 +27,7 @@ Tone: warm but professional. The AI team may NOT send anything to a client or VA
 - 6-month minimum contract
 - Replacement guarantee if a VA isn't a good fit
 - Monthly service fee can increase over time; increases are communicated in advance (for example, a past increase of $0.50/hour)
-- Late fee of $100 applies if payment isn't received by the 3rd of the month
+- Late fee of $100 applies if payment isn't received by the 2nd of the month (due the 1st); service is suspended by the 3rd and the contract is canceled by the 7th if still unpaid (per the signed Service Agreement, confirmed 2026-09-03)
 - Clients are asked to prepare onboarding info before the VA starts: main point of contact, preferred communication tool (Google Chat, Slack, Skype, FB Messenger, etc.), logins (CRM, social media), file storage (Dropbox or Google Drive), a work email, company details, and templates/checklists
 
 ## Tools and where documents live
