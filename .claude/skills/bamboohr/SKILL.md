@@ -1,46 +1,99 @@
 ---
 name: bamboohr
-description: "IN PROGRESS — API access proven, join logic not yet built. Load before any work touching BambooHR: PTO approvals, timesheets/punches, or the API. Trigger on 'BambooHR', 'timesheet', 'PTO approval', 'coach approved', or any request to pull data out of BambooHR automatically."
+description: "IN PROGRESS — API access proven, being rebuilt in Zapier (not n8n). Load before any work touching BambooHR: PTO approvals, timesheets/punches, or the API. Trigger on 'BambooHR', 'timesheet', 'PTO approval', 'coach approved', or any request to pull data out of BambooHR automatically."
 ---
 
 # BambooHR
 
-**Version: 0.2 (IN PROGRESS) - 2026-09-02**
+**Version: 0.3 (IN PROGRESS) - 2026-09-02**
 
-**Not a placeholder anymore — the API is live-tested and the endpoints below are proven against
-Stamp Staff's real BambooHR account. What's still missing is the join logic (matching punches to
-clients) and the actual n8n build. Fill in the rest the same way: test for real, write down what's
-actually true, don't guess.**
+**Not a placeholder anymore — the BambooHR API is live-tested and proven, below, against Stamp
+Staff's real account. Fill in the rest the same way: test for real, write down what's actually true,
+don't guess.**
 
-## Deadline: n8n free trial ends 2026-09-16
+## Platform decision, 2026-09-02: building in Zapier, not n8n
 
-Ailynn is on n8n's 14-day trial, started 2026-09-02. **The workflow needs to be finished, tested end
-to end, and Ailynn needs to have decided whether to pay for n8n (or move the flow somewhere else)
-before then.** If the trial lapses before this is done, the credential and the whole workflow go with
-it. Whoever picks this up next should check the trial's actual remaining days first (n8n shows this
-in its own UI) rather than assuming from this date, and flag it to Ailynn early rather than
-discovering it mid-cutoff.
+**A partial workflow (schedule + date logic + both BambooHR calls + the Form Responses read) was
+built and proven live in n8n first, on n8n's 14-day free trial. That n8n workflow is being abandoned,
+not finished.** Reason: Stamp Staff already pays for Zapier Professional (unlimited Zaps, billed on a
+shared monthly task pool — building this costs nothing extra beyond the existing subscription), while
+the n8n trial expires 2026-09-16 and deletes the whole workspace on expiry with no grace period.
+Finishing in n8n first and then moving to Zapier would mean building it twice — there is no
+import/export between the two platforms, no shared credential or expression format. Decided to stop
+adding to the n8n version and build the rest directly in Zapier instead.
+
+**What carries over from the n8n work (still 100% valid, platform-independent):** every proven
+BambooHR endpoint, the auth method, the date-gating rule, the Form Responses duplicate-header fix,
+and the whole join-logic plan below. **What does NOT carry over:** the actual n8n nodes themselves
+(Schedule Trigger, Code node, HTTP Request nodes) — those need to be rebuilt as Zapier steps (likely:
+Schedule trigger → Code by Zapier for date-gating → Webhooks by Zapier for each BambooHR call →
+Google Sheets action → Code by Zapier for the join logic → Google Sheets write). Zapier's
+Professional plan supports Code steps and Webhooks; confirm that's still the plan Stamp Staff has
+before assuming these are available.
 
 ## Account and access — proven 2026-09-02
 
 - **Subdomain:** `stampstaff` — base URL `https://stampstaff.bamboohr.com/api/v1/...`
 - **Auth:** HTTP Basic Auth. Username = the BambooHR API key, password = literal `x` (any string
-  works — that's BambooHR's convention, not a real password). Set up once as a generic Basic Auth
-  credential in n8n (named "BambooHR API key"); never re-enter the key anywhere else.
+  works — that's BambooHR's convention, not a real password). Set this up as a Basic Auth credential
+  in whatever tool calls the API (Zapier now, not n8n — see platform decision above); never re-enter
+  the key anywhere else, and never put it in this repo or in chat.
 - **`Accept: application/json` header is required** — BambooHR returns XML by default without it.
-- Working n8n workflow: **bamboohr-timesheet-payroll-pull**. Built so far, all live-tested:
-  **Schedule Trigger** (daily, 11am) → **Code in JavaScript** (date-gating, below) → two parallel
-  **HTTP Request** nodes (timesheet entries, approved PTO), both using
-  `{{ $json.periodStart }}`/`{{ $json.periodEnd }}` from the Code node and the shared "BambooHR API
-  key" Basic Auth credential. Both proven against real data for the Aug 26–Sep 10 period (842 real
-  punches, 8 real approved PTO requests).
-- **Date-gating Code node**, tested and correct: computes whether "today" is 24 hours after the
-  weekend-adjusted day-after-cutoff (11th→12th-ish, 26th→28th-ish, skipping Sat/Sun on the reminder
-  day only), matching the separately-built coach-reminder routine from the "In-house team event
-  calendar" session. Returns 0 items on a non-pull day (verified 2026-09-02 is correctly a no-op),
-  returns `{periodStart, periodEnd, cutoffLabel, today}` on a pull day (verified against a hardcoded
-  2026-09-12 test date → correctly produced `2026-08-26`/`2026-09-10`). The exact code is worth
-  copying from the live n8n workflow rather than retyping from memory if this file needs it again.
+- **Abandoned n8n workflow (reference only, not being continued): bamboohr-timesheet-payroll-pull.**
+  Built and live-tested there before the platform decision above: Schedule Trigger (daily, 11am) →
+  Code node (date-gating, logic described below) → two parallel HTTP Request nodes (timesheet
+  entries, approved PTO), both using the computed period dates and the shared Basic Auth credential.
+  Both proven against real data for the Aug 26–Sep 10 period (842 real punches, 8 real approved PTO
+  requests). This n8n workflow itself will disappear when the trial expires (2026-09-16) — nothing
+  further needs doing with it, the point of keeping this section is just the proof that the approach
+  works, not the n8n workflow as an artifact.
+- **Date-gating logic**, tested and correct (needs porting to a Zapier Code step, logic unchanged):
+  computes whether "today" is 24 hours after the weekend-adjusted day-after-cutoff (11th→12th-ish,
+  26th→28th-ish, skipping Sat/Sun on the reminder day only), matching the separately-built
+  coach-reminder routine from the "In-house team event calendar" session. Should return "not a pull
+  day, stop" on a non-pull day (verified 2026-09-02 is correctly a no-op in n8n), and compute
+  `{periodStart, periodEnd, cutoffLabel, today}` on a pull day (verified against a hardcoded
+  2026-09-12 test date in n8n → correctly produced `2026-08-26`/`2026-09-10`). The exact JavaScript is
+  below — same language works in Zapier's Code by Zapier step, should port with minimal changes.
+
+```javascript
+const now = new Date(new Date().toLocaleString('en-US', {timeZone: 'America/New_York'}));
+const day = now.getDate();
+const month = now.getMonth();
+const year = now.getFullYear();
+
+function nextBusinessDay(d) {
+  const wd = d.getDay();
+  if (wd === 6) d.setDate(d.getDate() + 2);
+  else if (wd === 0) d.setDate(d.getDate() + 1);
+  return d;
+}
+function fmt(d) { return d.toISOString().slice(0, 10); }
+
+const reminderA = nextBusinessDay(new Date(year, month, 11));
+const pullA = new Date(reminderA); pullA.setDate(pullA.getDate() + 1);
+
+const reminderB = nextBusinessDay(new Date(year, month, 26));
+const pullB = new Date(reminderB); pullB.setDate(pullB.getDate() + 1);
+
+const today = fmt(now);
+let periodStart, periodEnd, cutoffLabel;
+
+if (fmt(pullA) === today) {
+  const prevMonth = month === 0 ? 11 : month - 1;
+  const prevYear = month === 0 ? year - 1 : year;
+  periodStart = fmt(new Date(prevYear, prevMonth, 26));
+  periodEnd = fmt(new Date(year, month, 10));
+  cutoffLabel = 'Aug26-Sep10 style (paid 20th)';
+} else if (fmt(pullB) === today) {
+  periodStart = fmt(new Date(year, month, 11));
+  periodEnd = fmt(new Date(year, month, 25));
+  cutoffLabel = '11th-25th style (paid 5th next month)';
+}
+
+// In n8n this returned []  to stop the workflow on a non-pull day.
+// In Zapier, use this as a Filter step condition instead: only continue if periodStart is set.
+```
 
 ## Endpoints proven live
 
@@ -112,9 +165,21 @@ it into the payroll folder in the format of the existing payroll Google Sheet.
 
 ## What is NOT known yet — named explicitly
 
-- **The join logic itself, not yet built.** Need a step (Code node in n8n, most likely) that: reads
-  the Form Responses schedule tab, reads timesheet entries, reads approved PTO requests, and for each
-  VA maps punches/PTO days to a client by day-of-week + time-of-day. Not started.
+- **The whole Zapier build itself.** Nothing has been built in Zapier yet — everything above is
+  proven in n8n (now abandoned) or via raw API calls. Start fresh in Zapier using the endpoints,
+  auth, and date logic above, confirmed against the real account, but re-test every step live again
+  once it's actually in Zapier — a different platform can behave differently even calling the same
+  API (see the n8n skill's testing philosophy: a green run isn't proof, checking the real output is).
+- **Timesheet entries need an extra lookup step that PTO requests don't.** `time_off/requests` returns
+  the VA's `name` directly, so it can match Form Responses' "Full Name" column with no extra call. But
+  `time_tracking/timesheet_entries` returns only `employeeId` — no name, no email — so matching a
+  punch to a VA requires also calling `GET /v1/employees/directory` (proven live, returns
+  `id`/`displayName`/`workEmail` etc. per employee) and joining on `employeeId`, then matching that
+  employee's `workEmail` against Form Responses' "Email Address" column. Not yet wired into a step.
+- **The join logic itself, not yet built.** Needs a step (Code by Zapier, most likely) that: reads
+  the Form Responses schedule tab, the employee directory, timesheet entries, and approved PTO
+  requests, and for each VA maps punches/PTO days to a client by day-of-week + time-of-day. Not
+  started in Zapier.
 - **PTO days → hours conversion.** A PTO request gives whole days (`amount.unit: "days"`), the
   payroll sheet needs hours per client. Convert using the VA's scheduled hours for that client on
   that day-of-week from the Form Responses tab — not yet built, and not yet confirmed with Ailynn
@@ -128,13 +193,14 @@ it into the payroll folder in the format of the existing payroll Google Sheet.
 - **Writing the result into the payroll Google Sheet** — not attempted yet. Per the google-sheets
   skill: never overwrite a sheet Ailynn maintains by hand; this pull-per-VA-per-client output should
   probably land on its own tab or a sheet built for the purpose, not directly onto her working tab.
-- **The Schedule Trigger, and the two HTTP Request calls, still need to be wired into one flow** —
-  so far this has all been one HTTP Request node in n8n, manually re-pointed and re-run by hand to
-  prove each endpoint works. Nothing runs on its own yet.
+- **Whether Zapier's Google Sheets action has the same duplicate-header collision n8n's did.** The
+  header rename in the actual sheet (done 2026-09-02) fixes this regardless of which tool reads it,
+  but worth a specific check the first time Zapier reads that tab, rather than assuming it's fine.
 
 ## Do not build the rest of this from memory
 
 Everything above the "not known yet" section is proven against real data, live, 2026-09-02 — safe to
-build on. Everything in "not known yet" still needs the same treatment: test for real, don't assume.
-Once the flow runs end to end unattended and the payroll sheet actually gets the right numbers,
-replace this whole file with what was actually learned and drop the "in progress" framing.
+build on, in Zapier, from scratch. Everything in "not known yet" still needs the same treatment: test
+for real, don't assume. Once the flow runs end to end unattended in Zapier and the payroll sheet
+actually gets the right numbers, replace this whole file with what was actually learned and drop the
+"in progress" framing.
