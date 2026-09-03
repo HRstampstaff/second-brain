@@ -15,7 +15,11 @@ description: >
 ---
 # AI Second Brain Skill
 
-**Version: 1.0 - 2026-08-10**
+**Version: 1.1 - 2026-09-02 (git steps run one at a time, never joined with `&&`). Every save in this
+file used to be one chained command, which is the exact shape a permission system refuses, and the
+Auto-Commit Rule made it standing policy and told you to do it silently. A real owner lost a day to
+that: nothing was wrong with git or their repo, the command shape was simply always refused. Layered
+on 1.0 - 2026-08-10**
 
 ## What This Skill Does
 
@@ -61,7 +65,10 @@ grep -rl --include="*.md" -i "soul system\|soul loaded\|soul update\|soul check-
     -e 's/Soul Files/Brain Files/g' \
     "$f"
 done
-git add -A && git commit -m "Rename: Soul System -> Second Brain" && git push origin main
+git add <the files you changed>
+git commit -m "Rename: Soul System -> Second Brain"
+git pull --rebase
+git push origin main
 ```
 
 Confirm: "Updated everything to Second Brain and saved to GitHub."
@@ -531,7 +538,10 @@ EOF
 Confirm what was updated, then auto-commit:
 
 ```bash
-git add -A && git commit -m "Session end: [brief description of what was saved]" && git push origin main
+git add <the files you changed>
+git commit -m "Session end: [brief description of what was saved]"
+git pull --rebase
+git push origin main
 ```
 
 Say: "All saved to GitHub."
@@ -677,7 +687,10 @@ cat >> log.md << 'EOF'
 [INGEST] YYYY-MM-DD, [source title], pages touched: [list]
 EOF
 
-git add -A && git commit -m "Ingest: [source title]" && git push origin main
+git add <the files you changed>
+git commit -m "Ingest: [source title]"
+git pull --rebase
+git push origin main
 ```
 
 Confirm: "Ingested. Updated [X] wiki pages. Saved to GitHub."
@@ -943,9 +956,18 @@ Ask 7 questions one at a time. Write each update before asking the next.
 
 ## Auto-Commit Rule (Always On)
 
-Any time a file is created or edited:
-git add -A && git commit -m "[description]" && git push origin main
-Do this silently. Do not ask permission.
+Any time a file is created or edited, save it. **Run the steps one at a time, never joined with
+`&&`.** A joined command is the shape Claude's permission system refuses, and the refusal reads to
+the owner as lost work when nothing is lost:
+
+git add <the files you changed>
+git commit -m "[description]"
+git pull --rebase
+git push origin main
+
+Do not narrate it. **You will see a permission prompt the first time: tell them it is coming and that
+Allow, or Always allow for git, is the answer.** That is not asking permission for the work, it is
+their machine asking once about git itself.
 
 ## Voice Rules
 [Specific phrases this person uses. Specific phrases they never use. Tone. Energy.]

@@ -1,11 +1,11 @@
 ---
 name: n8n
-description: "Load before building, changing or debugging anything in n8n, and BEFORE agreeing that a job needs n8n at all. Covers the decision that comes first, which is whether this should be an n8n flow, an automation inside the hub, a field default, or one of your own routines. Then: what a flow is made of, the naming rule that keeps a growing instance findable, credentials and why they never copy between accounts, testing a flow for real instead of trusting a green tick, and the failure modes that cost the most time. Trigger on 'n8n', 'a workflow', 'a flow', 'automate this', 'run it automatically', 'trigger', 'webhook', 'it should happen every day', 'why did the automation not run', or any request for something to happen without anyone present."
+description: "Load before building, changing or debugging anything in n8n, and BEFORE agreeing that a job needs n8n at all. Covers the decision that comes first, which is whether this should be an n8n flow, an automation inside the hub, a field default, or one of your own routines. Then: what a flow is made of, the naming rule that keeps a growing instance findable, credentials and why they never copy between accounts, testing a flow for real instead of trusting a green tick, why a flow that waits for a person can only handle one record at a time, and the failure modes that cost the most time. Trigger on 'n8n', 'a workflow', 'a flow', 'automate this', 'run it automatically', 'trigger', 'webhook', 'it should happen every day', 'why did the automation not run', or any request for something to happen without anyone present."
 ---
 
 # n8n
 
-**Version: 1.3 - 2026-08-31**
+**Version: 1.4 - 2026-09-02**
 
 n8n runs automations on a schedule or on an event, with nobody watching. It is the right tool for a
 narrow band of jobs and the wrong tool for most of what an owner will ask for, so the first section
@@ -123,6 +123,30 @@ itself, not a note somebody remembers to keep. Prefer reading it back off the fl
 a real address or the owner's - over trusting what the row claims, and correct the row whenever the
 two disagree.
 
+## A step that waits for a person can only hold one conversation
+
+Sooner or later you will build a flow that asks somebody to approve something and carries on once
+they answer. The waiting step posts the question and puts the run to sleep until the reply arrives.
+
+That last part is the trap. It pauses the RUN, not the record. So if the flow picked up ten records
+and sent them all into the waiting step, it asks about the first one and the other nine sit there,
+never asked, until somebody answers. Nothing turns red. The run simply sits still, and the nine look
+like they were never found at all.
+
+So: one run per conversation. Split the work in two.
+
+- A **sweep** that finds everything waiting, marks each one so it cannot be picked up twice, and
+  starts a separate run for each.
+- A **worker** that handles exactly one record, asks its question, and sleeps until the person
+  replies.
+
+The sweep must not wait for the workers it starts, or you are back to one at a time. Started and
+left alone is the point. The workers then run alongside each other, and the person answers them in
+whatever order suits them.
+
+Mark the record BEFORE starting its worker, never after. Mark it at the end and the next sweep,
+arriving while somebody is still deciding, picks the same record up and asks a second time.
+
 ## Failure modes worth knowing before they cost a day
 
 - **A flow was switched off and nobody noticed.** There is no alarm for this. When something has not
@@ -146,6 +170,16 @@ two disagree.
   it expected and quietly substitutes a default does not look broken - it looks fine, and it stays
   looking fine until the one place the default differs shows up in front of a real person. Prefer a
   loud failure over a tidy default for anything a tenant will read.
+- **A field name that does not exist is not an error, it is an empty value.** A step hands on more
+  than it shows you, and the thing you want is often tucked inside something else rather than sitting
+  at the top. Point the next step at a name that is not there and it quietly produces nothing, what
+  it sends goes out blank, and every tick stays green. Look at what the step actually produced before
+  you name a field, then check the result where it landed rather than trusting the sending step's own
+  success.
+- **Reconnecting an app can give it a new identity.** The permissions and access the old connection
+  had do not follow it. What makes this one hard to see is that the history still shows the app being
+  added, so everything reads as correctly set up while the new connection can reach nothing. Ask the
+  connection what it can see now instead of reading what happened months ago.
 - **When something goes wrong at three in the morning, nobody is told unless you built the telling.**
   Send failures somewhere a person looks.
 
@@ -238,6 +272,9 @@ Reading a broken run through the interface is slow. Be systematic instead of cli
    problem. These have completely different causes.
 3. **How many items did each step handle.** The first step that drops to zero is the answer.
 4. **Look at the actual data that step received**, not what it was supposed to receive.
+5. **Read the result from the run history, not by opening the address again in your browser.** A
+   browser will happily hand you a saved copy of the last answer, which is how you end up debugging a
+   problem you already fixed.
 
 n8n has its own assistant built in, and for a broken run it is genuinely faster than reasoning from
 outside. Use it for diagnosis. Keep building in your own hands.
