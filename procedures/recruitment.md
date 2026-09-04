@@ -1,9 +1,10 @@
 # Recruiting a VA
 
-Source: "VA Recruitment Process Flow" in Google Drive, last touched 2026-08-27. **That document contains
-two overlapping drafts with conflicting details** (see "Still to confirm" at the bottom). This file
-follows the more complete, two-round version. Owen should re-check against the live Drive doc before
-relying on a detail here for something that matters.
+Source: ["VA Recruitment Process Flow"](https://docs.google.com/document/d/1ayEgGjSgivdybV6BmNUHiaPU1odkiHh78Rpksv5-6xw/edit) in
+Google Drive, last touched 2026-08-27. **That document contains two overlapping drafts with
+conflicting details** (see "Still to confirm" at the bottom). This file follows the more
+complete, two-round version. Owen should re-check against the live Drive doc before relying on a
+detail here for something that matters.
 
 ## When recruitment gets triggered
 
@@ -94,6 +95,76 @@ Checklist right after passing, and the Orientation + Day 1 Details email the Fri
 - Quiet, private work area
 - Good verbal and written English
 
+## Interviewer procedure
+
+Both rounds use the Interview Scorecard Tool below, set to the correct Round (Initial/Final) and
+Role (EA/SMM) before starting.
+
+**Before:** check the calendar invite for the Gmeet link (set up by Key), pull up the applicant's
+BambooHR profile/resume, review the role's must-haves. Final interviewer also reviews the
+applicant's submitted Pre-Interview Assessment first.
+
+**Start:** join via the Gmeet link from the calendar invite, admit the applicant.
+
+**Conduct:** Initial round works the checklist (experience/work history, availability &
+equipment, client-specific if applicable, communication assessed last). Final round works the
+star-rated categories (skills, English communication, culture fit, assessment/practical task
+review, client-specific). Ask client-specific questions if this is a client-specific hire.
+
+**Score and decide:** complete the scorecard, reach an overall Pass or Fail. Initial round only:
+an obvious EA communication concern auto-fails; for SMM it's a flag only, carried forward as a
+note for the Final interviewer.
+
+**Record:** log interview notes and set Status in the Recruitment Tracker ("Initial Passed/Failed"
+or "Passed/Failed").
+
+**Communicate:** Initial round doesn't discuss an offer — if passed, tell the applicant they'll get
+the assessment link next. Final round, if passed, state the offer on the spot (see Step 10). If
+there's no open role/training date, flag it for Key to pool the candidate.
+
+**Hand off:** tell Key the interview is done and logged, so Key can send the assessment (Initial
+Passed) or the outcome email within 24-48 hours (Final round).
+
+## Interview scorecard tool
+
+Live tool: https://visionary-begonia-e6fd2e.netlify.app/. **As of the 2026-08-27 source doc this
+still needed to be re-deployed to reflect the two-round process below** — check with Key/Ann that
+it matches before trusting it.
+
+- Round selector (Initial/Final) + Role selector (EA/SMM), a 2x2 matrix that shows the assigned
+  interviewer automatically.
+- Initial round (checklist mode): experience relevance (night-shift months, US/Canada VA
+  experience, a 3-job work history table with auto-flags for job-hopping and rate mismatch over
+  $6/hr), availability & equipment (hard requirements vs. conditional items that populate a
+  "Pending Verification" list), client-specific (N/A toggle), communication concern (assessed
+  last, auto-fail for EA / flag-only for SMM).
+- Final round (star rating 1-5): skills & technical ability, English communication, culture
+  fit/professionalism, assessment/practical task review, client-specific (N/A toggle).
+- Manual Pass/Fail always — never automatic, except the EA communication auto-fail above.
+- "No open role — add to pool" checkbox (Final round), free-text recommendation field, generates a
+  copyable report summary labeled Initial or Final.
+- Entries are local to the interviewer's own browser session, nothing centrally saved yet — copy
+  the generated report into the Recruitment Tracker after each interview.
+
+## Application and assessment forms
+
+Two separate forms:
+
+- **Initial Application Form** (BambooHR) — contact info, resume, DISC, speedtest, speaking test,
+  WhatsApp number. Auto-acknowledgment email on submission.
+- **Pre-Interview Assessment Form** — sent only after the Initial Interview passes, via the
+  Assessment Invite email. 24 hours to submit. Trimmed to avoid duplicating the BambooHR
+  application and the Initial Interview checklist.
+  - EA: English grammar & vocabulary test, typing speed test, admin/CSR practical task (email
+    management, customer inquiry handling, data entry). Link: forms.gle/JgrDa4ocghqFyR1R8
+  - SMM: video editing practical task, thumbnail design task for that same video, portfolio link.
+    Link: forms.gle/V6g36wJmcemvqa3g8
+
+Email templates for every step (acknowledgment, interview notices/confirmations, assessment
+invite, pass/pooled/regret/redirect, pre-training checklist, orientation) live in
+`templates/va-recruitment-emails.md`. Key's own day-to-day workflow for running all of this is in
+`procedures/recruitment-assistant-role.md`, including how the 60-day pool re-screen actually works.
+
 ## Still to confirm
 
 - The source document has a second draft ("Tab 1") with different details: training cadence shown as
@@ -104,4 +175,8 @@ Checklist right after passing, and the Orientation + Day 1 Details email the Fri
   source doc).
 - Who approves an off-cycle training batch outside the standard monthly cadence.
 - Exact fields for the Client Hiring Tracker beyond the internal/external flag.
-- What re-screening a pooled candidate at the 60-day mark actually involves.
+- Whether the Pre-Interview Assessment result gates the Final interview itself or just informs it —
+  the source doc doesn't say which.
+- The source doc's "Open Items" list says the Pre-Interview Assessment Forms still need to be built
+  as live Google Forms, but the same doc also gives live forms.gle links for them elsewhere — worth
+  confirming with Key whether those links are actually live before relying on them.
