@@ -296,4 +296,6 @@ outside. Use it for diagnosis. Keep building in your own hands.
 | Something went out that should not have | It was switched on before a quiet period | Point it at the owner, run it for real, then switch over |
 | The list says live, but nobody ever receives anything | It is still in its quiet period and the row was never moved across | Check where the flow actually delivers, then correct the row |
 | A flow that should be quiet reaches a real person | The recipient was switched over before anyone meant it to go live | Point it back at the owner, then move the row to match |
+| Every reply appears as a new message instead of underneath the first one | The step is pointed at a name that does not exist, so the value saying which conversation to reply to is empty | Look at what the earlier step really produced, then read the conversation back to confirm where the reply landed |
+| An approval flow only ever asks about the first record and the rest go quiet | The waiting step pauses the whole run, so the others are never asked | One run per conversation: a sweep that starts a separate run for each record |
 | Nobody knows what a flow does | It has no row in the automations list | Write the row. A flow nobody wrote down cannot be maintained |

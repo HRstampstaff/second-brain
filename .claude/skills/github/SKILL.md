@@ -1,11 +1,13 @@
 ---
 name: github
-description: "Load before ANY question about how the owner's repositories are organised: how many they should have, who can see what, sharing with a team member or a VA, running more than one business, folders inside a repo, or connecting a second account. Covers the rule that decides everything, which is that the repo is the smallest thing you can give someone access to, why one assistant works across many repos instead of one assistant per repo, pointers instead of copies, and what does NOT belong in a repo at all. Trigger on 'GitHub', 'my repo', 'repository', 'Memory Vault', 'give access', 'share the repo', 'permissions', 'a second business', 'my team', 'my VA', 'separate repos', 'branches', or any question about where something should be stored."
+description: "Load before ANY question about how the owner's repositories are organised: how many they should have, who can see what, sharing with a team member or a VA, running more than one business, folders inside a repo, or connecting a second account. Covers the rule that decides everything, which is that the repo is the smallest thing you can give someone access to, why one assistant works across many repos instead of one assistant per repo, pointers instead of copies, and what does NOT belong in a repo at all. Trigger on 'GitHub', 'my repo', 'repository', 'Memory Vault', 'give access', 'share the repo', 'permissions', 'a second business', 'my team', 'my VA', 'separate repos', 'branches', or any question about where something should be stored. Also trigger on storage limits, repo size, file size, an upload that was rejected as too large, whether to pay GitHub for more space, and where to keep photos, scans, PDFs, leases or property documents."
 ---
 
 # GitHub
 
-**Version: 1.0 - 2026-08-24**
+**Version: 1.2 - 2026-09-03 (files and images live in Drive, the repo holds an index that points at
+them). Adds the size limits, the reason paying GitHub does not solve a big-files problem, and the
+document index pattern. 1.2: index from now on, never a retroactive sweep of an existing Drive.**
 
 GitHub holds the Memory Vault. It is where every skill, decision, policy and note about the business
 lives, and it is the one thing that makes tomorrow's session know what today's session learned.
@@ -93,6 +95,54 @@ put in one that should go elsewhere:
   is the most common wrong turn, and it is expensive because the board never gets started.
 - **Secrets.** Passwords, keys, tokens, anything identifying about a person. History is permanent, so
   a secret committed once is not fixed by deleting it later.
+- **Files and images.** Photos, scans, PDFs, leases, statements, anything a person opens and reads.
+  These go in Drive. The section below says what the repo keeps instead.
+
+## ⭐ Files and images go to Drive. The repo keeps an index that points at them
+
+**This is the rule, and the reason is how git works rather than what it costs.** A repository keeps
+every version of every file forever, and images and PDFs do not merge the way text does, so each save
+stores a whole new copy instead of just the change. One 5 MB photo edited ten times sits in there ten
+times. **Deleting it later does not shrink anything**, because the history is permanent, which is the
+same trap as a committed secret.
+
+And everyone who connects pulls the whole history, so the assistant re-downloads all of it every time
+she syncs. **The person who feels a bloated repo first is the owner**, on every single session.
+
+**The limits, so nobody has to guess:** GitHub blocks any single file over 100 MB and warns above
+50 MB. It asks that a repo stay under 1 GB, and strongly recommends under 5 GB. A vault of written
+notes never comes close. A folder of scanned leases gets there quickly.
+
+**⛔ Paying does not fix it, so do not suggest an upgrade.** The paid plans add build minutes and
+package storage, and none of them lifts the 100 MB file limit or grants repository space.
+
+### What to do instead: the document index
+
+**Keep the file in Drive and keep a row about it in the vault**, at `reference/document-index.md`. The
+layout standard puts maps and lookups in `reference/`, and that is exactly what this is.
+
+One row per document that matters to the business, as a plain markdown table:
+
+| What it is | Relates to | Link | Date |
+|---|---|---|---|
+| Signed lease | 14 Oak St, Unit 2, tenant J. Rivera | [Drive](https://drive.google.com/...) | 2026-06-01 |
+| Roof inspection report | 14 Oak St | [Drive](https://drive.google.com/...) | 2026-04-18 |
+| Building insurance policy | 22 Pine Ave | [Drive](https://drive.google.com/...) | 2026-01-09 |
+
+**Why this is worth the small effort: it gives the assistant instant lookup without the repo ever
+carrying the bytes.** Asked where the signed lease for a unit is, she reads one small text file and
+answers with the link, instead of hunting through Drive or being unable to answer at all. **Add the
+row in the same moment the file goes into Drive**, never as a tidy-up later, because an index that
+lags is one nobody trusts.
+
+**⛔ Start from now, never go back and index everything already in Drive.** A retroactive sweep of a
+Drive that has been filling up for years is a big job with no owner, and it is the reason an index
+like this usually never gets started at all. **The index earns its keep from the first row.** Index
+what you file from today onward, and add an older document the moment somebody actually asks for it,
+which is the only proof it was worth a row.
+
+**The honest exception:** a few small images that are genuinely part of a note, a diagram or a
+screenshot inside a document, are fine in the repo. This rule is about scans, photos and volume.
 
 ## Diagnosis
 
@@ -105,3 +155,6 @@ put in one that should go elsewhere:
 | Nobody can tell who changed something | Everyone connects with the same login | One login per person |
 | A secret is sitting in a file | It is in the history permanently now | Rotate the secret. Deleting the file does not undo it |
 | The to-do list keeps getting lost | It is in the repo instead of on the hub | Move it to the hub, where rows have an owner |
+| A file will not upload, it is too big | Anything over 100 MB is blocked, and it does not belong here anyway | Put it in Drive and add a row to the document index |
+| The repo has got slow to sync | Images or PDFs are in it, and every version of each is kept forever | Move them to Drive, index them, and expect the history to stay large |
+| They ask which GitHub plan gives more space | None of them do. Paid tiers add build minutes and package storage | Drive for the files, the repo for the index |

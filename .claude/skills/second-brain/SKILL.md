@@ -15,7 +15,7 @@ description: >
 ---
 # AI Second Brain Skill
 
-**Version: 1.1 - 2026-09-02 (git steps run one at a time, never joined with `&&`). Every save in this
+**Version: 1.1 - 2026-09-03 (git steps run one at a time, never joined with `&&`). Every save in this
 file used to be one chained command, which is the exact shape a permission system refuses, and the
 Auto-Commit Rule made it standing policy and told you to do it silently. A real owner lost a day to
 that: nothing was wrong with git or their repo, the command shape was simply always refused. Layered

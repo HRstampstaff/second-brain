@@ -1,11 +1,13 @@
 ---
 name: google-drive
-description: "How this system works with Google Drive, and the rules that stop Drive jobs failing quietly. Load this BEFORE any Drive work: moving a file, renaming one, building a folder structure, filing a document, sharing something, or answering where did you put X. Covers what the connector can really do (it renames and moves, in Cloud or Local), which Drive jobs need Local anyway, what must be set up before Drive work is attempted at all, sharing so the assistant can actually see a file, and never reporting a move or rename without reading the destination back. The two skills that do the work are drive-organizer for a whole messy folder and file-namer for one or a few files. Trigger on: google drive, my drive, move this file, rename this file, file this, organize my drive, set up my folders, share this document, where did you put this, shared drive, folder structure."
+description: "How this system works with Google Drive, and the rules that stop Drive jobs failing quietly. Load this BEFORE any Drive work: moving a file, renaming one, building a folder structure, filing a document, sharing something, or answering where did you put X. Covers what the connector can really do (it renames and moves, in Cloud or Local), which Drive jobs need Local anyway, what must be set up before Drive work is attempted at all, sharing so the assistant can actually see a file, and never reporting a move or rename without reading the destination back. The two skills that do the work are drive-organizer for a whole messy folder and file-namer for one or a few files. Trigger on: google drive, my drive, move this file, rename this file, file this, organize my drive, set up my folders, share this document, where did you put this, shared drive, folder structure. Also trigger on where to keep photos, scans, PDFs, leases or property documents, and on the document index that points at them from the vault."
 ---
 
 # Google Drive
 
-**Version: 1.4 - 2026-08-24**
+**Version: 1.6 - 2026-09-03 (Drive holds the files, the vault holds an index pointing at them).
+Adds the document index, so the assistant can answer "where is the signed lease" without the repo
+ever carrying the file. 1.6: index from now on, never a retroactive sweep.**
 
 This skill is the rules. The work itself lives in two other skills:
 
@@ -173,3 +175,35 @@ they decide, with the thing in front of them, whether anything actually moves.
 
 They are not competing and neither replaces the other. **A naming convention or a folder standard is
 a decision, so it goes in the Memory Vault**, even though the files it governs live in Drive.
+
+### ⭐ Every file that matters gets a row in the vault's document index
+
+**Files and images live here in Drive. They never go in the Memory Vault.** A repository keeps every
+version of every file forever and images do not merge, so each save is a whole new copy, and deleting
+it later shrinks nothing. It also slows every sync, which the owner feels first. GitHub blocks any
+single file over 100 MB in any case, and no paid plan lifts that.
+
+**So the file stays in Drive and a ROW about it goes in the vault**, at
+`reference/document-index.md`. One row per document that matters to the business:
+
+| What it is | Relates to | Link | Date |
+|---|---|---|---|
+| Signed lease | 14 Oak St, Unit 2, tenant J. Rivera | [Drive](https://drive.google.com/...) | 2026-06-01 |
+| Building insurance policy | 22 Pine Ave | [Drive](https://drive.google.com/...) | 2026-01-09 |
+
+**This is what makes the filing worth having.** Asked where the signed lease for a unit is, you read
+one small text file and answer with the link. Without the index the document is somewhere in Drive and
+finding it costs a search every time, which is the state most owners are already in.
+
+**Write the row in the same pass that files the document, never as a tidy-up later.** An index that
+lags behind Drive is one nobody trusts, and an untrusted index gets bypassed, which puts everyone back
+to searching.
+
+**⛔ Start from now, never go back and index everything already in Drive.** A retroactive sweep of a
+Drive that has been filling up for years is a big job with no owner, and it is the reason an index
+like this usually never gets started at all. **The index earns its keep from the first row.** Index
+what you file from today onward, and add an older document the moment somebody actually asks for it,
+which is the only proof it was worth a row.
+
+**Moving a file keeps its link** (section 5), so a later reorganisation of Drive does not break the
+index. That is what makes this safe to maintain.
