@@ -81,6 +81,19 @@ Three things to know before trusting a number:
 - **The batch header and trainee sub-header** that trainers asked for is a grid grouping, not a
   field: group by Batch, then by Trainee. Setting a view is screen-only, so a person does it once.
 
+## Why the attendance grid uses Day 1-20, not calendar dates
+
+Ailynn asked for the classic wall-chart layout: a row per trainee, a column per day, ✅ ❌ ⛔ 🌡️
+markers and totals on the right. Built as **Attendance Grid** in the Training base on 2026-09-06.
+
+The columns are **Day 1 to Day 20**, not real dates, and that is deliberate. Airtable field names are
+fixed text: dated columns would have to be renamed twenty times for every new batch, and the connector
+cannot rename a field, so it would be a by-hand job each time. Day numbers make one table serve every
+batch forever. The real dates live on the batch's Training Start Date.
+
+Weekends are not columns either. The sheet template carried them because a calendar needs them; a
+20-day programme does not.
+
 ## Gaps found in the SOP itself (2026-09-06)
 
 Rebuilding the schedule as clock times from a 9:00 start surfaced five days that do not add up to the
