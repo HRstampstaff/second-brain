@@ -5,7 +5,7 @@ description: "Load before ANY work that reads from or writes to the hub: looking
 
 # Airtable
 
-**Version: 1.1 - 2026-08-25**
+**Version: 1.2 - 2026-09-06 (what the connector can and cannot change about a field)**
 
 Airtable is the hub. It holds the properties, the units, the leases, the tenants, the tasks and the
 routines. Almost everything else in this system either reads from it or writes to it, so a mistake
@@ -83,6 +83,28 @@ each holding some of the records, with every view and automation seeing only par
   and say so when you do.
 - **A write rejected because the value is not a valid choice is information, not an obstacle.** The
   list changed. Go and look at it.
+
+## What the connector can and cannot change about a field
+
+Proven 2026-09-06 against the real base. Getting this wrong sends an owner down the wrong design.
+
+| | |
+|---|---|
+| Create a table, with fields | **Yes** |
+| Create a field of almost any type, including formula, rollup, lookup, count, rating | **Yes** |
+| **Rename a field** | **YES** — `update_field` takes a `name`. Do not tell an owner renaming is a manual job; that was said in error on 2026-09-06 and it changed a design decision. |
+| Change a field's description | Yes |
+| Change a formula's expression | Yes |
+| **Set a number's display format** (currency, $, decimal places, percent) | **No.** `update_field` exposes only `options.formula`. Currency display is the field editor on screen: field header ▾ → Edit field → Formatting → Currency. |
+| Add an option to an existing single/multi select | No. By hand. |
+| Delete a field | No. By hand. |
+| Delete a table | Yes — but read what points at it first. |
+| Change which field is primary | No, and neither can the owner: Airtable does not allow it. A table whose primary field is wrong for the job has to be rebuilt. |
+
+**The currency trap:** when an owner asks for a money column to show `$`, do NOT rewrite the formula
+to output text like `CONCATENATE("$", x)`. It looks right and quietly breaks the column: text sorts
+`$100` before `$20` and Airtable's column summary can no longer total it. Keep the field numeric and
+hand them the four clicks.
 
 ## Adding to the base
 
