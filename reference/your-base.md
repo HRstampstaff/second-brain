@@ -35,10 +35,16 @@ seeing clients, fees, payroll or candidates.
 | **STAMP STAFF** (the hub) | `apptst9VRUlVdybNZ` | Clients, VAs, Placements, Candidates, Skills, Routines, Tasks |
 | **Stamp Staff — Training** | `appvYMsLEajwprjBs` | Training Batches, Trainees, Attendance, Trainee Scorecard |
 
-⚠️ **The four training tables still exist in BOTH bases as of 2026-09-06.** The Training base is the
-real one. The copies in the hub are leftovers waiting for Ailynn to delete them by hand (the
-connector can delete a table, but this is her call, not a silent cleanup). Until she does, **write
-training data to the Training base only** — writing to the hub copies puts it in the dead one.
+⚠️ **REVERSED 2026-09-06.** Ailynn put real Batch 4 trainees into the HUB copies, then asked for the
+training work to live in the hub after all. **The hub is now the live one. The `Stamp Staff — Training`
+base is dead** and Ailynn will delete it herself (Vera cannot delete a base, only tables).
+
+⚠️ **The Trainees table in the hub holds DUPLICATES.** Two pastes, 20:29 and 20:32 on 2026-09-06: the
+first set carries a trailing line break on each name, so Airtable sees 23 records for 15 real people.
+Duplicated: Ann Frances Ecalnir, Marccrix Pialago, Miguel Rodriguez, Shayne Anne Diangco, Zchaena
+Datulayta, Sheeny Todenio, Jamie Caumeran, Rommel John Sevilla. The 15 Attendance rows mostly link to
+the *trailing-break* copies. Not cleaned up: deleting real records is Ailynn's call and she has not
+given it.
 
 ## Tables in STAMP STAFF (the hub)
 
@@ -61,6 +67,7 @@ training data to the Training base only** — writing to the hub copies puts it 
 | Training Batches | Batch, Training Start Date, Training End Date, Tracks in this Batch (SMM/EA), Status (Planned/In Training/Graduated/Cancelled), Notes. Seeded with **Batch 4**; start date still blank. |
 | Trainees | Trainee Name, Track (SMM/EA), Coach, Contact, Status, Notes, Batch (link), plus auto totals: Total Training Fee, Days Present, Days Late, Days Absent, Days Logged |
 | **Attendance Grid** ⭐ | The wall-chart Ailynn asked for, 2026-09-06. One row per trainee: Trainee Name, ID No., Track, Shift Type (Whole/Half Day), Batch (link), Trainee (link), **Day 1 … Day 20** each a dropdown of ✅ Present / ❌ Absent / ⛔ Undertime / 🌡️ On Leave, then TOTAL PRESENT, TOTAL ABSENT, TOTAL UNDERTIME, TOTAL ON LEAVE, DAYS MARKED, TOTAL FEE EARNED. |
+| **Attendance Grid** ⭐ | `tbl9ugdvzmEbCyWFV`. The wall-chart layout, built 2026-09-06 in the HUB (not the Training base). One row per trainee: Trainee Name, ID No., Track, Shift Type, Batch (link), Trainee (link), **Day 1 … Day 20** each a dropdown of ✅ Present / ❌ Absent / ⛔ Undertime / 🌡️ On Leave, then TOTAL PRESENT, TOTAL ABSENT, TOTAL UNDERTIME, TOTAL ON LEAVE, DAYS MARKED, TOTAL FEE EARNED. Seeded with the 15 real Batch 4 trainees. **This is the live attendance sheet.** |
 | Attendance | The earlier one-row-per-trainee-per-day design. **Superseded by Attendance Grid** — two tables now do the same job, so pick one and delete the other. Date, Training Day, Attendance (Present/Late/Absent), Day Type, Time In, Checked By, Notes, Trainee (link), Batch (lookup), Fee Earned, Is Present, Is Late, Is Absent |
 | Trainee Scorecard | Trainee Name, Trainee (link), Assessed By, Date Assessed, Assessment Point (Week 1-4/Final); ratings 1-5 for Project Management Tools, Call Handling Experience, Communication Skills, AI Mastery, CRM Management, Video Editing, Graphics Design, Automation, Funnel Creation, Proactive, Team Activities, Recitation, Fast Learner; checkboxes Sleeping During Training, Attendance Issues; Strengths, Areas to Improve, Concerns, Recommendation; auto averages: Core Skills, Creative & Tech, Behaviour; Batch and Track lookups |
 
