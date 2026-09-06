@@ -41,6 +41,21 @@ Two things to carry forward:
 - **The Training Start file is shared as "anyone with the link can edit."** Raised with Ailynn on
   2026-09-06; she chose not to flag it to AJ. Do not raise it again unasked.
 
+## Daily Huddle — 9:00-9:30 every day
+
+Decided by Ailynn 2026-09-06. **Every training day opens with a 30-minute huddle at 9:00-9:30**:
+calling a few trainees to share what they have learned based on the previous day of training. AJ had
+already put a "Daily Huddle" in that slot on her Day 2 draft with Kate as coach, so this formalises
+what was already intended.
+
+Two consequences to settle:
+
+- **Day 1 has no previous day to recap**, so its 9:00-9:30 slot stays Welcome & Orientation, labelled
+  as the huddle. This keeps Day 1's timings matching AJ's existing rows exactly.
+- **The huddle is 30 minutes on top of the SOP's 8 hours**, not carved out of them, so Days 2-20 now
+  run 9:00 to 5:30 and the Friday Coaches Sync moves to 5:30-6:00. Nothing in the SOP was trimmed to
+  make room. Whether the day extends to 5:30 or a block gets cut is Kate's call.
+
 ## Gaps found in the SOP itself (2026-09-06)
 
 Rebuilding the schedule as clock times from a 9:00 start surfaced five days that do not add up to the
