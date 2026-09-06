@@ -15,3 +15,8 @@ or keeping them as-is:
 
 Their copies in `.claude/skills/` were rewritten to match. Apply this mapping to any future skill
 work rather than reverting to the landlord wording.
+
+**Note for future syncs (added 2026-09-06):** these three copies carry version `1.0 (repurposed for
+Stamp Staff)`, while the library's copies are on `4.2` and still landlord-only. That is not a missed
+update and the library copy must never be pulled over the top of them. If the library ships a
+genuinely general improvement to a specialist, port that one part by hand into the Stamp Staff copy.

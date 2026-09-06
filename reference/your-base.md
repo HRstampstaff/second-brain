@@ -18,7 +18,7 @@ note on anything unusual. The agents read it so they know where your data lives 
 |---|---|
 | Base name | Untitled Base (Ailynn may want to rename this by hand in Airtable — the connector has no rename tool) |
 | Base id | apptst9VRUlVdybNZ |
-| Last read | 2026-09-02 |
+| Last read | 2026-09-06 |
 
 **This is NOT the course's TLL Central Hub starter base — that one is built for property managers.**
 Ailynn confirmed on 2026-09-01: rather than duplicate the property-manager base in, Vera built
@@ -34,7 +34,7 @@ See `decisions/2026-09-01_built-airtable-hub-for-staffing-business.md`.
 | Placements | Placement, Client (link), VA (link), Type (Part-time/Full-time), Start Date, End Date, Status (Active/Ended/Replaced), Reason Ended |
 | Candidates | Candidate Name, Role Applying For (EA/Creative-SMM/Other — **needs a CSM choice added by hand, see Notes**), Status (Applied/Screened-Qualified/Screened-Unqualified/Interview 1/Assessment/Interview 2/Passed-Training Date/Passed-Pooled/Regretted), Source, Applied Date, Contact, Notes |
 | Table 1 | Name, Notes, Assignee, Status, Attachments, Attachment Summary — generic leftover from base creation, empty, not used by anything. Ailynn's call whether to delete it (the connector can't delete fields, only tables). |
-| Skills | Name, What it does, Version, Path in repo, Last updated, Status (Active/Parked) |
+| Skills | Name, What it does, Version, Path in repo, Last updated, Status (Active/Parked) — 32 rows as of 2026-09-06 |
 | Routines | Name, What it does, Instructions, How often, Last ran, How it went, Notes, Active, Order, Prepare and wait |
 | Tasks | Title, Status, Note |
 
@@ -43,13 +43,14 @@ See `decisions/2026-09-01_built-airtable-hub-for-staffing-business.md`.
 | Note | |
 |---|---|
 | Which table holds your routines | Routines — 1 active row: "Monthly BambooHR leave-approval reminders". Ran and completed for Sep on 2026-09-01 (row stamped 2026-09-02). Daily-pass schedule (good-morning-vera, 9am daily) already exists and runs this. |
-| Which table holds your tasks | Tasks (0 open — both closed as of 2026-09-02) |
+| Which table holds your tasks | Tasks (1 open as of 2026-09-06: the BambooHR-to-Zapier build, paused on a platform blocker) |
 | Your timezone | America/New_York (Islamorada, FL) |
 | Your currency | Not recorded yet |
 | How you prorate a partial month | Not recorded yet |
 | What a complete application looks like to you | Not recorded yet |
 | CSM | A VA role type (like EA or Creative/SMM), placed with a client — not an internal Stamp Staff position. The "Client Success Manager" text field on Clients is superseded; track it via Placements instead. "CSM" still needs adding as a choice on Role Type (VAs) and Role Applying For (Candidates) — the connector can't add select options, so this is a manual add in Airtable. |
 | How you name documents | Not recorded yet |
+| ⚠️ The four business tables are EMPTY | Clients, VAs, Candidates and Placements all held 0 records on 2026-09-06, five days after they were built. Stamp Staff runs 100+ VAs and 90 active clients, so nothing in this base reflects the real business yet, and Fiona and Tessa have nothing to read. Whether to import from ClickUp, export from BambooHR, or start with a subset is Ailynn's call — see `decisions/2026-09-01_airtable-over-clickup-for-now.md`. |
 
 ---
 
