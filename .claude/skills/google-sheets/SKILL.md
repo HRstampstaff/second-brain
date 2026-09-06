@@ -105,3 +105,35 @@ worst of both, because they diverge within a week and nobody can say which is ri
 | A value is plausible but wrong, and a repeated question is in the sheet | Duplicate header text is colliding when read by header name | Rename the header row to unique names before reading |
 | Writes are failing or reverting | Somebody has the sheet open | Write when nobody is in it, or write elsewhere |
 | Two versions of the truth exist | The same data lives in the hub and in a sheet | Pick one. Half a migration is worse than none |
+
+## ⛔ You can READ a Google Sheet. You cannot WRITE cells into one
+
+**Proven 2026-09-06, Cloud session.** The Google Drive connector reads a spreadsheet's contents fine
+(`read_file_content` on a `application/vnd.google-apps.spreadsheet` returns the grid as text). It has
+no cell-write tool at all. `update_file` changes only the title and the parent folder. There is no
+Google Sheets connector separate from Drive.
+
+**So never promise to "put this into your spreadsheet" or "paste it into A1".** You cannot. Say which
+half you can do, in one line, before doing any of the work.
+
+**The route that works, and it takes the owner about two minutes:**
+
+1. Build the data as a CSV.
+2. `create_file` it into the OWNER'S Drive with `contentMimeType: text/csv` and
+   `disableConversionToGoogleType: true`, so it stays a real CSV rather than becoming a second
+   spreadsheet.
+3. Read the file back with `get_file_metadata` before reporting it created.
+4. Hand them the click path: in the destination sheet, **File → Import → My Drive**, pick the file,
+   **Insert new sheet(s)**, separator **Comma**, and **Convert text to numbers, dates and formulas =
+   No**. That last toggle is the one that silently mangles durations, codes and placeholder dashes.
+
+**Importing as a new tab is almost always the right answer over pasting into an existing one**,
+because an existing tab is rarely as empty as the owner remembers. Read the destination first: on
+2026-09-06 a sheet described as ready for a paste into A1 turned out to hold a half-built schedule in
+a completely different column layout, with merged cells and someone else's to-do list at the top.
+
+**Check who owns the destination and who else is in it.** `get_file_metadata` gives the owner and
+`modifiedTime`; `get_file_permissions` gives the sharing. A file the owner merely has access to may
+belong to a partner or a client, may have been edited minutes ago by that person, and may be shared
+as `{"role":"writer","type":"anyone"}` — link-edit to the world. Report what you find and let them
+decide; never change someone else's sharing.
