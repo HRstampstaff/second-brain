@@ -56,6 +56,30 @@ Two consequences to settle:
   run 9:00 to 5:30 and the Friday Coaches Sync moves to 5:30-6:00. Nothing in the SOP was trimmed to
   make room. Whether the day extends to 5:30 or a block gets cut is Kate's call.
 
+## Tracking a batch: attendance and scorecards
+
+Built 2026-09-06, in Airtable and mirrored in Google Sheets so the trainers can use whichever they
+prefer. Four Airtable tables, and they chain: **Training Batches -> Trainees -> Attendance**, with
+**Trainee Scorecard** hanging off Trainees.
+
+**Attendance** is one row per trainee per training day. A coach picks the date, the trainee, the day
+number, Present/Late/Absent, Full Day/Half Day, and stamps who checked it. `Fee Earned` works itself
+out and the trainee's row totals it up, so nobody adds up a payroll figure by hand.
+
+**Trainee Scorecard** is one row per trainee per assessment point (Week 1-4 and Final), not one row
+per trainee, so improvement is visible instead of only the last mark. Ratings are 1-5 stars: 1 needs
+a lot of help, 3 can do it with supervision, 5 is ready for a client.
+
+Three things to know before trusting a number:
+
+- **An unscored star counts as 0**, in both Airtable and the Sheets copy, so the three Average
+  columns only mean something once a whole group is filled in. This is deliberate and consistent
+  across both systems, but it will read as a bad score if someone half-fills a row.
+- **Adding a coach to any dropdown is a by-hand job in Airtable.** The connector cannot add select
+  options.
+- **The batch header and trainee sub-header** that trainers asked for is a grid grouping, not a
+  field: group by Batch, then by Trainee. Setting a view is screen-only, so a person does it once.
+
 ## Gaps found in the SOP itself (2026-09-06)
 
 Rebuilding the schedule as clock times from a 9:00 start surfaced five days that do not add up to the

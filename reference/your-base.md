@@ -37,6 +37,10 @@ See `decisions/2026-09-01_built-airtable-hub-for-staffing-business.md`.
 | Skills | Name, What it does, Version, Path in repo, Last updated, Status (Active/Parked) — 32 rows as of 2026-09-06 |
 | Routines | Name, What it does, Instructions, How often, Last ran, How it went, Notes, Active, Order, Prepare and wait |
 | Tasks | Title, Status, Note |
+| Training Batches | Batch, Training Start Date, Training End Date, Tracks in this Batch (SMM/EA), Status (Planned/In Training/Graduated/Cancelled), Notes. Seeded with **Batch 4** on 2026-09-06; start date still blank. |
+| Trainees | Trainee Name, Batch (link), Track (SMM/EA), Coach, Contact, Status, Notes, plus auto totals: Total Training Fee, Days Present, Days Late, Days Absent, Days Logged |
+| Attendance | Date, Trainee (link), Training Day (1-20), Attendance (Present/Late/Absent), Day Type (Full Day/Half Day), Time In, Checked By, Notes, Batch (lookup), and formulas: Fee Earned, Is Present, Is Late, Is Absent |
+| Trainee Scorecard | Trainee Name, Trainee (link), Assessed By, Date Assessed, Assessment Point (Week 1-4/Final); ratings 1-5 for Project Management Tools, Call Handling Experience, Communication Skills, AI Mastery, CRM Management, Video Editing, Graphics Design, Automation, Funnel Creation, Proactive, Team Activities, Recitation, Fast Learner; checkboxes Sleeping During Training, Attendance Issues; Strengths, Areas to Improve, Concerns, Recommendation; auto averages: Core Skills, Creative & Tech, Behaviour; Batch and Track lookups |
 
 ## Notes
 
@@ -50,6 +54,8 @@ See `decisions/2026-09-01_built-airtable-hub-for-staffing-business.md`.
 | What a complete application looks like to you | Not recorded yet |
 | CSM | A VA role type (like EA or Creative/SMM), placed with a client — not an internal Stamp Staff position. The "Client Success Manager" text field on Clients is superseded; track it via Placements instead. "CSM" still needs adding as a choice on Role Type (VAs) and Role Applying For (Candidates) — the connector can't add select options, so this is a manual add in Airtable. |
 | How you name documents | Not recorded yet |
+| Training fee rule | $10 per full training day, $5 per half day, $0 if absent. **Late still earns the full amount** — only Absent pays nothing. Built into the Fee Earned formula on Attendance and into the Google Sheets copy. Confirmed as Vera's reading of Ailynn's instruction on 2026-09-06, not yet confirmed back. |
+| Coach dropdowns | Coach Ann, Coach Kate, Rafael Reyes, Marmil, Ben (plus Kay on Attendance's Checked By). Adding another coach is a by-hand job in Airtable — the connector cannot add select options. |
 | ⚠️ The four business tables are EMPTY | Clients, VAs, Candidates and Placements all held 0 records on 2026-09-06, five days after they were built. Stamp Staff runs 100+ VAs and 90 active clients, so nothing in this base reflects the real business yet, and Fiona and Tessa have nothing to read. Whether to import from ClickUp, export from BambooHR, or start with a subset is Ailynn's call — see `decisions/2026-09-01_airtable-over-clickup-for-now.md`. |
 
 ---
