@@ -16,7 +16,7 @@ note on anything unusual. The agents read it so they know where your data lives 
 
 | | |
 |---|---|
-| Base name | Untitled Base (Ailynn may want to rename this by hand in Airtable — the connector has no rename tool) |
+| Base name | STAMP STAFF (Ailynn renamed it; confirmed 2026-09-06) |
 | Base id | apptst9VRUlVdybNZ |
 | Last read | 2026-09-06 |
 
@@ -25,7 +25,22 @@ Ailynn confirmed on 2026-09-01: rather than duplicate the property-manager base 
 Clients, VAs, Placements and Candidates tables from scratch to match Stamp Staff's actual business.
 See `decisions/2026-09-01_built-airtable-hub-for-staffing-business.md`.
 
-## Tables
+## You now have TWO bases
+
+As of 2026-09-06 the training work lives in its own base so trainers can be given it without
+seeing clients, fees, payroll or candidates.
+
+| Base | id | What is in it |
+|---|---|---|
+| **STAMP STAFF** (the hub) | `apptst9VRUlVdybNZ` | Clients, VAs, Placements, Candidates, Skills, Routines, Tasks |
+| **Stamp Staff — Training** | `appvYMsLEajwprjBs` | Training Batches, Trainees, Attendance, Trainee Scorecard |
+
+⚠️ **The four training tables still exist in BOTH bases as of 2026-09-06.** The Training base is the
+real one. The copies in the hub are leftovers waiting for Ailynn to delete them by hand (the
+connector can delete a table, but this is her call, not a silent cleanup). Until she does, **write
+training data to the Training base only** — writing to the hub copies puts it in the dead one.
+
+## Tables in STAMP STAFF (the hub)
 
 | Table | Fields |
 |---|---|
@@ -37,9 +52,15 @@ See `decisions/2026-09-01_built-airtable-hub-for-staffing-business.md`.
 | Skills | Name, What it does, Version, Path in repo, Last updated, Status (Active/Parked) — 32 rows as of 2026-09-06 |
 | Routines | Name, What it does, Instructions, How often, Last ran, How it went, Notes, Active, Order, Prepare and wait |
 | Tasks | Title, Status, Note |
-| Training Batches | Batch, Training Start Date, Training End Date, Tracks in this Batch (SMM/EA), Status (Planned/In Training/Graduated/Cancelled), Notes. Seeded with **Batch 4** on 2026-09-06; start date still blank. |
-| Trainees | Trainee Name, Batch (link), Track (SMM/EA), Coach, Contact, Status, Notes, plus auto totals: Total Training Fee, Days Present, Days Late, Days Absent, Days Logged |
-| Attendance | Date, Trainee (link), Training Day (1-20), Attendance (Present/Late/Absent), Day Type (Full Day/Half Day), Time In, Checked By, Notes, Batch (lookup), and formulas: Fee Earned, Is Present, Is Late, Is Absent |
+| Training Batches, Trainees, Attendance, Trainee Scorecard | **Superseded copies.** Rebuilt in the Training base on 2026-09-06. Delete these four by hand when ready. |
+
+## Tables in Stamp Staff — Training (`appvYMsLEajwprjBs`)
+
+| Table | Fields |
+|---|---|
+| Training Batches | Batch, Training Start Date, Training End Date, Tracks in this Batch (SMM/EA), Status (Planned/In Training/Graduated/Cancelled), Notes. Seeded with **Batch 4**; start date still blank. |
+| Trainees | Trainee Name, Track (SMM/EA), Coach, Contact, Status, Notes, Batch (link), plus auto totals: Total Training Fee, Days Present, Days Late, Days Absent, Days Logged |
+| Attendance | Date, Training Day (1-20), Attendance (Present/Late/Absent), Day Type (Full Day/Half Day), Time In, Checked By, Notes, Trainee (link), Batch (lookup), and formulas: Fee Earned, Is Present, Is Late, Is Absent |
 | Trainee Scorecard | Trainee Name, Trainee (link), Assessed By, Date Assessed, Assessment Point (Week 1-4/Final); ratings 1-5 for Project Management Tools, Call Handling Experience, Communication Skills, AI Mastery, CRM Management, Video Editing, Graphics Design, Automation, Funnel Creation, Proactive, Team Activities, Recitation, Fast Learner; checkboxes Sleeping During Training, Attendance Issues; Strengths, Areas to Improve, Concerns, Recommendation; auto averages: Core Skills, Creative & Tech, Behaviour; Batch and Track lookups |
 
 ## Notes

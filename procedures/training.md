@@ -58,8 +58,9 @@ Two consequences to settle:
 
 ## Tracking a batch: attendance and scorecards
 
-Built 2026-09-06, in Airtable and mirrored in Google Sheets so the trainers can use whichever they
-prefer. Four Airtable tables, and they chain: **Training Batches -> Trainees -> Attendance**, with
+Built 2026-09-06, and moved the same day into **its own Airtable base, `Stamp Staff — Training`**, so
+a coach can be given access to training without ever seeing clients, fees, payroll or candidates.
+Mirrored in Google Sheets as a fallback. Four tables, and they chain: **Training Batches -> Trainees -> Attendance**, with
 **Trainee Scorecard** hanging off Trainees.
 
 **Attendance** is one row per trainee per training day. A coach picks the date, the trainee, the day
