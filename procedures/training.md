@@ -86,10 +86,13 @@ Three things to know before trusting a number:
 Ailynn asked for the classic wall-chart layout: a row per trainee, a column per day, ✅ ❌ ⛔ 🌡️
 markers and totals on the right. Built as **Attendance Grid** in the Training base on 2026-09-06.
 
-The columns are **Day 1 to Day 20**, not real dates, and that is deliberate. Airtable field names are
-fixed text: dated columns would have to be renamed twenty times for every new batch, and the connector
-cannot rename a field, so it would be a by-hand job each time. Day numbers make one table serve every
-batch forever. The real dates live on the batch's Training Start Date.
+The columns are **Day 1 to Day 20**, not real dates, and Ailynn confirmed that on 2026-09-06 after
+being given the correct facts. Airtable field names are fixed text, so dated columns would have to be
+renamed twenty times for every new batch. The connector *can* rename fields (Vera said otherwise
+earlier that day, wrongly), so it would not be a by-hand job — but it would still be twenty renames a
+batch and a table whose column headings lie about any batch other than the current one. Day numbers
+make one table serve every batch forever. The real dates live on the batch's Training Start Date,
+which Attendance Grid looks up onto every row.
 
 Weekends are not columns either. The sheet template carried them because a calendar needs them; a
 20-day programme does not.
@@ -114,6 +117,43 @@ day is 8 working hours with "lunch break separate", but no lunch slot is written
 start puts the day's end at 5:00 with no break in it. "Add breaks" and "Add lunch" are the first two
 lines of AJ's own to-do list at the top of Training Start. Not invented in the rebuild — it is a
 decision for Kate and AJ.
+
+## The SOP document (Version 2)
+
+**STAMPSTAFF TRAINING SOP V.2.2026** — https://docs.google.com/document/d/1vJ_pM97Fq9_S-Y33SSHs-w-OqJ-pRJWTr8UMolhETTU/edit
+
+Rebuilt 2026-09-06 from the original SOP doc
+(1sxYul0RpfKP5ziAMOaZEFg9FODZDsQQ4b-DaTRJqNfg), which stays untouched as the v1 record. What v2 adds
+on top of v1:
+
+- Every day laid out as **real clock times** from a 9:00 start, with the 9:00-9:30 Daily Huddle on
+  every one of the 20 days.
+- A **"How to use the Airtable attendance tracker"** section written for a coach, not for Vera: the
+  base link, the four markers, the fee rules, how to open a batch, how to score a trainee, how to
+  change the pay rates, and the clicks for putting a $ sign on TOTAL FEE EARNED.
+- An **Appendix — Known gaps in this SOP** carrying the five days that do not total 8 hours, and the
+  missing lunch and breaks, so the defects travel with the document instead of living only here.
+
+The master markdown is `templates/training-sop-v2.md` in this vault. Any future rebuild should start
+from that file, not from the Google Doc, because a Doc cannot be edited by the connector — a change
+means publishing a new Doc.
+
+### Two things Vera could not do, and Ailynn has to click
+
+- **Add it as a tab of the original SOP doc.** The Drive connector's `update_file` takes only title
+  and parent_id. It cannot add a Docs tab or move content into one. v2 is therefore a separate file.
+- **Set bookmarks.** Same limit. The markdown headings give a working document outline instead
+  (View > Show outline), which is what bookmarks would have been used for.
+
+### One character to check
+
+The "On Leave" marker is a thermometer emoji. It is a four-byte character, and it came back garbled
+when Vera read the published Doc back. The three-byte markers (checkmark, cross, no-entry) read back
+clean. Vera could not tell whether the Doc itself is wrong or only the read-back is, and would have
+had to retype all 30,000 characters to republish, risking worse damage than one cosmetic cell. So the
+master markdown in this vault now writes it as "On Leave (thermometer icon)" with a sentence naming
+the dropdown option, and any republish will be clean. The Airtable dropdown itself is correct and
+unaffected.
 
 ## Still to confirm
 
