@@ -41,6 +41,27 @@ Two things to carry forward:
 - **The Training Start file is shared as "anyone with the link can edit."** Raised with Ailynn on
   2026-09-06; she chose not to flag it to AJ. Do not raise it again unasked.
 
+## Gaps found in the SOP itself (2026-09-06)
+
+Rebuilding the schedule as clock times from a 9:00 start surfaced five days that do not add up to the
+8 working hours the SOP's own DAY TOTAL bars claim. These are errors in the SOP document, not in the
+rebuild. Kate owns the fix:
+
+| Day | Track | Blocks total | Problem |
+|---|---|---|---|
+| 1 | SMM | 8 hrs 30 min | 30 min over. The 4 hr 45 min "EA Systems Orientation" block is tagged BOTH, which cannot be right — SMM runs its own 5 hr 15 min PM at the same time. Treated as EA-only in the rebuild. |
+| 2 | EA | 4 hrs | **4 hours unaccounted for.** The EA column lists only four 1-hour blocks for a full day. This is the big one. |
+| 2 | SMM | 7 hrs 57 min | 3 min short, from the "~1h 42m" Ryan Magin block. Rounding, ignore. |
+| 11 | SMM and EA | 7 hrs 55 min | 5 min short, from the "1h 40m" webinar video. Rounding, ignore. |
+
+Every other day balances to exactly 8 hours on both tracks.
+
+Also still missing from both the SOP and AJ's sheet: **lunch and breaks**. The SOP says every training
+day is 8 working hours with "lunch break separate", but no lunch slot is written anywhere, so a 9:00
+start puts the day's end at 5:00 with no break in it. "Add breaks" and "Add lunch" are the first two
+lines of AJ's own to-do list at the top of Training Start. Not invented in the rebuild — it is a
+decision for Kate and AJ.
+
 ## Still to confirm
 
 - Whether the recruitment doc's stated training rate ($4/hr post-onboarding, $10/day during training)
