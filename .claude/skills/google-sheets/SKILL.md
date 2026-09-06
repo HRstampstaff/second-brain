@@ -5,7 +5,7 @@ description: "Load before reading from or writing to a spreadsheet, and BEFORE a
 
 # Google Sheets
 
-**Version: 1.1 - 2026-09-02**
+**Version: 1.2 - 2026-09-06 (the Drive connector reads a Google Sheet but cannot write cells into one)**
 
 Almost every owner arrives with spreadsheets, and they usually contain the only written history of
 the business. This skill is about respecting that, getting it in cleanly, and then being honest about
