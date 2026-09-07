@@ -5,13 +5,24 @@ aj@sharperprocess.com) so the coaches and owners are working off the same page.
 
 **Vera drafts it. Ailynn sends it.** Nothing here goes out without her yes.
 
+## It goes out from Ailynn, not from the HR mailbox
+
+Ailynn's decision, 2026-09-07: this is a note from the COO to her team, so it comes **from her own
+address (`ailynnfpg@gmail.com`)**, not from `humanresources@stampstaff.com`.
+
+⚠️ **Vera cannot do that yet.** The Gmail connector is signed in as `humanresources@stampstaff.com`
+and its draft tools have no sender field, so every draft Vera makes lands in that mailbox and would
+go out from it. Until `ailynnfpg@gmail.com` is connected as its own Gmail connector, the draft in the
+HR mailbox is only a carrier: Ailynn copies the text into her own Gmail and sends it from there.
+**Never send it from the HR mailbox as a workaround.**
+
 ## Who it goes to
 
-Internal team, as of 2026-09-07 (confirm before the first send):
+Internal team, as of 2026-09-07 (confirm before the first send). Ailynn is the sender, so she is not
+on the list:
 
 | | |
 |---|---|
-| Ailynn Perez (COO) | ailynnfpg@gmail.com |
 | Kate Barin (training lead) | katherineba.gvaco@gmail.com |
 | Coach Ann | annfpg@gmail.com |
 | Coach Raf | rafael.gvaco@gmail.com |
@@ -23,9 +34,9 @@ Internal team, as of 2026-09-07 (confirm before the first send):
 AJ is **not** copied. This is the internal read-out, so the team can speak plainly about what
 needs to change. If AJ should see a version of it, that is a separate, shorter email.
 
-⚠️ **This list is not settled.** Ailynn, Kristin, Mark, Kate, Ann, Raf and Janet are all already ON
-the AJ call, so a recap tells them nothing they did not hear. The real audience is probably the
-wider in-house team who were not in the room. Ailynn to decide before the first send.
+⚠️ **This list is not settled.** Kristin, Mark, Kate, Ann, Raf and Janet are all already ON the AJ
+call, so a recap tells them nothing they did not hear. The real audience is probably the wider
+in-house team who were not in the room. Ailynn to decide before the first send.
 
 ## The meeting it recaps
 
