@@ -152,6 +152,42 @@ NOT refresh the sample data other steps see.** Downstream steps' dynamic field r
 Fix: after editing code, close the editor and use the step's own **Test → Retest step** button (not
 "Run Code") to actually register a fresh sample for the rest of the Zap to reference.
 
+## Step 8, the join: written 2026-09-07, NOT yet run
+
+**The code lives at `.claude/skills/bamboohr/join-step.js` in this folder.** It is written but has
+never been executed against a live run, so treat every number it produces as unverified until a real
+test says otherwise.
+
+**Input Data mapping the Code step needs** (left column is the exact name the code reads):
+
+| Name | Maps to |
+|---|---|
+| `timesheetRaw` | step 4 `Response` |
+| `ptoRaw` | step 5 `Response` |
+| `directoryRaw` | step 6 `Response` |
+| `sheetRaw` | `Object.to_json( step 7 Raw Output )` |
+
+**An improvement on the earlier plan: PTO requests carry `employeeId` too.** The old plan had PTO
+matching Form Responses on "Full Name" as text, because `time_off/requests` returns `name`. It also
+returns `employeeId`, so both punches AND PTO go through the directory's `employeeId` -> `workEmail`
+map and nothing depends on two people's names being spelled the same way in two systems.
+
+**It reads the weekday from `entry.date`, not from `entry.start`.** Whether BambooHR's `start`/`end`
+are UTC or already local is not settled (both carry a `+00:00` offset while a sibling `timezone`
+field says `America/New_York`). Using the date field means a wrong guess cannot move a shift onto the
+wrong day. **The code counts the disagreements and reports them** as `utcDateMismatches` in its
+`diagnostics` output: zero across a real period means the timestamps are local, and that is the
+thing to read first on the first live test.
+
+**It never silently guesses.** Everything ambiguous goes into a `flags` array in the output rather
+than into a total: a punch on a day the VA is not scheduled, a punch that falls outside every
+scheduled window, PTO on an unscheduled day, a VA with no Form Responses row, an unreadable time or
+day list, and a schedule declaring a timezone other than Eastern. **Read `flagCount` before trusting
+`rows`.**
+
+**Still not built after this:** writing the result into the payroll sheet. Per the google-sheets
+skill, that lands on its own tab, never on the working tab Ailynn maintains by hand.
+
 ## Account and access — proven 2026-09-02
 
 - **Subdomain:** `stampstaff` — base URL `https://stampstaff.bamboohr.com/api/v1/...`
