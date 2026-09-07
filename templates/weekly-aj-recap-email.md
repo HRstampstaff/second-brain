@@ -23,12 +23,28 @@ Internal team, as of 2026-09-07 (confirm before the first send):
 AJ is **not** copied. This is the internal read-out, so the team can speak plainly about what
 needs to change. If AJ should see a version of it, that is a separate, shorter email.
 
+⚠️ **This list is not settled.** Ailynn, Kristin, Mark, Kate, Ann, Raf and Janet are all already ON
+the AJ call, so a recap tells them nothing they did not hear. The real audience is probably the
+wider in-house team who were not in the room. Ailynn to decide before the first send.
+
+## The meeting it recaps
+
+**"Weekly CSO with Stamp Staff", Wednesdays 9:00-10:00am ET.** AJ organises it; it sits on Ailynn's
+own calendar, `ailynnfpg@gmail.com` (readable by calendar ID, it is not in the calendar list). On the
+invite: AJ, Ailynn, Kristin, Mark, Kate, Ann, Raf and Janet. Every instance carries a **Notes by
+Gemini** Google Doc as an attachment.
+
+So the Monday email recaps the **previous Wednesday's** call, not something that happened that
+morning. A quarterly call with AJ also exists, next on 2026-09-23, 2:00-4:00pm ET.
+
 ## Where the content comes from
 
 Fill every section from a real source. **Leave a line out rather than guessing at it.**
 
-1. The AJ meeting's own notes: the Gemini "Notes by Gemini" doc on the calendar event, or Ailynn's
-   own notes from the call.
+1. The Notes by Gemini doc attached to last Wednesday's event.
+   ⚠️ **Blocked as of 2026-09-07:** those docs are not shared with `humanresources@stampstaff.com`,
+   so Vera cannot open them and the Drive connector returns "entity was not found". Until they are
+   shared, the notes have to come from Ailynn by hand.
 2. The Training Start sheet (owned by aj@sharperprocess.com, Ailynn has writer access) for anything
    about the 20-day schedule.
 3. `procedures/training.md` for what is already decided, so the email does not re-open it.
