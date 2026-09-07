@@ -152,7 +152,41 @@ NOT refresh the sample data other steps see.** Downstream steps' dynamic field r
 Fix: after editing code, close the editor and use the step's own **Test → Retest step** button (not
 "Run Code") to actually register a fresh sample for the rest of the Zap to reference.
 
-## Step 8, the join: written 2026-09-07, NOT yet run
+## ⛔ The real blocker now is the Form Responses data, not the build
+
+**First live run of the join, 2026-09-07, period 2026-08-26 to 2026-09-10: 92 VA-client rows across
+75 VAs, and 527 flags.** The arithmetic works. The schedule data it depends on does not, and the
+totals are NOT fit for payroll until that is fixed.
+
+| Count | Flag | What it is |
+|---|---|---|
+| **335** | `no-schedule-row` | Punches from VAs with **no row at all** in the Form Responses tab |
+| **125** | `punch-outside-every-window` | Punch outside every scheduled window on a multi-client day, assigned to the first client as a fallback and possibly billed to the wrong one |
+| **23** | `schedule-span-implausible` | Impossible spans, excluded from PTO totals |
+| 17 | `no-email-for-employee` | In BambooHR with no `workEmail`, so nothing can match them |
+| 12 | `punch-on-unscheduled-day` | Worked a day they are not rostered for |
+| 4 + 1 | `pto-on-unscheduled-day`, `pto-no-schedule-row` | Same, for approved PTO |
+| 4 | `schedule-timezone-differs` | Schedule declares a timezone other than Eastern; not handled |
+| 2 | `pto-split-across-clients` | Working as designed, listed so it can be eyeballed |
+| 2 + 2 | `schedule-time-unreadable`, `schedule-days-unreadable` | Literal `undefined` in the sheet |
+
+**Real examples worth keeping**, because they show the shape of the problem:
+
+- `alyssadawn.stampstaff@gmail.com / Jarrett Cesmat: "8:00:00 AM" to "5:00:00 AM"` - 21 hours. The
+  `AM` is explicit, so no parser can safely correct it. **Before this was caught she came out with
+  168 PTO hours over 8 days and a 242-hour period total.** The sheet row needs changing to 5:00 PM.
+- `angelo.stampstaff@gmail.com / N/A: "12:00:00 AM" to "12:00:00 AM"` - 24 hours, and the client is
+  the literal text `N/A`.
+- `annalyn.stampinigroup@gmail.com / NA: start "undefined" end "undefined"`.
+
+**`workedHoursApproved` came back 0 on every single row**, because no punch in the period carries
+`approved: true`. Either coaches had not approved yet when this ran, or that field does not mean what
+it looks like. Do not build a payroll rule on it until that is settled.
+
+**What unblocks the most, and it is not a code change:** every active VA needs a current row in the
+Form Responses tab. 335 unattributed punches is a large share of the period.
+
+## Step 8, the join: written 2026-09-07, first live run same day
 
 **The code lives at `.claude/skills/bamboohr/join-step.js` in this folder.** It is written but has
 never been executed against a live run, so treat every number it produces as unverified until a real
