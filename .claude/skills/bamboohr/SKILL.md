@@ -5,7 +5,7 @@ description: "IN PROGRESS — API access proven, being rebuilt in Zapier (not n8
 
 # BambooHR
 
-**Version: 0.3 (IN PROGRESS) - 2026-09-02**
+**Version: 0.4 (IN PROGRESS) - 2026-09-07**
 
 **Not a placeholder anymore — the BambooHR API is live-tested and proven, below, against Stamp
 Staff's real account. Fill in the rest the same way: test for real, write down what's actually true,
@@ -63,27 +63,60 @@ before assuming these are available.
    10 Employment Type 2, 11 Days worked 2, 12 Start 2, 13 End 2, 14 Timezone 2, 15 Client3 Name,
    16 Employment Type 3, 17 Days worked 3, 18 Start 3, 19 End 3, 20 Timezone 3, 21 Anything else.
 
-**All four data sources are now proven live in Zapier. Not yet built: the join logic (Code by
+**All four data sources are now proven live in Zapier, and as of 2026-09-07 all three BambooHR ones
+return their full raw payload. Not yet built: the join logic (Code by
 Zapier) that actually matches punches/PTO to a client and computes per-VA-per-client hours, and the
 write-back into the payroll sheet.**
 
-## Current blocker, 2026-09-03: Zapier can't pass a full array into a Code step
+## Blocker cleared, 2026-09-07: Return Raw Response on a Custom Request
 
-**Tried and confirmed:** step 8 (Code by Zapier, meant to do the join) can access the FULL raw output
-of step 7 (Google Sheets) and step 6 (employee directory) as one blob via `Object.to_json([step].Raw
-Output)`, because those two endpoints return a wrapping object (`{rows: [...]}`, `{employees: [...]}`)
-at the JSON root. **But steps 4 and 5 (timesheet entries, approved PTO) return a bare JSON array at
-the root**, and Zapier's "Step Output" chip for those only exposes the FIRST array element, not the
-full list — confirmed by a diagnostic Code step that logged the actual parsed shape of each input
-(`timesheetShape`/`ptoShape` came back as a single entry's fields, not an array of 842/8 items).
+**Solved and live-tested against the real account.** The array-flattening problem is gone and **no
+Zapier upgrade was needed**, so option 1 (paying for extended Code runtime) is off the table and
+option 3 (pause) is closed. Option 2's "raw body" hunch was right.
 
-**First fix attempted: have the Code step fetch all three BambooHR endpoints itself** (Code by Zapier
-runs real Node.js, `fetch()` works). This is architecturally clean and worked in isolation on the
-concept, but **hit Zapier's Code step runtime limit: external network calls exceeded it even running
-all three fetches in parallel with `Promise.all`.** The exact code (proven correct as JavaScript, just
-not fast enough within Zapier's default limit) is worth reusing if this gets picked back up:
+**The fix:** in Webhooks by Zapier, change the action event from **GET** to **Custom Request**, then
+set **Return Raw Response** to **Yes**. The step then exposes a single `Response` field holding the
+entire unparsed response body as one text string, root-level bare arrays included. The Code step does
+`JSON.parse(inputData.x)` and has the whole list.
+
+**Custom Request alone is NOT enough.** It is the `Return Raw Response` toggle that does it, and that
+toggle sits at the BOTTOM of the Configure section, below Headers, where it is easy to miss.
+
+Applied to all three BambooHR steps on 2026-09-07, each verified against real data:
+
+- **step 4, timesheet entries** - `[{"id":155841,"employeeId":192,...},{"id":155842,"employeeId":400,...}`
+- **step 5, approved PTO** - `[{"id":"4752","employeeId":"217",...},{"id":"4778","employeeId":"391",...}`
+- **step 6, employee directory** - `{"fields":[...],"employees":[...]}`
+
+**Custom Request has NO "Query String Params" section**, unlike GET. Query parameters go inline in the
+URL, with the step 2 date chips inserted between literal text:
+`...timesheet_entries?start=<chip>&end=<chip>`. Typing the literal `&end=` between the two chips is
+easy to forget, and the result is a silently malformed URL (`?start=2026-08-262026-09-10`) rather than
+an error.
+
+**⚠️ Switching the action event BLANKS the whole Configure section, including the Authorization
+header.** This cost real time on 2026-09-07. The header was re-copied from the field's COLLAPSED
+display, which truncates, so what landed was the literal text `Basic ...` and then just `Basic`.
+**Copy from INSIDE the field (click in, Ctrl+A, Ctrl+C), never from the collapsed display, and park
+the value in a scratch window outside the browser before converting anything** - otherwise converting
+the last unconverted step destroys the only remaining good copy of it.
+
+**Two different failures both mean "auth is wrong", and only one of them is a 401:**
+
+- **`401`** from `time_tracking/timesheet_entries` - header missing or malformed.
+- **A 200 carrying BambooHR's HTML login page** (`<!DOCTYPE html>` ... `<title>Login - Stamp Staff
+  Remote Teams and Talents`) from `employees/directory`. Same cause, different endpoint behaviour.
+  Do not read this as a URL or routing problem.
+
+**XML back instead of JSON means the `Accept` header did not survive the event switch.** Re-add the
+second Headers row `Accept` / `application/json` after every conversion.
+
+**Superseded:** the Code-step-fetches-everything approach below hit Zapier's Code runtime limit and is
+no longer needed, since the three Webhooks steps now hand their full bodies to the Code step directly.
+Kept only as a record of what was tried.
 
 ```javascript
+// SUPERSEDED 2026-09-07 - correct JavaScript, but exceeded Zapier's Code step runtime limit.
 const authHeader = 'Basic ' + Buffer.from(inputData.apiKey + ':x').toString('base64');
 const headers = { Accept: 'application/json', Authorization: authHeader };
 
@@ -95,35 +128,6 @@ const [timesheetRes, ptoRes, dirRes] = await Promise.all([
 const [timesheet, pto, directory] = await Promise.all([timesheetRes.json(), ptoRes.json(), dirRes.json()]);
 const sheet = JSON.parse(inputData.sheetRaw);
 ```
-
-**Checked whether Zapier's "extended runtime" (up to 10 minutes, advertised for Professional/Team/
-Enterprise plans) would fix this**: found the exact UI path — open the Code step, "Open in Code
-Editor," click the **Runtime** icon in the editor's left sidebar, "Extended runtime" dropdown. **On
-Stamp Staff's actual account this showed "Extended runtime is available on paid plans — Upgrade now,"
-meaning the current plan does not include it**, despite general docs saying Professional does. Not
-independently verified why (could be this specific account/plan tier, could be the docs describing a
-different limit than the one this account is gated on) — worth checking Zapier's actual current plan
-details before assuming either way.
-
-**Left as an open decision with Ailynn, 2026-09-03** (asked, she said pause rather than decide now):
-
-1. **Upgrade Zapier** for extended Code runtime — unknown exact cost/tier, not looked into.
-2. **Restructure around the limit** — keep steps 4/5 (timesheet, PTO) as separate Webhooks by Zapier
-   actions rather than fetching them from inside Code, and find a different way to get their full
-   array data into the join step. Not investigated yet: whether Webhooks by Zapier exposes a raw
-   unparsed response-body field (as literal text) separately from the parsed "Step Output" chip —
-   that would sidestep the array-flattening problem without needing extended runtime at all. Worth
-   checking directly in the field browser (scroll through every field Zapier offers for step 4/5,
-   not just the ones visible without scrolling) before assuming it doesn't exist.
-3. **Pause and revisit** — chosen for now. The Zap is left in a safe, non-published draft state: the
-   date-gating Code step (step 2) is reverted to the real `new Date()` line (not the hardcoded test
-   date), so nothing will run against wrong data if anyone touches this Zap. Step 8's `apiKey` value
-   should be double-checked before reuse, given the repeated typo/corruption problems that happened
-   entering it earlier in this same session.
-
-**Whoever picks this back up: try option 2's "raw body" investigation first**, since it costs nothing
-and might make option 1 unnecessary. If that's genuinely not available, bring the concrete cost of
-option 1 back to Ailynn as a real decision rather than assuming she wants to pay for it.
 
 **Bug hit and fixed: Webhooks by Zapier's dedicated "Basic Auth" field could not be made to work.**
 Tried `username:password` format, tried with/without stray characters from browser autofill
@@ -282,21 +286,13 @@ it into the payroll folder in the format of the existing payroll Google Sheet.
 
 ## What is NOT known yet — named explicitly
 
-- **The whole Zapier build itself.** Nothing has been built in Zapier yet — everything above is
-  proven in n8n (now abandoned) or via raw API calls. Start fresh in Zapier using the endpoints,
-  auth, and date logic above, confirmed against the real account, but re-test every step live again
-  once it's actually in Zapier — a different platform can behave differently even calling the same
-  API (see the n8n skill's testing philosophy: a green run isn't proof, checking the real output is).
-- **Timesheet entries need an extra lookup step that PTO requests don't.** `time_off/requests` returns
-  the VA's `name` directly, so it can match Form Responses' "Full Name" column with no extra call. But
-  `time_tracking/timesheet_entries` returns only `employeeId` — no name, no email — so matching a
-  punch to a VA requires also calling `GET /v1/employees/directory` (proven live, returns
-  `id`/`displayName`/`workEmail` etc. per employee) and joining on `employeeId`, then matching that
-  employee's `workEmail` against Form Responses' "Email Address" column. Not yet wired into a step.
-- **The join logic itself, not yet built.** Needs a step (Code by Zapier, most likely) that: reads
-  the Form Responses schedule tab, the employee directory, timesheet entries, and approved PTO
-  requests, and for each VA maps punches/PTO days to a client by day-of-week + time-of-day. Not
-  started in Zapier.
+- **The join logic (step 8), and it is now the only thing standing between this and a working pull.**
+  Steps 1-7 are built and all four data sources are proven raw against real data (see "Blocker
+  cleared" above). Step 8 has to: `JSON.parse` the three BambooHR payloads plus the sheet rows, build
+  an `employeeId` -> `workEmail` map from the directory (timesheet entries carry only `employeeId`,
+  while PTO requests carry `name` directly and can match Form Responses' "Full Name" instead), then
+  map each punch and each PTO day to a client by day-of-week and time-of-day, and total hours per VA
+  per client. Nothing of this is written yet.
 - **PTO days → hours conversion.** A PTO request gives whole days (`amount.unit: "days"`), the
   payroll sheet needs hours per client. Convert using the VA's scheduled hours for that client on
   that day-of-week from the Form Responses tab — not yet built, and not yet confirmed with Ailynn
