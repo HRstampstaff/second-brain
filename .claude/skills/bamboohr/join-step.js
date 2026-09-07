@@ -13,10 +13,30 @@
  */
 
 // ---------------------------------------------------------------- parse
-const timesheet = JSON.parse(inputData.timesheetRaw);
-const pto       = JSON.parse(inputData.ptoRaw);
-const directory = JSON.parse(inputData.directoryRaw);
-const sheetBlob = JSON.parse(inputData.sheetRaw);
+// Tolerant of a mapped value arriving wrapped in stray text (the step 7
+// mapping can hand over the literal `Object.to_json(...)` rather than the
+// evaluated result). Falls back to the outermost {...} or [...] in the
+// string, and names the input in the error if even that fails.
+function looseParse(text, label) {
+  if (text === undefined || text === null || text === '') {
+    throw new Error(label + ' arrived empty. Check the step mapping on this input.');
+  }
+  const s = String(text);
+  try { return JSON.parse(s); } catch (e) { /* fall through */ }
+  const firstBrace = s.indexOf('{'), firstBracket = s.indexOf('[');
+  const start = (firstBracket !== -1 && (firstBrace === -1 || firstBracket < firstBrace))
+    ? firstBracket : firstBrace;
+  const end = Math.max(s.lastIndexOf('}'), s.lastIndexOf(']'));
+  if (start !== -1 && end > start) {
+    try { return JSON.parse(s.slice(start, end + 1)); } catch (e) { /* fall through */ }
+  }
+  throw new Error(label + ' is not JSON. First 120 chars: ' + s.slice(0, 120));
+}
+
+const timesheet = looseParse(inputData.timesheetRaw, 'timesheetRaw');
+const pto       = looseParse(inputData.ptoRaw, 'ptoRaw');
+const directory = looseParse(inputData.directoryRaw, 'directoryRaw');
+const sheetBlob = looseParse(inputData.sheetRaw, 'sheetRaw');
 
 // The Google Sheets step wraps its rows and the key name has moved before.
 let sheetRows = Array.isArray(sheetBlob)
@@ -50,21 +70,28 @@ function parseDays(text) {
     .filter(n => n !== undefined);
 }
 
-// "9:00 AM", "09:00:00 AM", "13:30", "9am" -> minutes since midnight
+// "9:00 AM", "09:00:00 AM", "13:30", "9am" -> { min, meridiem }
+// `meridiem` says whether the VA actually wrote am/pm. It matters: a bare
+// "6:00" as an END time nearly always means 6pm, and reading it as 6am is
+// what produced a 21-hour working day on the first live run (2026-09-07).
 function parseTime(text) {
   if (!text) return null;
   const s = String(text).trim();
-  const m = s.match(/^(\d{1,2})(?:[:.](\d{2}))?(?::(\d{2}))?\s*([ap])\.?\s*m\.?/i)
-         || s.match(/^(\d{1,2})[:.](\d{2})/);
+  const withAp = s.match(/^(\d{1,2})(?:[:.](\d{2}))?(?::(\d{2}))?\s*([ap])\.?\s*m\.?/i);
+  const m = withAp || s.match(/^(\d{1,2})[:.](\d{2})/);
   if (!m) return null;
   let h = parseInt(m[1], 10);
   const min = m[2] ? parseInt(m[2], 10) : 0;
-  const ap = (m[4] || '').toLowerCase();
+  const ap = (withAp && withAp[4] || '').toLowerCase();
   if (ap === 'p' && h < 12) h += 12;
   if (ap === 'a' && h === 12) h = 0;
   if (h > 23 || min > 59) return null;
-  return h * 60 + min;
+  return { min: h * 60 + min, meridiem: !!ap };
 }
+
+// A VA shift is between 1 and 12 hours. Anything outside that is a misread
+// time, not a real roster, so it is flagged and excluded rather than totalled.
+const MAX_SHIFT_MIN = 12 * 60;
 
 // ------------------------------------------------------ build schedules
 // One schedule per VA email, taken from that VA's MOST RECENT submission.
@@ -79,13 +106,35 @@ for (const row of sheetRows) {
   for (let i = 0; i < 3; i++) {
     const client = String(row[COL.client[i]] || '').trim();
     if (!client) continue;
-    const startMin = parseTime(row[COL.start[i]]);
-    const endMin   = parseTime(row[COL.end[i]]);
+    const startT = parseTime(row[COL.start[i]]);
+    const endT   = parseTime(row[COL.end[i]]);
+    const startMin = startT ? startT.min : null;
+    let endMin = endT ? endT.min : null;
     let hoursPerDay = null;
-    if (startMin !== null && endMin !== null) {
+    if (startT && endT) {
       let span = endMin - startMin;
-      if (span <= 0) span += 24 * 60;          // overnight shift
-      hoursPerDay = span / 60;
+      if (span <= 0) {
+        // A bare end time that lands before the start is almost always a
+        // missing "pm". Try that first, and only fall back to a genuine
+        // overnight shift if the pm reading is not plausible either.
+        const pmSpan = (endMin + 12 * 60) - startMin;
+        if (!endT.meridiem && pmSpan > 0 && pmSpan <= MAX_SHIFT_MIN) {
+          endMin += 12 * 60;
+          span = pmSpan;
+          flag('schedule-end-assumed-pm',
+            email + ' / ' + client + ': end "' + row[COL.end[i]] + '" read as ' +
+            Math.floor(endMin / 60) + ':' + String(endMin % 60).padStart(2, '0'));
+        } else {
+          span += 24 * 60;
+        }
+      }
+      if (span > MAX_SHIFT_MIN) {
+        flag('schedule-span-implausible',
+          email + ' / ' + client + ': "' + row[COL.start[i]] + '" to "' + row[COL.end[i]] +
+          '" is ' + (span / 60).toFixed(2) + 'h, excluded from PTO totals');
+      } else {
+        hoursPerDay = span / 60;
+      }
     } else {
       flag('schedule-time-unreadable',
         email + ' / ' + client + ': start "' + row[COL.start[i]] + '" end "' + row[COL.end[i]] + '"');
@@ -244,10 +293,20 @@ const rows = Object.keys(totals).map(k => totals[k]).map(r => ({
 const uniqueEmails = {};
 rows.forEach(r => { uniqueEmails[r.email] = true; });
 
-output = {
+// `return` is what this Zapier account's Code step actually honours.
+// `output = {...}`, the older convention, produced a blank Output on
+// 2026-09-07 with no error at all.
+// 503 raw flags on the first live run is unreadable. The histogram is what
+// actually gets looked at; the full list stays available underneath it.
+const flagsByKind = {};
+flags.forEach(f => { flagsByKind[f.kind] = (flagsByKind[f.kind] || 0) + 1; });
+
+return {
   periodRows: rows.length,
   vaCount: Object.keys(uniqueEmails).length,
   flagCount: flags.length,
+  flagsByKind: JSON.stringify(flagsByKind),
+  flagSample: JSON.stringify(flags.slice(0, 20)),
   rows: JSON.stringify(rows),
   flags: JSON.stringify(flags),
   diagnostics: JSON.stringify({
