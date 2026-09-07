@@ -120,7 +120,7 @@ decision for Kate and AJ.
 
 ## The SOP document (Version 2)
 
-**STAMPSTAFF TRAINING SOP V.2.2026** — https://docs.google.com/document/d/1vJ_pM97Fq9_S-Y33SSHs-w-OqJ-pRJWTr8UMolhETTU/edit
+**STAMPSTAFF TRAINING SOP V.2.2026** — https://docs.google.com/document/d/18DuMqqOUhielE75aFIYakMg5_6XT1Iu65scECPpMxz8/edit
 
 Rebuilt 2026-09-06 from the original SOP doc
 (1sxYul0RpfKP5ziAMOaZEFg9FODZDsQQ4b-DaTRJqNfg), which stays untouched as the v1 record. What v2 adds
@@ -145,15 +145,24 @@ means publishing a new Doc.
 - **Set bookmarks.** Same limit. The markdown headings give a working document outline instead
   (View > Show outline), which is what bookmarks would have been used for.
 
-### One character to check
+### Published twice on 2026-09-06 — use only the second one
 
-The "On Leave" marker is a thermometer emoji. It is a four-byte character, and it came back garbled
-when Vera read the published Doc back. The three-byte markers (checkmark, cross, no-entry) read back
-clean. Vera could not tell whether the Doc itself is wrong or only the read-back is, and would have
-had to retype all 30,000 characters to republish, risking worse damage than one cosmetic cell. So the
-master markdown in this vault now writes it as "On Leave (thermometer icon)" with a sentence naming
-the dropdown option, and any republish will be clean. The Airtable dropdown itself is correct and
-unaffected.
+The first published Doc was made from an earlier draft and was missing the huddle description
+Ailynn asked for ("calling a few trainees to share what they have learned based on the previous day
+of training") on Days 2-20 — it just said "Daily Huddle". Caught by reading the published Doc back
+against this vault's master. The Doc was republished in full from the master and the first copy was
+moved to Google Drive's trash, where it stays recoverable for 30 days. **Only the ID above is live.**
+
+The lesson: publishing is one-way. `create_file` takes a snapshot of whatever the markdown says at
+that moment, and the Doc cannot be edited afterwards, so the master and the Doc drift silently unless
+the Doc is read back and compared. Read the published Doc back every time, against the master, not
+just for "did it publish".
+
+A second thing that came out of the same read-back: the thermometer emoji used for the On Leave
+marker is a four-byte character and came back garbled from the published Doc, while the three-byte
+markers (checkmark, cross, no-entry) read back clean. The SOP now writes it as
+"On Leave (thermometer icon)" with a sentence naming the dropdown option, so nothing in the document
+depends on that character rendering. The Airtable dropdown itself is correct and unaffected.
 
 ## Still to confirm
 
