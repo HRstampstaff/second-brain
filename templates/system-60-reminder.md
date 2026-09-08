@@ -34,24 +34,22 @@ to send the three things round before the call.
 ## Working out who owns the week
 
 **The owner is the ORGANIZER of that week's instance.** Ailynn's rule, 2026-09-08: she transfers the
-event to whoever owns the process that week.
+event to whoever owns the process that week, **and she re-transfers it every week.** See
+`decisions/2026-09-08_system-60-owner-is-the-calendar-organizer.md`.
 
 **Read the organizer field. Not the creator, which is Kristin forever, and not the attendee list.**
 
-### ⚠️ Then cross-check it, every time
+**Draft to the organizer. Do not second-guess it and do not hold for a confirmation.**
+
+### One thing to mention, never to act on
 
 **Google transfers ownership for the whole series, not one occurrence.** When 11 Sep went to Ann, so
-did 18 Sep, 25 Sep, 2 Oct and 9 Oct. So the organizer field cannot rotate by itself: it will keep
-saying the same name until Ailynn transfers it again, and a routine trusting it alone would remind
-the wrong person quietly, for weeks.
+did 18 Sep, 25 Sep, 2 Oct and 9 Oct. The field only stays right because Ailynn keeps re-transferring
+it, which is a manual step every week.
 
-The signal that does change week to week is the **instance's own title and description**.
-
-| What you find | What to do |
-|---|---|
-| Organizer and topic agree | Draft to the organizer |
-| Topic has moved on, organizer unchanged from last week | **Say so and ask Ailynn.** The transfer has probably not been redone |
-| They name different people | **Ask.** Never pick one |
+So if the topic in the title has moved on while the organizer is unchanged from last week, that is
+worth **one line in the report** saying the transfer may not have been redone. **Still draft to the
+organizer.** Whether the rule applies to a given week is Ailynn's call, not Vera's.
 
 **Record the organizer you used on the routine row each week**, so next week has something to
 compare against.
