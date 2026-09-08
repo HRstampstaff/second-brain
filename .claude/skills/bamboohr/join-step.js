@@ -7,9 +7,17 @@
  *   ptoRaw        -> step 5 "Response"
  *   directoryRaw  -> step 6 "Response"
  *   sheetRaw      -> Object.to_json( step 7 Raw Output )
+ *   periodStart   -> step 2 "Period Start"     (for the Cutoff label)
+ *   periodEnd     -> step 2 "Period End"       (for the Cutoff label)
  *
  * Steps 4/5/6 must be Webhooks by Zapier "Custom Request" with
  * Return Raw Response = Yes, or they hand over one flattened record.
+ *
+ * The output carries BOTH shapes on purpose:
+ *   - `rows` / `flags` as JSON strings, for reading and debugging
+ *   - `col*` parallel arrays, which Zapier reads as line items so a single
+ *     Google Sheets "Create Multiple Spreadsheet Rows" step can write the
+ *     whole cutoff at once, instead of fanning out one task per VA.
  */
 
 // ---------------------------------------------------------------- parse
@@ -415,6 +423,44 @@ const rows = Object.keys(totals).map(k => totals[k]).map(r => ({
 const uniqueEmails = {};
 rows.forEach(r => { uniqueEmails[r.email] = true; });
 
+// ------------------------------------------------- flags onto the row
+// A flag list nobody reads next to a number nobody questions is how a bad
+// figure gets paid. Attach each VA's own flags to their own row, so the
+// person reviewing the sheet sees "CHECK THIS ONE" beside the name.
+const flagsForEmail = {};
+flags.forEach(f => {
+  const m = String(f.detail).match(/[\w.+-]+@[\w.-]+/);
+  if (!m) return;
+  const e = m[0].toLowerCase();
+  (flagsForEmail[e] = flagsForEmail[e] || []).push(f.kind);
+});
+
+const cutoff = (inputData.periodStart || '?') + ' to ' + (inputData.periodEnd || '?');
+const runAt = new Date().toISOString().slice(0, 16).replace('T', ' ') + ' UTC';
+
+// Parallel arrays. Zapier reads same-length arrays as line items, which is
+// what lets one "Create Multiple Spreadsheet Rows" step write every row.
+const colCutoff = [], colRunAt = [], colName = [], colEmail = [], colClient = [];
+const colInHouse = [], colPunches = [], colWorked = [], colApproved = [];
+const colPtoDays = [], colPtoHours = [], colTotal = [], colFlags = [];
+rows.forEach(r => {
+  colCutoff.push(cutoff);
+  colRunAt.push(runAt);
+  colName.push(r.fullName);
+  colEmail.push(r.email);
+  colClient.push(r.client);
+  colInHouse.push(r.inHouse ? 'yes' : '');
+  colPunches.push(r.punches);
+  colWorked.push(r.workedHours);
+  colApproved.push(r.workedHoursApproved);
+  colPtoDays.push(r.ptoDays);
+  colPtoHours.push(r.ptoHours);
+  colTotal.push(r.totalHours);
+  const fs = flagsForEmail[r.email] || [];
+  const uniq = fs.filter((v, i) => fs.indexOf(v) === i);
+  colFlags.push(uniq.join(', '));
+});
+
 // `return` is what this Zapier account's Code step actually honours.
 // `output = {...}`, the older convention, produced a blank Output on
 // 2026-09-07 with no error at all.
@@ -427,10 +473,26 @@ return {
   periodRows: rows.length,
   vaCount: Object.keys(uniqueEmails).length,
   flagCount: flags.length,
+  cutoff: cutoff,
+  runAt: runAt,
   flagsByKind: JSON.stringify(flagsByKind),
   flagSample: JSON.stringify(flags.slice(0, 20)),
   rows: JSON.stringify(rows),
   flags: JSON.stringify(flags),
+  // Line items for the Google Sheets write step. Same length, same order.
+  colCutoff: colCutoff,
+  colRunAt: colRunAt,
+  colName: colName,
+  colEmail: colEmail,
+  colClient: colClient,
+  colInHouse: colInHouse,
+  colPunches: colPunches,
+  colWorked: colWorked,
+  colApproved: colApproved,
+  colPtoDays: colPtoDays,
+  colPtoHours: colPtoHours,
+  colTotal: colTotal,
+  colFlags: colFlags,
   diagnostics: JSON.stringify({
     timesheetEntries: timesheet.length,
     ptoRequests: pto.length,

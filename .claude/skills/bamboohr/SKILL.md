@@ -251,8 +251,35 @@ scheduled window, PTO on an unscheduled day, a VA with no Form Responses row, an
 day list, and a schedule declaring a timezone other than Eastern. **Read `flagCount` before trusting
 `rows`.**
 
-**Still not built after this:** writing the result into the payroll sheet. Per the google-sheets
-skill, that lands on its own tab, never on the working tab Ailynn maintains by hand.
+## The write-back, step 9
+
+**Design settled 2026-09-08. The code side is built; the Zapier step is not.**
+
+**One append-only tab, NOT a new tab per cutoff.** A tab per cutoff needs a `Create Worksheet` step
+and leaves a pile of tabs nobody clears. One tab with a `Cutoff` column is filterable, and a re-run
+shows as visible duplicate rows rather than silently overwriting a good pull. **It never touches
+Payroll Main**, per the google-sheets skill: never overwrite a sheet the owner maintains by hand.
+
+**Step 8 now emits parallel arrays** (`colCutoff`, `colName`, `colEmail`, `colClient`, `colInHouse`,
+`colPunches`, `colWorked`, `colApproved`, `colPtoDays`, `colPtoHours`, `colTotal`, `colFlags`),
+same length and same order. Zapier reads same-length arrays as **line items**, so a single Google
+Sheets **Create Multiple Spreadsheet Rows** step writes the whole cutoff in one task instead of
+fanning out one task per VA.
+
+**⚠️ The line-item behaviour is the one part not proven on this account.** Every other Zapier
+assumption made from memory during this build turned out wrong at least once (`output =` vs
+`return`, and the Custom Request raw body). **Test it on a real run before trusting it.** If Zapier
+will not read the arrays as line items, the fallback is to return the array of row objects directly
+from the Code step and let Zapier fan out, at the cost of one task per VA per run.
+
+**Each row carries its own flags** in `colFlags`. A flag list nobody reads, sitting next to a number
+nobody questions, is how a wrong figure gets paid; putting `CHECK THIS ONE` beside the name is what
+makes the review actually happen.
+
+**Step 8 needs `periodStart` and `periodEnd` added back to its Input Data**, mapped to step 2. They
+were removed when the Code step stopped fetching BambooHR itself, and the `Cutoff` column needs them.
+
+**Not built:** the Google Sheets step itself, and the destination tab.
 
 ## Account and access — proven 2026-09-02
 
