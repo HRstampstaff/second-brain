@@ -61,10 +61,9 @@ So a full PTO day pays **8 hours** and a half day pays **4**. BambooHR already r
 **This covers the seven on the flexi and 9-6 schedules.** Note it is 8 rather than the 9 hours a
 9-to-6 spans, so the hour is presumably lunch.
 
-**⛔ It does NOT cover Key Bantola**, who works a four-hour evening shift and is not "regular in
-house". Paying her PTO at 8 would be double. **Her number has not been given**, so her PTO is counted
-in days and left at zero hours, and raises `in-house-pto-needs-a-rule` on every run until somebody
-sets it.
+**⛔ Key Bantola is 4, not 8.** Set by Ailynn on 2026-09-08, matching her four-hour evening shift.
+She is not "regular in house", and **moving her to 8 would pay her PTO at double**. If anyone ever
+tidies the list by making all eight the same number, that is the mistake it will be.
 
 ## What follows from this
 
