@@ -80,6 +80,13 @@ that phrase in rather than inventing a topic.
 ## Rules that stick to this one
 
 - **Held, never sent.** It is an outbound message like any other, and being a routine changes nothing.
-- **Sender: humanresources@stampstaff.com**, the only Gmail connected. Unlike the weekly AJ recap this
-  one is internal, so the HR mailbox is a reasonable sender — but Ailynn has not ruled on it. Ask once.
+- **⛔ IT GOES OUT FROM AILYNN (ailynnfpg@gmail.com), NOT FROM THE HR MAILBOX.** Her ruling,
+  2026-09-08, the same as the weekly AJ recap. Vera cannot do that yet: the Gmail connector is signed
+  in as humanresources@stampstaff.com and neither `create_draft` nor `update_draft` has a sender
+  field. Until her own Gmail is connected, the HR draft is a **carrier** she copies from.
+  **Never send it from the HR mailbox as a workaround.**
+- **So the carrier draft carries NO RECIPIENT.** Put the intended recipient in the first line of the
+  body instead. A draft with a To on it in the HR mailbox is one click from going out from the wrong
+  address, and `update_draft` cannot clear a To once it is set — the draft has to be trashed and
+  rebuilt.
 - **To the owner only.** Not the whole invite list: it is one person's job that week.
