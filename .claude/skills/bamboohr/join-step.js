@@ -104,9 +104,12 @@ function parseDays(text) {
 }
 
 // "9:00 AM", "09:00:00 AM", "13:30", "9am" -> { min, meridiem }
-// `meridiem` says whether the VA actually wrote am/pm. It matters: a bare
-// "6:00" as an END time nearly always means 6pm, and reading it as 6am is
-// what produced a 21-hour working day on the first live run (2026-09-07).
+// `meridiem` is 'a', 'p', or '' when the VA wrote no am/pm at all. WHICH one
+// they wrote matters, not just whether: a bare "6:00" as an END time nearly
+// means 6pm, and an explicit "5:00 AM" end against an "8:00 AM" start is a
+// wrong answer rather than a missing one. Both are corrected below, by
+// different rules, because one is filling a gap and the other is overriding
+// what somebody actually typed.
 function parseTime(text) {
   if (!text) return null;
   const s = String(text).trim();
@@ -119,12 +122,20 @@ function parseTime(text) {
   if (ap === 'p' && h < 12) h += 12;
   if (ap === 'a' && h === 12) h = 0;
   if (h > 23 || min > 59) return null;
-  return { min: h * 60 + min, meridiem: !!ap };
+  return { min: h * 60 + min, meridiem: ap };
 }
 
 // A VA shift is between 1 and 12 hours. Anything outside that is a misread
 // time, not a real roster, so it is flagged and excluded rather than totalled.
 const MAX_SHIFT_MIN = 12 * 60;
+
+// The ceiling for OVERRIDING an am/pm the VA actually typed, deliberately
+// tighter than MAX_SHIFT_MIN. Be more cautious when contradicting somebody
+// than when trusting them. It is also what keeps the junk `12:00 AM ->
+// 12:00 AM` rows out: those flip to exactly 12 hours, which clears
+// MAX_SHIFT_MIN but not this, so they stay flagged instead of being
+// quietly turned into a real-looking shift.
+const MAX_INFER_MIN = 10 * 60;
 
 // Form Responses timestamps are M/D/YYYY H:MM:SS, US order (confirmed: the
 // form was created 2026-09-01 and its earliest rows read "9/1/2026").
@@ -154,6 +165,15 @@ for (const row of sheetRows) {
   for (let i = 0; i < 3; i++) {
     const client = String(row[COL.client[i]] || '').trim();
     if (!client) continue;
+    // VAs with only one or two clients type something into the boxes for the
+    // ones they do not have. Seen in real data: "N/A", "NA", "None" and
+    // "Mandatory Field". Treated as blank, or they become phantom clients
+    // with real hours totalled against them.
+    if (/^(n\.?\/?a\.?|none|nil|n\/a|mandatory\s*field|-{1,2})$/i.test(client)) {
+      flag('client-name-is-a-placeholder',
+        email + ': client ' + (i + 1) + ' reads "' + client + '", treated as blank');
+      continue;
+    }
     const startT = parseTime(row[COL.start[i]]);
     const endT   = parseTime(row[COL.end[i]]);
     const startMin = startT ? startT.min : null;
@@ -162,17 +182,34 @@ for (const row of sheetRows) {
     if (startT && endT) {
       let span = endMin - startMin;
       if (span <= 0) {
-        // A bare end time that lands before the start is almost always a
-        // missing "pm". Try that first, and only fall back to a genuine
-        // overnight shift if the pm reading is not plausible either.
         const pmSpan = (endMin + 12 * 60) - startMin;
+        const asTime = mins =>
+          Math.floor(mins / 60) + ':' + String(mins % 60).padStart(2, '0');
+
         if (!endT.meridiem && pmSpan > 0 && pmSpan <= MAX_SHIFT_MIN) {
+          // No am/pm given at all. Filling a gap, so the normal ceiling applies.
           endMin += 12 * 60;
           span = pmSpan;
           flag('schedule-end-assumed-pm',
-            email + ' / ' + client + ': end "' + row[COL.end[i]] + '" read as ' +
-            Math.floor(endMin / 60) + ':' + String(endMin % 60).padStart(2, '0'));
+            email + ' / ' + client + ': end "' + row[COL.end[i]] + '" read as ' + asTime(endMin));
+
+        } else if (startT.meridiem === 'a' && endT.meridiem === 'a' &&
+                   pmSpan > 0 && pmSpan <= MAX_INFER_MIN) {
+          // Both times say AM and the end lands before the start. Nobody
+          // starts at 8am and finishes at 5am the same day, so this is a
+          // wrong answer rather than an overnight shift. Overriding what
+          // somebody typed, so the tighter MAX_INFER_MIN ceiling applies.
+          // Ailynn approved this rule 2026-09-08 after ten VAs made the
+          // same slip. It affects PTO hours, so every one is flagged.
+          const wasEnd = row[COL.end[i]];
+          endMin += 12 * 60;
+          span = pmSpan;
+          flag('schedule-end-am-flipped-to-pm',
+            email + ' / ' + client + ': end "' + wasEnd + '" read as ' + asTime(endMin) +
+            ' (' + (span / 60).toFixed(2) + 'h shift). CHECK THIS ONE.');
+
         } else {
+          // A genuine overnight shift, e.g. 8:50 PM to 1:10 AM.
           span += 24 * 60;
         }
       }
