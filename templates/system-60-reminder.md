@@ -11,34 +11,50 @@ to send the three things round before the call.
 
 | | |
 |---|---|
-| Calendar title | **Process Mapping** (not "System 60" — the calendar does not use that name) |
+| Title | **"SYSTEM 60: Process Mapping and Recruitment Workflow"** on 11 Sep. Later instances still read plain **"Process Mapping"**, so match on the series id, never on the title |
 | When | **Fridays, 10:00-11:00am ET** |
 | Where | Zoom `https://us02web.zoom.us/j/7248981430?pwd=WjJkdTc2RDgvbVFwL0M2UXJJYlA3dz09` (a Google Meet link is also on the invite; the Zoom one is in the description) |
-| Calendar it lives on | **ailynnfpg@gmail.com**, organiser Ailynn, series created by Kristin (kstampini@gmail.com) |
+| Calendar it lives on | **ailynnfpg@gmail.com** |
 | Series id | `79gfqofvpcmshji051nn2jcv9u` |
+| Series created by | Kristin (kstampini@gmail.com). **The creator never changes. It is not the owner.** |
 
-**Attendees, as of 2026-09-08:**
+**Attendees, as of 2026-09-08 20:31:**
 
 | Name | Email |
 |---|---|
-| Ailynn | ailynnfpg@gmail.com (organiser) |
-| Ann (Eydie Ann Lugay) | annfpg@gmail.com |
+| Ann (Eydie Ann Lugay) | annfpg@gmail.com — **organizer, so owner of the current week** |
+| Ailynn | ailynnfpg@gmail.com |
 | Janet Mangrobang | janet2.gvaco@gmail.com |
-| Kate (Katherine Barin) | katherineba.gvaco@gmail.com — **declined the series** |
+| Kate (Katherine Barin) | katherineba.gvaco@gmail.com |
 | Raf (Rafael Reyes) | rafael.gvaco@gmail.com |
 | Benjomin Kristian Reyes | benjkris.stampstaff@gmail.com |
 | Marmil Olorga | shainaolarga.stampstaff@gmail.com — **invited as "Shaina"**, see `policies/in-house-team-hours.md` |
+| Key Bantola | keyverlybantola@gmail.com — **on the 11 Sep instance only** |
 
 ## Working out who owns the week
 
-**In this order. Never guess an owner.**
+**The owner is the ORGANIZER of that week's instance.** Ailynn's rule, 2026-09-08: she transfers the
+event to whoever owns the process that week.
 
-1. **The Friday event's own description.** It carries the week's topic and whose process it is. The
-   11 Sep instance reads *"Recruitment - Ann's process / Review process"*, so the owner is Ann.
-2. **If the description names a process but no person**, match it to the person who owns that process
-   in `procedures/` (recruitment is Ann's, training is Kate's) and say in the report that you inferred it.
-3. **If the description is empty, or names nobody**, ask Ailynn and hold. Do not send a reminder to a
-   guess, and do not send it to the whole invite list instead.
+**Read the organizer field. Not the creator, which is Kristin forever, and not the attendee list.**
+
+### ⚠️ Then cross-check it, every time
+
+**Google transfers ownership for the whole series, not one occurrence.** When 11 Sep went to Ann, so
+did 18 Sep, 25 Sep, 2 Oct and 9 Oct. So the organizer field cannot rotate by itself: it will keep
+saying the same name until Ailynn transfers it again, and a routine trusting it alone would remind
+the wrong person quietly, for weeks.
+
+The signal that does change week to week is the **instance's own title and description**.
+
+| What you find | What to do |
+|---|---|
+| Organizer and topic agree | Draft to the organizer |
+| Topic has moved on, organizer unchanged from last week | **Say so and ask Ailynn.** The transfer has probably not been redone |
+| They name different people | **Ask.** Never pick one |
+
+**Record the organizer you used on the routine row each week**, so next week has something to
+compare against.
 
 ## The message
 
@@ -48,7 +64,7 @@ Draft it, hold it, tell Ailynn. It never goes out on its own.
 >
 > Hi {{FIRST NAME}},
 >
-> You're up for this Friday's process mapping session ({{DATE}}, 10-11am ET) on {{PROCESS}}.
+> You're up for this Friday's System 60 session ({{DATE}}, 10-11am ET) on {{PROCESS}}.
 >
 > Could you send these three round to the group before Thursday end of day, so everyone comes in
 > having read them:
@@ -60,7 +76,7 @@ Draft it, hold it, tell Ailynn. It never goes out on its own.
 > Thanks,
 > Ailynn
 
-**Fill `{{PROCESS}}` only from the calendar description.** If it just says "Review process", leave
+**Fill `{{PROCESS}}` only from the title and description.** If they just say "Review process", leave
 that phrase in rather than inventing a topic.
 
 ## Rules that stick to this one
@@ -69,5 +85,3 @@ that phrase in rather than inventing a topic.
 - **Sender: humanresources@stampstaff.com**, the only Gmail connected. Unlike the weekly AJ recap this
   one is internal, so the HR mailbox is a reasonable sender — but Ailynn has not ruled on it. Ask once.
 - **To the owner only.** Not the whole invite list: it is one person's job that week.
-- **Kate has declined the series.** If a week's owner is Kate, say so rather than quietly reminding
-  someone who is not coming.
