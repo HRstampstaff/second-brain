@@ -5,16 +5,50 @@ description: "Load before connecting QuickBooks to n8n, before creating an Intui
 
 # Connect QuickBooks to n8n
 
-**Version: 1.0 - 2026-09-03**
+**Version: 1.3 - 2026-09-07**
 
 This is one job and one job only: get the owner's own n8n instance talking to the owner's own
 QuickBooks Online company, starting from nothing and finishing at a credential that provably works.
 It does not build any automation on top of that. It gets you a connection you have proven is real, so
 the next skill can use it.
 
+## ⛔ FIRST, DECIDE WHETHER IT IS WORTH DOING AT ALL
+
+**This connection is genuinely possible and it is genuinely a chore. Both halves are true and the
+owner deserves to hear both before they start.** It is not a few clicks, it cannot be finished in one
+sitting, and no amount of help removes the parts only they can do.
+
+**What it actually costs them, and plan on the high end:**
+
+- **About two hours of forms**, spread over the developer portal. Some people move faster. Plan on two.
+- **Then several days of waiting** on Intuit's review, with nothing to do and nobody to call.
+- **Published legal pages.** The form will not accept a privacy policy or terms link that does not
+  resolve to a real page, so if they have none, that is part of the job too.
+- **Their own hands on several steps.** The compliance answers, the client secret and the sign-in are
+  theirs and cannot be delegated.
+
+**⭐ THE TEST, and give them the honest answer rather than the encouraging one: this is only worth it
+if the automations it unlocks will save them MANY HOURS EVERY MONTH, every month, forever.** The
+setup cost is paid once. An automation that saves twenty minutes a month never repays it, and they
+will resent the afternoon. Categorising every receipt that arrives by email, month after month, does
+repay it comfortably.
+
+**So ask what they actually want automated, and estimate the recurring hours BEFORE anyone opens the
+developer portal.** If the honest answer is "a couple of hours a month", say so and point them at the
+QuickBooks connector instead, which is a few clicks and needs none of this. See the `quickbooks/`
+skill.
+
+**And if they only need to READ the books, stop here.** Reports, lookups, drafting an entry they post
+themselves: the connector does all of that with no developer app, no questionnaire and no wait. This
+whole road exists for one thing, an automation that must reach the books with **nobody present**.
+
+**What is genuinely easier now than it used to be:** every trap on this road is written down, so the
+work is following a known path rather than discovering it. That changes the frustration, not the
+clock. The forms still take what they take and Intuit still reviews for as long as it reviews.
+
 ## Read this before anyone starts: the wall is Intuit's review, not the build
 
-**The forms and the setup are under an hour of work. The waiting is the cost.** An Intuit developer
+**The forms are a couple of hours. The waiting is the real cost.** An Intuit developer
 app is born "in development" and hands out sandbox keys only. Production keys, the ones that reach the
 owner's real books, unlock only after two things are done in the developer portal, App details and a
 Compliance questionnaire, and then Intuit reviews what was submitted. That review takes **several
@@ -26,6 +60,19 @@ app store.** There is no lighter tier for "it is just for me". There is no way t
 **So do not start this on a Friday afternoon expecting a working connection by evening.** Set the
 expectation on day one: fill the forms, submit, and then wait. The connection cannot be finished in
 one sitting, and that is normal, not a sign anything went wrong.
+
+**⭐ One real measurement, so "several days" has a number next to it: submitted 2026-09-01, production
+keys granted 2026-09-03.** Two days, over a weekend, on a private one-company integration. **That is
+one data point and not a promise** - it is the only review this skill has watched end to end, and
+Intuit gives no service level. Quote it as "it took two days for one owner", never as "it takes two
+days".
+
+**⭐ And the part worth telling the owner up front, because it is the good news: once the keys landed,
+the credential connected on the FIRST attempt.** Not because that owner was lucky, but because every
+trap below had already been read before the forms were touched. **Nothing here is hard once you know
+it: the cost is the waiting, the forms, the published legal pages and the handful of steps only the
+owner can take.** The failures people report are almost always someone meeting these traps live
+rather than reading them first.
 
 ## Go straight to production. The sandbox is a trap for this use
 
@@ -169,6 +216,28 @@ sandbox company and the connection is pointed at the wrong place. Not passed. Go
 reconnect against the real company.
 
 Only when the owner has recognized their own data is this done.
+
+## Now that it connects: do NOT reach for the native QuickBooks node
+
+**The first instinct after connecting is to drop n8n's built-in QuickBooks Online node onto the canvas.
+For real bookkeeping work it will not do the job, and you find out several nodes in.** Measured
+2026-09-02: its resources are Bill, Customer, Employee, Estimate, Invoice, Item, Payment, Purchase
+(read only), Transaction and Vendor. **There is no Class, no Account, and no way to CREATE a Purchase**,
+which is exactly what categorising an expense needs.
+
+**Use HTTP Request nodes instead, on the same credential.** Set the node's authentication to the
+predefined credential type and choose the QuickBooks OAuth2 credential. You keep n8n's token refresh,
+which is the only genuinely hard part of OAuth, and you get the whole REST API rather than the ten
+resources the node exposes.
+
+**⭐ Put the credential and the Company ID in ONE sub-flow, and have every other flow call it.** On the
+reference build that sub-flow is the single place either value appears; nothing else in the instance
+knows the Company ID. It is worth doing on day one for three reasons: a re-connect or a new Company ID
+is a one-node edit instead of a hunt, no future flow can quietly hardcode a realm ID, and the sub-flow
+is the natural place to pin the minor version once for everything.
+
+**Pin `minorversion` on the calls**, as Step 10 says, and pin it in that one sub-flow so every caller
+inherits it.
 
 ## What never goes into chat, this file, or the repo
 

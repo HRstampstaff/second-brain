@@ -52,14 +52,28 @@ morning. A quarterly call with AJ also exists, next on 2026-09-23, 2:00-4:00pm E
 
 Fill every section from a real source. **Leave a line out rather than guessing at it.**
 
-1. The Notes by Gemini doc attached to last Wednesday's event.
-   ⚠️ **Blocked as of 2026-09-07:** those docs are not shared with `humanresources@stampstaff.com`,
-   so Vera cannot open them and the Drive connector returns "entity was not found". Until they are
-   shared, the notes have to come from Ailynn by hand.
-2. The Training Start sheet (owned by aj@sharperprocess.com, Ailynn has writer access) for anything
+1. **⭐ The Asana RISE board — this is the one that works.** Project **"Stamp Staff RISE Meeting"**,
+   gid `1201784176220593`, in AJ's `sharperprocess.com` workspace, which Ailynn already has access
+   to. It IS the meeting: sections for Agenda, The FOUR (the quarterly rocks) and 90 Day F.A.S.T
+   Goals. **Notes typed during a call are written into the task's own notes field, prefixed with the
+   date** — `9/2 reminder to everyone to follow checklists built; ...`. So the method is: list the
+   tasks modified since the last call, read the dated lines, and build the recap from those. Every
+   line comes with an owner and a due date already attached, which is exactly what the email needs.
+   Proven on the 2 Sep 2026 call, which produced a full recap with nothing invented.
+
+   Its limit, and say it in the draft: **anything discussed but never written into Asana is not
+   there.** The board captures decisions and rock updates, not the conversation.
+
+2. The Notes by Gemini doc attached to last Wednesday's event. **Better source if it ever works.**
+   ⚠️ **Still blocked as of 2026-09-08:** those docs are not shared with
+   `humanresources@stampstaff.com`, so Vera cannot open them and the Drive connector returns "entity
+   was not found". Sharing them would close the gap the Asana board leaves.
+
+3. Ailynn by hand, if neither of the above has anything for that week.
+4. The Training Start sheet (owned by aj@sharperprocess.com, Ailynn has writer access) for anything
    about the 20-day schedule.
-3. `procedures/training.md` for what is already decided, so the email does not re-open it.
-4. Anything AJ asked for that has not been actioned yet goes in Open items with a name against it.
+5. `procedures/training.md` for what is already decided, so the email does not re-open it.
+6. Anything AJ asked for that has not been actioned yet goes in Open items with a name against it.
 
 ## The email
 
