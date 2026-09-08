@@ -15,14 +15,23 @@ hours to a client if that VA has a row in Form Responses, matched on email. See
 | Matched to a form submission | 76 |
 | Unmatched | 35 |
 
-**The 35 unmatched are four different problems, not one.** Chasing all 35 would waste time on 13 of
-them.
+**The 35 unmatched are four different problems, not one.** Only 19 are a real gap. Chasing all 35
+would waste time on 16 of them.
 
-## 1. Genuinely no form submission - 21 people, and this is the chase list
+| Bucket | Count | Action |
+|---|---|---|
+| Genuinely no form row | 19 | Chase |
+| Filled it under a different email | 6 | Fix the address, do not chase |
+| In-house staff | 8 | Nothing. They never need one |
+| Backpay-only rows | 2 | Nothing. No hours this cutoff |
 
-**Revised 2026-09-08 after Ailynn's ruling on in-house staff.** Benjomin Kristian Reyes came off this
-list: he is in-house on a fixed 9-6, so he never needs a schedule row. Note his payroll row says
-`Contract Type = New VA Contract`, which is wrong and is why he landed here.
+## 1. Genuinely no form submission - 19 people, and this is the chase list
+
+**Revised 2026-09-08 after Ailynn's rulings on in-house staff.** Three came off: **Benjomin Kristian
+Reyes** (in-house, fixed 9-6), **Key Bantola** (in-house, fixed 5-9pm ET) and **Marfil Ganelo**
+(in-house, flexible). All three carry `Contract Type = New VA Contract` on the payroll sheet despite
+being in-house, which is exactly why they landed here. See
+[the in-house policy](../policies/in-house-team-hours.md).
 
 | VA | Client | Email |
 |---|---|---|
@@ -38,10 +47,10 @@ list: he is in-house on a fixed 9-6, so he never needs a schedule row. Note his 
 | Jonelyn Infante | E. Essien | jonelyninfante.stampstaff@gmail.com |
 | Kathreen Grace Briones | V. Markarian | kathreenbr.gvaco@gmail.com |
 | Kenneth (Ken) Pongco | S. Mcnamer | kenneth.stampstaff@gmail.com |
-| Key Bantola | K. Stampini | keyverlybantola@gmail.com |
+| ~~Key Bantola~~ | ~~K. Stampini~~ | **REMOVED 2026-09-08: in-house, fixed 5-9pm ET** |
 | Kyrie Tayactac | M. Crigler | kyrie.stampstaff@gmail.com |
 | MARENZO V OLORGA | C. Royse | renzo.stampstaff@gmail.com |
-| Marfil Ganelo | project | marf.ganelo@gmail.com |
+| ~~Marfil Ganelo~~ | ~~project~~ | **REMOVED 2026-09-08: in-house, flexible hours** |
 | Mary Rose Palacios | A. Prado | maryrose.stampstaff@gmail.com |
 | Nebjie Concepcion - 10 hrs | T. Ryan - 10hrs | ben.stampinigroup@gmail.com |
 | Ronelyn Joyce Ponce | V. Markarian | joyce@markarianrealty.com |
@@ -49,9 +58,9 @@ list: he is in-house on a fixed 9-6, so he never needs a schedule row. Note his 
 | Viktor Jose Esperacion | S. Miller | viktor.stampstaff@gmail.com |
 | Wenielyn Tingchuy | C. Lecroix | wenielyn.stampstaff@gmail.com |
 
-**Two of these still have `K. Stampini` or `project` as their client** (Key Bantola, Marfil Ganelo).
-The same question was asked of Benjomin and the answer was that he is in-house, so these two may well
-be too. **Ask before chasing them.**
+**All 19 of these are genuinely placed with a client**, so every one of them needs a schedule row.
+The people whose client column read `K. Stampini` or `project` have all been resolved as in-house
+and moved to section 3.
 
 ## 2. Filled the form, but under a different email - 6 people. Do NOT chase these
 
@@ -70,21 +79,28 @@ the join cannot see the submission. The fix is to make one of the two match, not
 **Osaimi Hassan's is worth a look on its own**: the form was submitted under
 `mike@markarianrealty.com`, which is a client-side address, not the VA's.
 
-## 3. In-house staff - 5 people. Probably should NOT be on this list at all
+## 3. In-house staff - 8 people. Correctly absent, do not chase
 
-Coaches and the COO, whose client column reads `K. Stampini` because they work for Stamp Staff
-itself. Their hours do not need splitting across clients, so a schedule form arguably does not apply.
+Stamp Staff's own people. Their hours are never split across clients, so the schedule form does not
+apply to them at all. **Settled by Ailynn on 2026-09-08**; full detail and the three schedules are in
+[policies/in-house-team-hours.md](../policies/in-house-team-hours.md).
 
-| Person | Position | Email |
-|---|---|---|
-| Eydie Ann Embuscado Lugay | Coach | annfpg@gmail.com |
-| Janet Mangrobang | Coach | janet2.gvaco@gmail.com |
-| Katherine Barin | COO | katherineba.gvaco@gmail.com |
-| Rafael Reyes | Coach | rafael.gvaco@gmail.com |
-| Marmil Olorga | **VA** | shainaolarga.stampstaff@gmail.com |
+| Person | Schedule | Contract Type on payroll | Email |
+|---|---|---|---|
+| Eydie Ann Embuscado Lugay | Flexi 9am-8pm ET | `In house` | annfpg@gmail.com |
+| Katherine Barin | Flexi 9am-8pm ET | `In house` | katherineba.gvaco@gmail.com |
+| Janet Mangrobang | Flexi 9am-8pm ET | `In house` | janet2.gvaco@gmail.com |
+| Marfil Ganelo | Flexi | ⚠️ `New VA Contract` | marf.ganelo@gmail.com |
+| Rafael Reyes | Fixed 9-6 | `In house` | rafael.gvaco@gmail.com |
+| Marmil Olorga | Fixed 9-6 | `In house` | shainaolarga.stampstaff@gmail.com |
+| Benjomin Kristian Reyes | Fixed 9-6 | ⚠️ `New VA Contract` | benjkris.stampstaff@gmail.com |
+| Key Bantola | Fixed 5-9pm ET | ⚠️ `New VA Contract` | keyverlybantola@gmail.com |
 
-**Marmil Olorga is the odd one**: contract type `In house` but position `VA`. Worth deciding which
-she is, because it changes whether she needs a form row.
+**⚠️ Three of the eight are mislabelled on the payroll sheet** as `New VA Contract`. Correct those
+cells, or nothing downstream can tell they are in-house.
+
+**⚠️ Marfil Ganelo is NOT Marmil Olorga.** Different people, different schedules, adjacent on any
+alphabetical list.
 
 ## 4. Backpay-only rows - 2 people. Nothing to schedule
 
