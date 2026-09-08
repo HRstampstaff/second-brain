@@ -76,18 +76,22 @@ const DAY = { sunday: 0, monday: 1, tuesday: 2, wednesday: 3, thursday: 4, frida
 // If it ever grows past ~15 people or starts churning, move it to a read of
 // the Payroll Main tab instead.
 //
-// ptoHoursPerDay: what one approved PTO day is worth. NOT KNOWN for anyone
-// yet, so PTO for these people is flagged rather than guessed. Fill a number
-// in here the moment Ailynn rules on it and the flag stops firing.
+// ptoHoursPerDay: what one approved PTO day is worth.
+// Ailynn, 2026-09-08: "for regular in house 8". A half day arrives from
+// BambooHR as amount 0.5 and is multiplied out below, so 8 gives 4 hours
+// for a half day with no second number needed.
+// Key Bantola is deliberately still null: she works a 4-hour evening shift
+// and is not "regular in house", so 8 would overpay her PTO by double. Her
+// PTO stays counted in days and flagged until that number is given.
 const IN_HOUSE_CLIENT = 'IN HOUSE';
 const IN_HOUSE = {
-  'annfpg@gmail.com':                  { name: 'Eydie Ann Embuscado Lugay', schedule: 'flexi 9am-8pm ET', ptoHoursPerDay: null },
-  'katherineba.gvaco@gmail.com':       { name: 'Katherine Barin',           schedule: 'flexi 9am-8pm ET', ptoHoursPerDay: null },
-  'janet2.gvaco@gmail.com':            { name: 'Janet Mangrobang',          schedule: 'flexi 9am-8pm ET', ptoHoursPerDay: null },
-  'marf.ganelo@gmail.com':             { name: 'Marfil Ganelo',             schedule: 'flexi',            ptoHoursPerDay: null },
-  'rafael.gvaco@gmail.com':            { name: 'Rafael Reyes',              schedule: 'fixed 9-6',        ptoHoursPerDay: null },
-  'shainaolarga.stampstaff@gmail.com': { name: 'Marmil Olorga',             schedule: 'fixed 9-6',        ptoHoursPerDay: null },
-  'benjkris.stampstaff@gmail.com':     { name: 'Benjomin Kristian Reyes',   schedule: 'fixed 9-6',        ptoHoursPerDay: null },
+  'annfpg@gmail.com':                  { name: 'Eydie Ann Embuscado Lugay', schedule: 'flexi 9am-8pm ET', ptoHoursPerDay: 8 },
+  'katherineba.gvaco@gmail.com':       { name: 'Katherine Barin',           schedule: 'flexi 9am-8pm ET', ptoHoursPerDay: 8 },
+  'janet2.gvaco@gmail.com':            { name: 'Janet Mangrobang',          schedule: 'flexi 9am-8pm ET', ptoHoursPerDay: 8 },
+  'marf.ganelo@gmail.com':             { name: 'Marfil Ganelo',             schedule: 'flexi',            ptoHoursPerDay: 8 },
+  'rafael.gvaco@gmail.com':            { name: 'Rafael Reyes',              schedule: 'fixed 9-6',        ptoHoursPerDay: 8 },
+  'shainaolarga.stampstaff@gmail.com': { name: 'Marmil Olorga',             schedule: 'fixed 9-6',        ptoHoursPerDay: 8 },
+  'benjkris.stampstaff@gmail.com':     { name: 'Benjomin Kristian Reyes',   schedule: 'fixed 9-6',        ptoHoursPerDay: 8 },
   'keyverlybantola@gmail.com':         { name: 'Key Bantola',               schedule: 'fixed 5-9pm ET',   ptoHoursPerDay: null }
 };
 

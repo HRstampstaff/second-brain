@@ -51,6 +51,21 @@ for Key looks wrong that is the first thing to check rather than the hours.
 **Assumed Eastern** for the 9-6 and confirmed Eastern for Key. The 9-6 was not stated with a
 timezone; confirm before it reaches a person.
 
+## What an approved PTO day is worth
+
+**Ailynn, 2026-09-08: "for regular in house 8", and a half day is 0.5.**
+
+So a full PTO day pays **8 hours** and a half day pays **4**. BambooHR already reports a half day as
+`amount: 0.5`, so the 8 is multiplied out and no second number is needed.
+
+**This covers the seven on the flexi and 9-6 schedules.** Note it is 8 rather than the 9 hours a
+9-to-6 spans, so the hour is presumably lunch.
+
+**⛔ It does NOT cover Key Bantola**, who works a four-hour evening shift and is not "regular in
+house". Paying her PTO at 8 would be double. **Her number has not been given**, so her PTO is counted
+in days and left at zero hours, and raises `in-house-pto-needs-a-rule` on every run until somebody
+sets it.
+
 ## What follows from this
 
 **None of these eight are placed with a client, so their hours are never split by client.** On the
