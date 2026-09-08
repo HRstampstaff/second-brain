@@ -62,6 +62,35 @@ const COL = {
 
 const DAY = { sunday: 0, monday: 1, tuesday: 2, wednesday: 3, thursday: 4, friday: 5, saturday: 6 };
 
+// ------------------------------------------------------ in-house staff
+// Stamp Staff's own people. They are never placed with a client, so their
+// hours are totalled straight and never split, and they will never appear in
+// the Form Responses tab. Source of truth for this list, and the only place
+// to change it: policies/in-house-team-hours.md
+//
+// Why a list here rather than reading the payroll sheet: it is eight people
+// who rarely change, and the payroll sheet's own `Contract Type` column
+// identifies only five of them (Benjomin, Key and Marfil are mislabelled
+// `New VA Contract`). This list CANNOT rot silently - anyone in BambooHR who
+// is neither here nor in Form Responses already raises `no-schedule-row`.
+// If it ever grows past ~15 people or starts churning, move it to a read of
+// the Payroll Main tab instead.
+//
+// ptoHoursPerDay: what one approved PTO day is worth. NOT KNOWN for anyone
+// yet, so PTO for these people is flagged rather than guessed. Fill a number
+// in here the moment Ailynn rules on it and the flag stops firing.
+const IN_HOUSE_CLIENT = 'IN HOUSE';
+const IN_HOUSE = {
+  'annfpg@gmail.com':                  { name: 'Eydie Ann Embuscado Lugay', schedule: 'flexi 9am-8pm ET', ptoHoursPerDay: null },
+  'katherineba.gvaco@gmail.com':       { name: 'Katherine Barin',           schedule: 'flexi 9am-8pm ET', ptoHoursPerDay: null },
+  'janet2.gvaco@gmail.com':            { name: 'Janet Mangrobang',          schedule: 'flexi 9am-8pm ET', ptoHoursPerDay: null },
+  'marf.ganelo@gmail.com':             { name: 'Marfil Ganelo',             schedule: 'flexi',            ptoHoursPerDay: null },
+  'rafael.gvaco@gmail.com':            { name: 'Rafael Reyes',              schedule: 'fixed 9-6',        ptoHoursPerDay: null },
+  'shainaolarga.stampstaff@gmail.com': { name: 'Marmil Olorga',             schedule: 'fixed 9-6',        ptoHoursPerDay: null },
+  'benjkris.stampstaff@gmail.com':     { name: 'Benjomin Kristian Reyes',   schedule: 'fixed 9-6',        ptoHoursPerDay: null },
+  'keyverlybantola@gmail.com':         { name: 'Key Bantola',               schedule: 'fixed 5-9pm ET',   ptoHoursPerDay: null }
+};
+
 function parseDays(text) {
   if (!text) return [];
   return String(text).toLowerCase().split(/[,;/&]+|\band\b/)
@@ -169,7 +198,7 @@ function bucket(email, fullName, client) {
   const key = email + '||' + client;
   if (!totals[key]) {
     totals[key] = {
-      email: email, fullName: fullName, client: client,
+      email: email, fullName: fullName, client: client, inHouse: false,
       workedHours: 0, workedHoursApproved: 0, ptoHours: 0, punches: 0, ptoDays: 0
     };
   }
@@ -192,11 +221,24 @@ for (const entry of timesheet) {
     flag('no-email-for-employee', 'employeeId ' + id + ' (' + (nameById[id] || 'unknown') + ')');
     continue;
   }
-  const sched = schedules[email];
-  if (!sched) { flag('no-schedule-row', email + ' (employeeId ' + id + ')'); continue; }
-
   const d = new Date(entry.start);
   if (d.toISOString().slice(0, 10) !== entry.date) utcDateMismatches++;
+
+  // In-house staff are totalled straight. No schedule lookup, no client
+  // matching, and no flag: charging their hours to a client is wrong by
+  // definition, not a gap to be filled.
+  if (IN_HOUSE[email]) {
+    const t = bucket(email, IN_HOUSE[email].name, IN_HOUSE_CLIENT);
+    t.inHouse = true;
+    const h = Number(entry.hours) || 0;
+    t.workedHours += h;
+    if (entry.approved) t.workedHoursApproved += h;
+    t.punches++;
+    continue;
+  }
+
+  const sched = schedules[email];
+  if (!sched) { flag('no-schedule-row', email + ' (employeeId ' + id + ')'); continue; }
 
   // entry.date is the authoritative work date, so read the weekday from it
   // rather than from the timestamp: a UTC/local mix-up cannot then silently
@@ -243,10 +285,33 @@ for (const req of pto) {
     flag('pto-no-email-for-employee', 'employeeId ' + id + ' (' + (req.name || '?') + ')');
     continue;
   }
+  const dates = req.dates || {};
+
+  // In-house PTO. What a PTO day is WORTH for these people is not decided
+  // (a 5-9pm shift is plainly 4 hours; a flexi day has no fixed length at
+  // all), so days are counted and hours are left at zero rather than
+  // invented. Filling ptoHoursPerDay in the IN_HOUSE map turns this on.
+  if (IN_HOUSE[email]) {
+    const ih = IN_HOUSE[email];
+    const t = bucket(email, ih.name, IN_HOUSE_CLIENT);
+    t.inHouse = true;
+    for (const date of Object.keys(dates)) {
+      const amt = Number(dates[date]) || 0;
+      t.ptoDays += amt;
+      if (ih.ptoHoursPerDay !== null && ih.ptoHoursPerDay !== undefined) {
+        t.ptoHours += ih.ptoHoursPerDay * amt;
+      } else {
+        flag('in-house-pto-needs-a-rule',
+          email + ' ' + date + ': ' + amt + ' day approved PTO, schedule "' + ih.schedule +
+          '", hours not set. Counted as days only.');
+      }
+    }
+    continue;
+  }
+
   const sched = schedules[email];
   if (!sched) { flag('pto-no-schedule-row', email + ' (' + (req.name || '?') + ')'); continue; }
 
-  const dates = req.dates || {};
   for (const date of Object.keys(dates)) {
     const dayAmount = Number(dates[date]) || 0;      // 1 = full day, 0.5 = half
     const p = date.split('-').map(Number);
@@ -281,6 +346,7 @@ const rows = Object.keys(totals).map(k => totals[k]).map(r => ({
   email: r.email,
   fullName: r.fullName,
   client: r.client,
+  inHouse: r.inHouse,
   punches: r.punches,
   workedHours: round2(r.workedHours),
   workedHoursApproved: round2(r.workedHoursApproved),
@@ -315,6 +381,8 @@ return {
     directoryEmployees: (directory.employees || []).length,
     sheetRows: sheetRows.length,
     schedulesBuilt: Object.keys(schedules).length,
+    inHouseListed: Object.keys(IN_HOUSE).length,
+    inHouseSeenInPeriod: rows.filter(r => r.inHouse).length,
     utcDateMismatches: utcDateMismatches,
     timestampReading: utcDateMismatches > 0
       ? 'start/end carry a real UTC offset - times were converted'

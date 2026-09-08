@@ -195,19 +195,28 @@ They are Stamp Staff's own people, not placed with a client, so **their hours ar
 client and they will never appear in the Form Responses tab.** See
 [policies/in-house-team-hours.md](../../../policies/in-house-team-hours.md).
 
-**The join step currently gets this wrong.** It flags them `no-schedule-row` and drops their punches,
-because it treats every employee as client-placed. Correct behaviour is to total their hours straight
-with no day-of-week or time-of-day matching at all.
+**Handled as of 2026-09-08.** The join carries an `IN_HOUSE` map keyed by work email. Those punches
+are totalled straight into a single `IN HOUSE` client bucket, with no schedule lookup, no
+day-of-week or time-of-day matching, and no `no-schedule-row` flag.
 
-**The obstacle is that the Zap cannot currently tell who is in-house.** That fact lives in the
-`Contract Type` column of the payroll sheet's **Payroll Main** tab (`In house`), and the Zap reads
-only the **Form Responses** tab. Three ways to fix it, none chosen yet:
+**Why a list in the code and not a read of the payroll sheet.** This reverses the earlier
+recommendation in this file, deliberately. Keying off the payroll sheet's `Contract Type` column was
+the obvious answer and it is wrong: **that column identifies only five of the eight.** Benjomin
+Kristian Reyes, Key Bantola and Marfil Ganelo all read `New VA Contract` despite being in-house.
+Checked 2026-09-08 against the real Payroll Main tab: the client column (`K. Stampini` or `project`)
+does identify all eight, and no VA carries Stampini as a second or third client, but that is a
+coincidence of the current data rather than a field anybody maintains for the purpose.
 
-1. Read Payroll Main as a fifth data source and key off `Contract Type`.
-2. Keep a short list of in-house emails in the Code step. Simple, but goes stale silently.
-3. Have in-house staff submit a form row with a reserved client value. Cheapest, but relies on people.
+**The list cannot rot silently, which was the objection to it.** Anyone in BambooHR who is neither in
+the list nor in Form Responses already raises `no-schedule-row`, so a new coach shows up as a flag
+rather than as silence. **If it ever grows past about fifteen people or starts churning, move it to a
+read of Payroll Main.**
 
-**Do not silently pick one.** It decides whether a coach's hours can ever be mis-billed to a client.
+**PTO for in-house staff is counted in DAYS and left at zero HOURS**, and each one raises
+`in-house-pto-needs-a-rule`. What a PTO day is worth is genuinely undecided: a 5-9pm shift is plainly
+four hours, a 9-6 could be eight or nine depending on lunch, and a flexi day has no fixed length at
+all. **Filling `ptoHoursPerDay` in the `IN_HOUSE` map is what turns this on**, one number per person,
+and the flag stops firing by itself.
 
 ## Step 8, the join: written 2026-09-07, first live run same day
 
