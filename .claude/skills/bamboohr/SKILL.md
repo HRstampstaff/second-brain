@@ -279,7 +279,18 @@ makes the review actually happen.
 **Step 8 needs `periodStart` and `periodEnd` added back to its Input Data**, mapped to step 2. They
 were removed when the Code step stopped fetching BambooHR itself, and the `Cutoff` column needs them.
 
-**Not built:** the Google Sheets step itself, and the destination tab.
+**The destination, created by Ailynn 2026-09-08:** a separate spreadsheet, **"Payroll Automation
+Output"**, id `1_jLgIlNhRkC_WUqLFc0QYBNqJXyLtOPZRTXsU1fjPOo`, tab `Sheet1`, owned by
+humanresources@stampstaff.com and **private, no link sharing** (unlike the payroll sheet itself).
+Header row already in place, matching the `col*` fields in order.
+
+**⚠️ It was originally named "Stamp Staff Payroll", one space away from the real "StampStaff
+Payroll".** Renamed to "Payroll Automation Output" the same day, because Zapier's Google Sheets step
+picks the spreadsheet from a dropdown of names and two near-identical entries is exactly how an
+automation writes into the live payroll sheet by mistake. **Do not name anything near this
+"payroll" again.**
+
+**Not built:** the Google Sheets step itself.
 
 ## Account and access — proven 2026-09-02
 
