@@ -126,13 +126,28 @@ function parseTime(text) {
 // time, not a real roster, so it is flagged and excluded rather than totalled.
 const MAX_SHIFT_MIN = 12 * 60;
 
+// Form Responses timestamps are M/D/YYYY H:MM:SS, US order (confirmed: the
+// form was created 2026-09-01 and its earliest rows read "9/1/2026").
+//
+// ⛔ These MUST be compared as dates, never as text. "9/10/2026" sorts BEFORE
+// "9/2/2026" as a string, so a resubmission on the 10th would lose to a stale
+// row from the 2nd and the old schedule would silently win. Caught 2026-09-08,
+// two days before it would have started happening.
+let unparsedStamps = 0;
+function parseStamp(text) {
+  const m = String(text || '').trim()
+    .match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})[ ,]+(\d{1,2}):(\d{2})(?::(\d{2}))?/);
+  if (!m) { if (String(text || '').trim()) unparsedStamps++; return 0; }
+  return Date.UTC(+m[3], +m[1] - 1, +m[2], +m[4], +m[5], +(m[6] || 0));
+}
+
 // ------------------------------------------------------ build schedules
 // One schedule per VA email, taken from that VA's MOST RECENT submission.
 const schedules = {};
 for (const row of sheetRows) {
   const email = String(row[COL.email] || '').trim().toLowerCase();
   if (!email) continue;
-  const stamp = String(row[COL.timestamp] || '');
+  const stamp = parseStamp(row[COL.timestamp]);
   if (schedules[email] && schedules[email].stamp >= stamp) continue;
 
   const blocks = [];
@@ -385,6 +400,7 @@ return {
     directoryEmployees: (directory.employees || []).length,
     sheetRows: sheetRows.length,
     schedulesBuilt: Object.keys(schedules).length,
+    unparsedStamps: unparsedStamps,
     inHouseListed: Object.keys(IN_HOUSE).length,
     inHouseSeenInPeriod: rows.filter(r => r.inHouse).length,
     utcDateMismatches: utcDateMismatches,
