@@ -17,9 +17,19 @@ row and chasing them is a mistake: see
 **"Stamp Staff Schedule"**, in humanresources@stampstaff.com's Drive, created 2026-09-01.
 File id `1-O-_BTj0lkekSrWxCc1BPeQj9x2Ur1wMsP2wq1B3aIg`.
 
-**⛔ Do NOT paste the `/edit` link into the message.** That is the link Drive returns, and it lets the
-recipient change the form itself. **The responder link comes from the form's own Send button** and
-normally looks like `https://docs.google.com/forms/d/e/1FAIpQLSc.../viewform`.
+**The responder link, confirmed by Ailynn 2026-09-08. This is the one that goes to VAs:**
+
+```
+https://docs.google.com/forms/d/e/1FAIpQLSe1DSteSdpK7i7ziKbsvxYpy292X_5YsURQQ6TvPO_HhOlAmw/viewform
+```
+
+**⛔ Do NOT paste the `/edit` link into the message.** That is the link Drive returns for the form,
+and it lets the recipient change the form itself.
+
+**⛔ And do NOT paste the payroll spreadsheet link.** That happened once while this was being set up.
+The sheet holds every person's rate, net pay, bank name and personal email, and was at the time
+shared as anyone-with-the-link-can-**edit**. Sending it to VAs would publish the whole payroll to
+each other.
 
 ## The message
 
