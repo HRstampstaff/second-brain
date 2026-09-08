@@ -58,8 +58,11 @@ timezone; confirm before it reaches a person.
 So a full PTO day pays **8 hours** and a half day pays **4**. BambooHR already reports a half day as
 `amount: 0.5`, so the 8 is multiplied out and no second number is needed.
 
-**This covers the seven on the flexi and 9-6 schedules.** Note it is 8 rather than the 9 hours a
-9-to-6 spans, so the hour is presumably lunch.
+**This covers the seven on the flexi and 9-6 schedules.**
+
+**The 8 is deliberate and is NOT a rounding of the 9 hours a 9-to-6 spans. Lunch is unpaid**,
+confirmed by Ailynn 2026-09-08. So a 9-to-6 person is paid 8 hours, not 9. **Do not "fix" this to 9**
+on the reasoning that the span is nine hours: that would overpay three people on every PTO day.
 
 **⛔ Key Bantola is 4, not 8.** Set by Ailynn on 2026-09-08, matching her four-hour evening shift.
 She is not "regular in house", and **moving her to 8 would pay her PTO at double**. If anyone ever
