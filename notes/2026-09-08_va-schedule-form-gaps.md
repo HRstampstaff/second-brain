@@ -18,11 +18,15 @@ hours to a client if that VA has a row in Form Responses, matched on email. See
 **The 35 unmatched are four different problems, not one.** Chasing all 35 would waste time on 13 of
 them.
 
-## 1. Genuinely no form submission - 22 people, and this is the chase list
+## 1. Genuinely no form submission - 21 people, and this is the chase list
+
+**Revised 2026-09-08 after Ailynn's ruling on in-house staff.** Benjomin Kristian Reyes came off this
+list: he is in-house on a fixed 9-6, so he never needs a schedule row. Note his payroll row says
+`Contract Type = New VA Contract`, which is wrong and is why he landed here.
 
 | VA | Client | Email |
 |---|---|---|
-| BENJOMIN KRISTIAN REYES | K. Stampini | benjkris.stampstaff@gmail.com |
+| ~~BENJOMIN KRISTIAN REYES~~ | ~~K. Stampini~~ | **REMOVED 2026-09-08: in-house, see [policy](../policies/in-house-team-hours.md)** |
 | Brey Aldrich (Adi) Saratan | G. Taylor | aldrich.stampstaff@gmail.com |
 | Chavie Karleen Tan | Jose Ochoa | chaviet.stampstaff@gmail.com |
 | Diego Aguila | N. Field | diegoa.stampstaff@gmail.com |
@@ -45,9 +49,9 @@ them.
 | Viktor Jose Esperacion | S. Miller | viktor.stampstaff@gmail.com |
 | Wenielyn Tingchuy | C. Lecroix | wenielyn.stampstaff@gmail.com |
 
-**Three of these have `K. Stampini` or `project` as their client** (Benjomin Kristian Reyes, Key
-Bantola, Marfil Ganelo). That may mean internal work rather than a client placement, in which case
-they belong in section 3 instead. Not resolved.
+**Two of these still have `K. Stampini` or `project` as their client** (Key Bantola, Marfil Ganelo).
+The same question was asked of Benjomin and the answer was that he is in-house, so these two may well
+be too. **Ask before chasing them.**
 
 ## 2. Filled the form, but under a different email - 6 people. Do NOT chase these
 
