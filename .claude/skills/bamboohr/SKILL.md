@@ -184,7 +184,30 @@ totals are NOT fit for payroll until that is fixed.
 it looks like. Do not build a payroll rule on it until that is settled.
 
 **What unblocks the most, and it is not a code change:** every active VA needs a current row in the
-Form Responses tab. 335 unattributed punches is a large share of the period.
+Form Responses tab. 335 unattributed punches is a large share of the period. The real chase list,
+worked out from the Payroll Main tab on 2026-09-08, is 22 people, not 335 punches or 35 rows:
+[notes/2026-09-08_va-schedule-form-gaps.md](../../../notes/2026-09-08_va-schedule-form-gaps.md).
+
+## ⛔ In-house staff are a separate case and the join does not handle them yet
+
+**Ailynn, 2026-09-08: Ann, Kate and Janet work flexible hours between 9:00am and 8:00pm Eastern.**
+They are Stamp Staff's own people, not placed with a client, so **their hours are never split by
+client and they will never appear in the Form Responses tab.** See
+[policies/in-house-team-hours.md](../../../policies/in-house-team-hours.md).
+
+**The join step currently gets this wrong.** It flags them `no-schedule-row` and drops their punches,
+because it treats every employee as client-placed. Correct behaviour is to total their hours straight
+with no day-of-week or time-of-day matching at all.
+
+**The obstacle is that the Zap cannot currently tell who is in-house.** That fact lives in the
+`Contract Type` column of the payroll sheet's **Payroll Main** tab (`In house`), and the Zap reads
+only the **Form Responses** tab. Three ways to fix it, none chosen yet:
+
+1. Read Payroll Main as a fifth data source and key off `Contract Type`.
+2. Keep a short list of in-house emails in the Code step. Simple, but goes stale silently.
+3. Have in-house staff submit a form row with a reserved client value. Cheapest, but relies on people.
+
+**Do not silently pick one.** It decides whether a coach's hours can ever be mis-billed to a client.
 
 ## Step 8, the join: written 2026-09-07, first live run same day
 
