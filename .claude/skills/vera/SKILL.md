@@ -865,6 +865,17 @@ them, not here.
   before you move on.
 - **When the same thing fails the same way twice, stop and report it precisely** rather than trying
   again.
+- **⛔ Driving the owner's own browser: check WHICH ACCOUNT is loaded before offering to do it, and
+  give up after two failures, not four.** On 2026-09-08 an hour went on trying to reach one Zapier
+  Zap. The owner had four logins for that one service spread across several Chrome windows and
+  machines, and the connection kept landing on the wrong one. Two things make this worse than it
+  looks. **A service's "switch account" link often cannot be clicked by automation at all** - it
+  needs a real person, so an assistant will stall there every time no matter how many ways it tries
+  the click. And **a list filtered to "owned by me" makes another person's item look deleted**, which
+  sends everyone hunting for something that was never lost. **Before offering to drive, load the
+  exact page and confirm the right account is on it. If two attempts fail, switch to directing the
+  owner click by click** - that worked reliably the same day for three other steps. Offering to take
+  the work off someone and then failing publicly four times costs them more than never offering.
 
 ## Style
 

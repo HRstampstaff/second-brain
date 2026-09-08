@@ -106,6 +106,31 @@ worst of both, because they diverge within a week and nobody can say which is ri
 | Writes are failing or reverting | Somebody has the sheet open | Write when nobody is in it, or write elsewhere |
 | Two versions of the truth exist | The same data lives in the hub and in a sheet | Pick one. Half a migration is worse than none |
 
+## ⛔ On a big sheet, the connector's read is NOT trustworthy. Ask for a CSV
+
+**Proven the hard way 2026-09-08 on Stamp Staff's payroll sheet (1.5MB, ~25 tabs).** Two separate
+failures, both silent, and one of them nearly produced a wrong list of people to chase:
+
+1. **`read_file_content` truncates, and it truncates MID-TAB.** The payroll tab came back as 69 rows
+   ending at a surname beginning with L. It looked like a complete tab. There is no marker saying
+   the data was cut, and the tool's own note about large files is easy to skim past.
+2. **Column positions shift between rows.** Rows in the same tab had 37 or 38 cells depending on
+   merged cells above, so reading "the email column" by position landed on a dollar amount for ten
+   people. They then looked like they had no email at all.
+
+**So for any sheet of real size: ask the owner to export the ONE tab you need as CSV** (File →
+Download → Comma-separated values downloads the active tab only) and work from that. It takes them
+fifteen seconds and it is complete, positionally stable, and parseable.
+
+**The tell that you have been truncated:** an alphabetical list that stops partway through the
+alphabet, or a row count that is suspiciously round or suspiciously short. **Check the last row of
+anything you read before you build on it.**
+
+**A tab that looks identical to another tab may be a stale copy.** The same sheet held three tabs
+with the payroll layout; two were duplicates showing a pay period more than a year old, and only one
+was the current cutoff. **Read the period or date column before deciding which tab is the live one**,
+rather than taking the first match.
+
 ## ⛔ You can READ a Google Sheet. You cannot WRITE cells into one
 
 **Proven 2026-09-06, Cloud session.** The Google Drive connector reads a spreadsheet's contents fine
