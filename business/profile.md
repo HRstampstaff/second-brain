@@ -23,7 +23,7 @@ Ailynn 2026-09-09.
 | Term | Full-time | Part-time |
 |---|---|---|
 | 6 months (the minimum) | $1,997/month | $1,197/month |
-| 12 months | $1,897/month | **UNCONFIRMED, see below** |
+| 12 months | $1,897/month (see the note) | $1,097/month |
 
 The 6-month rates are the ones already written into the fiona and tessa skills and the service
 agreement template, so those files are correct and were not changed. Six months remains the shortest
@@ -32,11 +32,14 @@ term available, so "6-month minimum" is still true.
 The live site advertises the 12-month rates as floors: full-time "save 40 hours a week, price starts
 at $1,897" and part-time "save 20 hours a week, price starts at $1,097".
 
-**ONE THING IS STILL OPEN: the 12-month part-time rate.** Ailynn said "$1197 for part time minimum 12
-months", but the live site says part-time starts at $1,097, and $1,197 is already the 6-month rate,
-which would mean part-time gets no discount for doubling the commitment while full-time gets $100 off.
-The likely answer is $1,097, matching the site and the pattern, but that is inference and has not been
-confirmed. Do not quote a 12-month part-time price until she says which.
+**12-month part-time is settled at $1,097**, confirmed by Ailynn 2026-09-09 and matching the site.
+
+**ONE NUMBER IS STILL OPEN: the 12-month full-time rate.** It is recorded here as $1,897 because two
+independent sources say so, the live site ("price starts at $1,897") and Ailynn herself earlier the
+same day ("1897 is for FT for minimum 12 months"). But in her final answer she wrote "$1197 for FT and
+$1097 for pt", and $1,197 for full-time cannot be right: it is below the 6-month part-time rate, for
+double the hours. Read as a slip for $1,897, which is what the other two sources say. **Not treated as
+confirmed. Get a yes before quoting a 12-month full-time price.**
 
 ## Voice and send permission
 
