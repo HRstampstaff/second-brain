@@ -40,11 +40,20 @@ series to fix an instance.
 ## Standing work
 
 Kept current by the routine **"Post Admin Tasks blocks on the coaches' calendars"** in the Routines
-table, weekly on Mondays inside the daily pass. It creates internal blocks only and sends nothing, so
-it is not prepare-and-wait.
+table, running **daily** inside the daily pass. Ailynn set it daily rather than weekly on 2026-09-09:
+meetings get booked daily and sometimes same-day, so a weekly sweep would leave a new meeting with no
+block after it. The routine is idempotent, so most days it finds nothing and that is the expected
+result.
+
+It creates internal blocks only and sends nothing, so it is not prepare-and-wait.
 
 ## Open
 
-**Rafael's calendar is read-only to the connector**, so none of his blocks exist and his 6 Oct
-`POST TLVA` was not renamed. He needs to grant humanresources@stampstaff.com "Make changes to events".
-Until then his gaps are reported to Ailynn rather than fixed.
+**Ann's 7:00am daily `Post TLVA` series keeps its name** until Ailynn says otherwise. That is the only
+thing outstanding.
+
+Rafael's calendar was read-only when this was first built and is no longer: he shared it on
+2026-09-09, and his 18 blocks went in the same day. Worth knowing for next time - **his calendar does
+not appear in `list_calendars` even now that it is shared.** It has to be reached by naming
+`rafael.gvaco@gmail.com` directly, the same quirk that already applies to Ailynn's own calendar. A
+missing calendar in that list is not evidence that it is unshared.
