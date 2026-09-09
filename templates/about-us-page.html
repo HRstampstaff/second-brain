@@ -99,7 +99,7 @@
   }
   .ss-figures-grid {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     max-width: 1080px;
     margin: 0 auto;
   }
@@ -322,10 +322,9 @@
   @media (max-width: 860px) {
     .ss-hero-inner { grid-template-columns: minmax(0, 1fr); gap: 32px; padding: 48px 24px 52px; }
     .ss-postmark { justify-self: start; }
-    .ss-figures-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .ss-figure { border-left: 0; border-top: 1px solid #35322A; }
-    .ss-figure:nth-child(-n+2) { border-top: 0; }
-    .ss-figure:nth-child(even) { border-left: 1px solid #35322A; }
+    .ss-figures-grid { grid-template-columns: minmax(0, 1fr); }
+    .ss-figure { border-left: 0; border-top: 1px solid #35322A; padding: 24px; }
+    .ss-figure:first-child { border-top: 0; }
     .ss-caps { grid-template-columns: minmax(0, 1fr); }
     .ss-fit { grid-template-columns: minmax(0, 1fr); }
     .ss-wrap { padding: 0 24px; }
@@ -377,16 +376,12 @@
         <div class="ss-figure-label">Founded</div>
       </div>
       <div class="ss-figure">
-        <div class="ss-figure-num">100+</div>
-        <div class="ss-figure-label">Virtual assistants</div>
+        <div class="ss-figure-num">1,000+</div>
+        <div class="ss-figure-label">Businesses helped</div>
       </div>
       <div class="ss-figure">
-        <div class="ss-figure-num">90</div>
-        <div class="ss-figure-label">Active clients</div>
-      </div>
-      <div class="ss-figure">
-        <div class="ss-figure-num">3</div>
-        <div class="ss-figure-label">Mentor coaches</div>
+        <div class="ss-figure-num">2,000+</div>
+        <div class="ss-figure-label">Virtual assistants placed</div>
       </div>
     </div>
   </section>
@@ -406,8 +401,8 @@
         </p>
         <p>
           So they started Stamp Staff with a couple of virtual assistants supporting Kristin's
-          coaching members. Today the team is more than 100 virtual assistants strong, supporting
-          90 active clients across the United States.
+          coaching members. Since then we have placed more than 2,000 virtual assistants and helped
+          over 1,000 businesses across the United States get their time back.
         </p>
         <p>
           We still own and run the company ourselves, from Islamorada in the Florida Keys.
