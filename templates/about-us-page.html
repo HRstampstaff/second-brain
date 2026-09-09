@@ -90,7 +90,12 @@
     color: var(--ink-soft);
     max-width: 46ch;
   }
-  .ss-postmark { flex-shrink: 0; transform: rotate(-7deg); }
+  .ss-postmark {
+    display: block;
+    width: 170px;
+    height: auto;
+    max-width: 100%;
+  }
 
   /* ---------- Figures ---------- */
   .ss-figures {
@@ -356,20 +361,10 @@
         </p>
       </div>
 
-      <svg class="ss-postmark" width="150" height="150" viewBox="0 0 150 150" role="img" aria-label="Stamp Staff, established 2017, Islamorada Florida">
-        <circle cx="75" cy="75" r="70" fill="none" stroke="#14130E" stroke-width="2"/>
-        <circle cx="75" cy="75" r="62" fill="none" stroke="#14130E" stroke-width="1"/>
-        <circle cx="75" cy="75" r="46" fill="#E7C12C" stroke="none"/>
-        <text x="75" y="60" text-anchor="middle" fill="#14130E"
-              font-family="Bitter, Georgia, serif" font-size="15" font-weight="800" letter-spacing="1">STAMP</text>
-        <text x="75" y="78" text-anchor="middle" fill="#14130E"
-              font-family="Bitter, Georgia, serif" font-size="15" font-weight="800" letter-spacing="1">STAFF</text>
-        <line x1="42" y1="86" x2="108" y2="86" stroke="#14130E" stroke-width="1.5"/>
-        <text x="75" y="99" text-anchor="middle" fill="#14130E"
-              font-family="Karla, Arial, sans-serif" font-size="9" font-weight="700" letter-spacing="1.6">EST. 2017</text>
-        <text x="75" y="130" text-anchor="middle" fill="#14130E"
-              font-family="Karla, Arial, sans-serif" font-size="8.5" font-weight="700" letter-spacing="1.4">ISLAMORADA FL</text>
-      </svg>
+      <img class="ss-postmark"
+           src="https://assets.cdn.filesafe.space/XB4cB5PwDJkjVwmChScZ/media/6996051fdde40b374ff043ec.png"
+           alt="Stamp Staff, established 2017, Islamorada Florida"
+           width="170" height="170">
     </div>
     <div class="ss-perf ss-perf-bottom"></div>
   </header>
