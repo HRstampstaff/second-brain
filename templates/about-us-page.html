@@ -1,0 +1,596 @@
+<title>About Stamp Staff</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@400;600;800&family=Karla:wght@400;500;700&display=swap">
+<style>
+  .ss-about {
+    /* Palette sampled from the Stamp Staff logo */
+    --gold: #E7C12C;
+    --gold-deep: #8A6D10;
+    --ink: #14130E;
+    --ink-soft: #4A463A;
+    --ink-faint: #7C7666;
+    --cream: #F2EFE0;
+    --cream-deep: #E5E3CA;
+    --paper: #FBF9F0;
+    --rule: #D8D3BC;
+
+    background: var(--cream);
+    color: var(--ink-soft);
+    font-family: "Karla", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 17px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .ss-about *,
+  .ss-about *::before,
+  .ss-about *::after { box-sizing: border-box; }
+
+  .ss-about h1,
+  .ss-about h2,
+  .ss-about h3 {
+    font-family: "Bitter", Georgia, "Times New Roman", serif;
+    color: var(--ink);
+    text-wrap: balance;
+    margin: 0;
+  }
+
+  .ss-about p { margin: 0; }
+
+  .ss-wrap {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 28px;
+  }
+
+  .ss-measure { max-width: 62ch; }
+
+  .ss-eyebrow {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold-deep);
+  }
+
+  /* ---------- Perforated stamp edge ---------- */
+  .ss-perf {
+    height: 16px;
+    background-image: radial-gradient(circle at 8px 8px, var(--cream) 7px, transparent 7.5px);
+    background-size: 22px 22px;
+    background-position: center;
+    background-repeat: repeat-x;
+  }
+  .ss-perf-top { background-color: var(--paper); }
+  .ss-perf-bottom { background-color: var(--paper); }
+
+  /* ---------- Hero ---------- */
+  .ss-hero {
+    background: var(--paper);
+    border-top: 3px solid var(--ink);
+  }
+  .ss-hero-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 48px;
+    align-items: center;
+    padding: 64px 28px 68px;
+    max-width: 1080px;
+    margin: 0 auto;
+  }
+  .ss-hero h1 {
+    font-size: clamp(2.5rem, 6.2vw, 4rem);
+    font-weight: 800;
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    margin: 14px 0 20px;
+  }
+  .ss-lede {
+    font-size: clamp(1.0625rem, 2vw, 1.25rem);
+    line-height: 1.6;
+    color: var(--ink-soft);
+    max-width: 46ch;
+  }
+  .ss-postmark { flex-shrink: 0; transform: rotate(-7deg); }
+
+  /* ---------- Figures ---------- */
+  .ss-figures {
+    background: var(--ink);
+    color: var(--cream-deep);
+  }
+  .ss-figures-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    max-width: 1080px;
+    margin: 0 auto;
+  }
+  .ss-figure {
+    padding: 30px 28px;
+    border-left: 1px solid #35322A;
+  }
+  .ss-figure:first-child { border-left: 0; }
+  .ss-figure-num {
+    font-family: "Bitter", Georgia, serif;
+    font-size: 2.25rem;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--gold);
+    font-variant-numeric: tabular-nums;
+  }
+  .ss-figure-label {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #A9A390;
+    margin-top: 10px;
+  }
+
+  /* ---------- Sections ---------- */
+  .ss-section { padding: 64px 0; }
+  .ss-section + .ss-section { border-top: 1px solid var(--rule); }
+  .ss-section h2 {
+    font-size: clamp(1.6rem, 3.4vw, 2.1rem);
+    font-weight: 800;
+    letter-spacing: -0.015em;
+    line-height: 1.15;
+    margin: 12px 0 24px;
+  }
+  .ss-body > * + * { margin-top: 20px; }
+
+  /* ---------- Process steps ---------- */
+  .ss-steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 26px;
+    counter-reset: ss-step;
+  }
+  .ss-step {
+    display: grid;
+    grid-template-columns: 42px minmax(0, 1fr);
+    gap: 20px;
+    align-items: start;
+  }
+  .ss-step-num {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: var(--gold);
+    font-family: "Bitter", Georgia, serif;
+    font-weight: 800;
+    font-size: 1.0625rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-variant-numeric: tabular-nums;
+  }
+  .ss-step h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .ss-step p { max-width: 58ch; }
+
+  /* ---------- Capability list ---------- */
+  .ss-caps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px 40px;
+  }
+  .ss-caps li {
+    display: flex;
+    gap: 12px;
+    align-items: baseline;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--rule);
+    color: var(--ink);
+    font-size: 1rem;
+  }
+  .ss-caps li::before {
+    content: "";
+    flex: 0 0 auto;
+    width: 7px;
+    height: 7px;
+    background: var(--gold);
+    transform: translateY(-2px);
+  }
+
+  /* ---------- Pull quote ---------- */
+  .ss-quote {
+    border-left: 4px solid var(--gold);
+    background: var(--cream-deep);
+    padding: 26px 30px;
+    margin: 0;
+  }
+  .ss-quote p {
+    font-family: "Bitter", Georgia, serif;
+    font-size: clamp(1.0625rem, 2.2vw, 1.3125rem);
+    line-height: 1.5;
+    color: var(--ink);
+  }
+  .ss-quote footer {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold-deep);
+    margin-top: 14px;
+  }
+
+  /* ---------- Fit panels ---------- */
+  .ss-fit {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+  }
+  .ss-panel {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 28px 30px 30px;
+  }
+  .ss-panel-yes { border-top: 4px solid var(--gold); }
+  .ss-panel-no { border-top: 4px solid var(--ink-faint); }
+  .ss-panel h3 {
+    font-size: 1.1875rem;
+    font-weight: 700;
+    margin-bottom: 18px;
+  }
+  .ss-panel ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 14px;
+  }
+  .ss-panel li {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    padding-left: 22px;
+    position: relative;
+  }
+  .ss-panel-yes li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 9px;
+    width: 10px;
+    height: 2px;
+    background: var(--gold-deep);
+  }
+  .ss-panel-no li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 9px;
+    width: 10px;
+    height: 2px;
+    background: var(--ink-faint);
+  }
+
+  /* ---------- Closing ---------- */
+  .ss-close {
+    background: var(--ink);
+    color: var(--cream-deep);
+    padding: 64px 0 58px;
+  }
+  .ss-close h2 {
+    color: var(--paper);
+    font-size: clamp(1.6rem, 3.4vw, 2.1rem);
+    font-weight: 800;
+    margin: 12px 0 22px;
+    max-width: 22ch;
+  }
+  .ss-close .ss-eyebrow { color: var(--gold); }
+  .ss-close p { color: #B9B3A0; max-width: 54ch; }
+  .ss-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 32px;
+  }
+  .ss-btn {
+    display: inline-block;
+    padding: 15px 28px;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: 2px solid var(--gold);
+  }
+  .ss-btn-primary { background: var(--gold); color: var(--ink); }
+  .ss-btn-ghost { background: transparent; color: var(--gold); }
+  .ss-btn:hover { opacity: 0.88; }
+  .ss-btn:focus-visible { outline: 3px solid var(--paper); outline-offset: 3px; }
+
+  .ss-address {
+    margin-top: 40px;
+    padding-top: 22px;
+    border-top: 1px solid #35322A;
+    font-size: 14px;
+    line-height: 1.8;
+    color: #A9A390;
+  }
+  .ss-address a { color: var(--gold); text-decoration: none; }
+  .ss-address a:hover { text-decoration: underline; }
+
+  @media (max-width: 860px) {
+    .ss-hero-inner { grid-template-columns: minmax(0, 1fr); gap: 32px; padding: 48px 24px 52px; }
+    .ss-postmark { justify-self: start; }
+    .ss-figures-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .ss-figure { border-left: 0; border-top: 1px solid #35322A; }
+    .ss-figure:nth-child(-n+2) { border-top: 0; }
+    .ss-figure:nth-child(even) { border-left: 1px solid #35322A; }
+    .ss-caps { grid-template-columns: minmax(0, 1fr); }
+    .ss-fit { grid-template-columns: minmax(0, 1fr); }
+    .ss-wrap { padding: 0 24px; }
+    .ss-section { padding: 48px 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ss-about * { animation: none !important; transition: none !important; }
+  }
+</style>
+
+<div class="ss-about">
+
+  <!-- ============ HERO ============ -->
+  <header class="ss-hero">
+    <div class="ss-hero-inner">
+      <div>
+        <div class="ss-eyebrow">Est. 2017 &middot; Islamorada, Florida</div>
+        <h1>About Stamp Staff</h1>
+        <p class="ss-lede">
+          We match growing US business owners with trained, long-term virtual assistants in the
+          Philippines, and we stay involved long after the placement is made.
+        </p>
+      </div>
+
+      <svg class="ss-postmark" width="150" height="150" viewBox="0 0 150 150" role="img" aria-label="Stamp Staff, established 2017, Islamorada Florida">
+        <circle cx="75" cy="75" r="70" fill="none" stroke="#14130E" stroke-width="2"/>
+        <circle cx="75" cy="75" r="62" fill="none" stroke="#14130E" stroke-width="1"/>
+        <circle cx="75" cy="75" r="46" fill="#E7C12C" stroke="none"/>
+        <text x="75" y="60" text-anchor="middle" fill="#14130E"
+              font-family="Bitter, Georgia, serif" font-size="15" font-weight="800" letter-spacing="1">STAMP</text>
+        <text x="75" y="78" text-anchor="middle" fill="#14130E"
+              font-family="Bitter, Georgia, serif" font-size="15" font-weight="800" letter-spacing="1">STAFF</text>
+        <line x1="42" y1="86" x2="108" y2="86" stroke="#14130E" stroke-width="1.5"/>
+        <text x="75" y="99" text-anchor="middle" fill="#14130E"
+              font-family="Karla, Arial, sans-serif" font-size="9" font-weight="700" letter-spacing="1.6">EST. 2017</text>
+        <text x="75" y="130" text-anchor="middle" fill="#14130E"
+              font-family="Karla, Arial, sans-serif" font-size="8.5" font-weight="700" letter-spacing="1.4">ISLAMORADA FL</text>
+      </svg>
+    </div>
+    <div class="ss-perf ss-perf-bottom"></div>
+  </header>
+
+  <!-- ============ FIGURES ============ -->
+  <section class="ss-figures" aria-label="Stamp Staff by the numbers">
+    <div class="ss-figures-grid">
+      <div class="ss-figure">
+        <div class="ss-figure-num">2017</div>
+        <div class="ss-figure-label">Founded</div>
+      </div>
+      <div class="ss-figure">
+        <div class="ss-figure-num">100+</div>
+        <div class="ss-figure-label">Virtual assistants</div>
+      </div>
+      <div class="ss-figure">
+        <div class="ss-figure-num">90</div>
+        <div class="ss-figure-label">Active clients</div>
+      </div>
+      <div class="ss-figure">
+        <div class="ss-figure-num">3</div>
+        <div class="ss-figure-label">Mentor coaches</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="ss-wrap">
+
+    <!-- ============ ORIGIN ============ -->
+    <section class="ss-section">
+      <div class="ss-eyebrow">Why we started</div>
+      <h2>It worked for our own business first</h2>
+      <div class="ss-body ss-measure">
+        <p>
+          Mark and Kristin Stampini had been hiring Filipino virtual assistants since 2009 to help
+          grow their own real estate business. It worked. By 2017 they could see the same thing
+          working for the realtors around them, who were doing far too much of their own admin and
+          had no affordable way to stop.
+        </p>
+        <p>
+          So they started Stamp Staff with a couple of virtual assistants supporting Kristin's
+          coaching members. Today the team is more than 100 virtual assistants strong, supporting
+          90 active clients across the United States.
+        </p>
+        <p>
+          We still own and run the company ourselves, from Islamorada in the Florida Keys.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============ MISSION ============ -->
+    <section class="ss-section">
+      <div class="ss-eyebrow">Our mission</div>
+      <h2>It runs in both directions</h2>
+      <div class="ss-body ss-measure">
+        <p>
+          We exist to bridge the gap between unemployment in the Philippines and business owners
+          who need to grow. Those are the same problem seen from two sides.
+        </p>
+        <p>
+          Our clients get back the hours they were spending on work somebody else could do better.
+          Our virtual assistants get free training, a career they can build on, and long-term work
+          from home, which in the Philippines is rare and worth protecting.
+        </p>
+        <p>
+          We take both halves seriously. It is why we screen as hard as we do, and why we keep
+          coaching people long after they are placed.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============ PROCESS ============ -->
+    <section class="ss-section">
+      <div class="ss-eyebrow">How it works</div>
+      <h2>Five steps from first call to first week</h2>
+      <ol class="ss-steps">
+        <li class="ss-step">
+          <div class="ss-step-num" aria-hidden="true">1</div>
+          <div>
+            <h3>A discovery call, free</h3>
+            <p>
+              We learn what you do, where your time actually goes, and what you would hand over
+              first if you could hand over anything.
+            </p>
+          </div>
+        </li>
+        <li class="ss-step">
+          <div class="ss-step-num" aria-hidden="true">2</div>
+          <div>
+            <h3>We present the top three candidates</h3>
+            <p>
+              Pre-vetted, and screened against the work you described rather than pulled off a
+              r&eacute;sum&eacute; pile.
+            </p>
+          </div>
+        </li>
+        <li class="ss-step">
+          <div class="ss-step-num" aria-hidden="true">3</div>
+          <div>
+            <h3>You interview, and you choose</h3>
+            <p>
+              You pick the person you want to work with. We do not assign anybody to you.
+            </p>
+          </div>
+        </li>
+        <li class="ss-step">
+          <div class="ss-step-num" aria-hidden="true">4</div>
+          <div>
+            <h3>Agreement and onboarding</h3>
+            <p>
+              The Service Agreement is signed by e-signature, then we run an onboarding call with
+              you and your new assistant together so the first week is not guesswork.
+            </p>
+          </div>
+        </li>
+        <li class="ss-step">
+          <div class="ss-step-num" aria-hidden="true">5</div>
+          <div>
+            <h3>Then the part most agencies skip</h3>
+            <p>
+              Daily check-ins, performance reporting, and a mentor coach assigned to your assistant
+              for as long as they work with you.
+            </p>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ============ CAPABILITIES ============ -->
+    <section class="ss-section">
+      <div class="ss-eyebrow">What they do</div>
+      <h2>The work our assistants take off your desk</h2>
+      <ul class="ss-caps">
+        <li>Executive and administrative assistance</li>
+        <li>Calendar and email management</li>
+        <li>Database and CRM management</li>
+        <li>Lead management and appointment setting</li>
+        <li>Customer service and client communication</li>
+        <li>Marketing and social media support</li>
+        <li>Graphic design and video editing</li>
+        <li>Operations and project coordination</li>
+      </ul>
+      <div class="ss-body ss-measure" style="margin-top: 26px;">
+        <p>
+          Part-time and full-time placements are both available. Our assistants work across US time
+          zones and adjust to your schedule rather than the other way around.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============ AFTER PLACEMENT ============ -->
+    <section class="ss-section">
+      <div class="ss-eyebrow">After placement</div>
+      <h2>Recruiting is where most agencies stop</h2>
+      <div class="ss-body">
+        <blockquote class="ss-quote ss-measure">
+          <p>
+            Unlike traditional staffing companies, we provide support beyond recruitment. We
+            carefully screen candidates, coordinate interviews, assist with onboarding, and continue
+            to support both the client and the virtual assistant after placement.
+          </p>
+          <footer>Stamp Staff</footer>
+        </blockquote>
+        <div class="ss-measure ss-body">
+          <p>
+            In practice that means three mentor coaches supporting our assistants, daily check-ins
+            through onboarding, and performance reporting you actually receive.
+          </p>
+          <p>
+            It also means a replacement guarantee. If the person we placed turns out not to be the
+            right fit, we replace them at no additional placement cost, for the life of your
+            relationship with us.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FIT ============ -->
+    <section class="ss-section">
+      <div class="ss-eyebrow">Fit</div>
+      <h2>We would rather be honest about this up front</h2>
+      <div class="ss-fit">
+        <div class="ss-panel ss-panel-yes">
+          <h3>Where we do our best work</h3>
+          <ul>
+            <li>Established, growing business owners, typically at $250,000 or more in annual revenue</li>
+            <li>Owners who are overwhelmed by day-to-day work and genuinely ready to delegate it</li>
+            <li>People willing to invest real time in onboarding and communication</li>
+            <li>Anyone who wants a long-term relationship with a remote team member, not a transaction</li>
+          </ul>
+        </div>
+        <div class="ss-panel ss-panel-no">
+          <h3>Where we are probably not the right fit</h3>
+          <ul>
+            <li>Businesses looking for the cheapest short-term freelancer</li>
+            <li>Owners expecting immediate results without providing training or direction</li>
+            <li>Anyone unwilling to communicate consistently</li>
+            <li>Businesses not yet stable enough to commit to ongoing staffing support. We ask for a six-month minimum</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ============ CLOSING ============ -->
+  <section class="ss-close">
+    <div class="ss-wrap">
+      <div class="ss-eyebrow">What we are aiming for</div>
+      <h2>The sentence we want you to be able to say</h2>
+      <blockquote class="ss-quote ss-measure" style="background: #201E17; border-left-color: #E7C12C;">
+        <p style="color: #F2EFE0;">
+          Stamp Staff gave me a reliable, well-trained virtual professional who truly understands my
+          business, takes ownership of their work, and gives me back the time to focus on growth.
+        </p>
+      </blockquote>
+      <div class="ss-actions">
+        <a class="ss-btn ss-btn-primary" href="https://www.stampstaff.com/">Schedule a discovery call</a>
+        <a class="ss-btn ss-btn-ghost" href="tel:+15612212292">Call 561-221-2292</a>
+      </div>
+      <div class="ss-address">
+        Stamp Staff &middot; 84745 Old Hwy #15, Islamorada, FL 33036<br>
+        <a href="tel:+15612212292">561-221-2292</a> &middot;
+        <a href="https://www.stampstaff.com/">stampstaff.com</a>
+      </div>
+    </div>
+  </section>
+
+</div>
