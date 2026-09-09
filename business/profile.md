@@ -16,7 +16,7 @@ Stamp Staff is a virtual assistant staffing agency: it recruits, trains, vets, a
 
 Process: free discovery call, then Stamp Staff presents the top 3 pre-vetted candidates, the client interviews and picks one, a Service Agreement is signed by e-signature, an onboarding call is scheduled (with the assigned VA and client), and then ongoing management begins with daily check-ins, performance reports, a dedicated Client Success Manager, and coach mentoring for the VA.
 
-Pricing is a monthly subscription on a 6-month minimum contract, with a replacement guarantee if a VA is a poor fit. ADVERTISED PRICES ON THE LIVE SITE, confirmed by Ailynn 2026-09-09 from a screenshot of stampstaff.com: full-time is "save 40 hours a week, price starts at $1,897" and part-time is "save 20 hours a week, price starts at $1,097". Note "starts at": these are floors, not fixed rates. These SUPERSEDE the $1,197 part-time / $1,997 full-time figures given in the August interview, which are still written into the fiona and tessa skills and the service agreement template as of this date and have NOT been changed there, because an existing client pays the rate on their signed agreement rather than the advertised one.
+Pricing is a monthly subscription on a 6-month minimum contract, with a replacement guarantee if a VA is a poor fit. ADVERTISED PRICES ON THE LIVE SITE, confirmed by Ailynn 2026-09-09 from a screenshot of stampstaff.com: full-time is "save 40 hours a week, price starts at $1,897" and part-time is "save 20 hours a week, price starts at $1,097". Note "starts at": these are floors, not fixed rates. These SUPERSEDE the $1,197 part-time / $1,997 full-time figures given in the August interview, which are still written into the fiona and tessa skills and the service agreement template as of this date and have NOT been changed there, because an existing client pays the rate on their signed agreement rather than the advertised one. THEN AILYNN ADDED, same day: "1897 is for FT for minimum 12 months and $1197 for part time minimum 12 months". So the advertised prices are TERM-DEPENDENT and tied to a 12-MONTH commitment. TWO CONFLICTS ARE OPEN AND UNRESOLVED: (a) she says part-time is $1,197 at 12 months, but the live site screenshot says part-time "starts at $1,097"; (b) everything else in this repo says the minimum is 6 MONTHS, including policies/billing-cycle.md which called the FT 6-month agreement authoritative on 2026-09-03, and the signed master contract itself. It is NOT established whether a 6-month option still exists at a higher rate, or whether 6 months is gone. Do not quote a price or a term to anyone until she answers.
 
 ## Voice and send permission
 
@@ -24,7 +24,7 @@ Tone: warm but professional. The AI team may NOT send anything to a client or VA
 
 ## Standing rules clients ask about
 
-- 6-month minimum contract
+- Contract minimum: RECORDED AS 6 MONTHS, but contested as of 2026-09-09, when Ailynn said the $1,897 FT and $1,197 PT prices are "for minimum 12 months". Unresolved, see the pricing paragraph above.
 - Replacement guarantee if a VA isn't a good fit
 - Monthly service fee can increase over time; increases are communicated in advance (for example, a past increase of $0.50/hour)
 - Late fee of $100 applies if payment isn't received by the 2nd of the month (due the 1st); service is suspended by the 3rd and the contract is canceled by the 7th if still unpaid (per the signed Service Agreement, confirmed 2026-09-03)
