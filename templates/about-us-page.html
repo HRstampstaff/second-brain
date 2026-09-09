@@ -213,6 +213,25 @@
     line-height: 1.5;
     color: var(--ink);
   }
+  .ss-quote-dark {
+    position: relative;
+    background: #201E17;
+    border-left-color: var(--gold);
+    padding-top: 34px;
+  }
+  .ss-quote-dark p { color: var(--cream); }
+  .ss-quote-mark {
+    position: absolute;
+    top: 6px;
+    left: 26px;
+    font-family: "Bitter", Georgia, serif;
+    font-size: 4rem;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--gold);
+    opacity: 0.28;
+  }
+
   .ss-quote footer {
     font-size: 12px;
     font-weight: 700;
@@ -567,10 +586,12 @@
     <div class="ss-wrap">
       <div class="ss-eyebrow">What we are aiming for</div>
       <h2>The sentence we want you to be able to say</h2>
-      <blockquote class="ss-quote ss-measure" style="background: #201E17; border-left-color: #E7C12C;">
-        <p style="color: #F2EFE0;">
-          Stamp Staff gave me a reliable, well-trained virtual professional who truly understands my
-          business, takes ownership of their work, and gives me back the time to focus on growth.
+      <blockquote class="ss-quote ss-quote-dark ss-measure">
+        <span class="ss-quote-mark" aria-hidden="true">&ldquo;</span>
+        <p>
+          &ldquo;Stamp Staff gave me a reliable, well-trained virtual professional who truly
+          understands my business, takes ownership of their work, and gives me back the time to
+          focus on growth.&rdquo;
         </p>
       </blockquote>
       <div class="ss-actions">
