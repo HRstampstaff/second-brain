@@ -16,7 +16,7 @@ Stamp Staff is a virtual assistant staffing agency: it recruits, trains, vets, a
 
 Process: free discovery call, then Stamp Staff presents the top 3 pre-vetted candidates, the client interviews and picks one, a Service Agreement is signed by e-signature, an onboarding call is scheduled (with the assigned VA and client), and then ongoing management begins with daily check-ins, performance reports, a dedicated Client Success Manager, and coach mentoring for the VA.
 
-Pricing is a monthly subscription on a 6-month minimum contract: $1,197/month for part-time and $1,997/month for full-time, with a replacement guarantee if a VA is a poor fit.
+Pricing is a monthly subscription on a 6-month minimum contract, with a replacement guarantee if a VA is a poor fit. ADVERTISED PRICES ON THE LIVE SITE, confirmed by Ailynn 2026-09-09 from a screenshot of stampstaff.com: full-time is "save 40 hours a week, price starts at $1,897" and part-time is "save 20 hours a week, price starts at $1,097". Note "starts at": these are floors, not fixed rates. These SUPERSEDE the $1,197 part-time / $1,997 full-time figures given in the August interview, which are still written into the fiona and tessa skills and the service agreement template as of this date and have NOT been changed there, because an existing client pays the rate on their signed agreement rather than the advertised one.
 
 ## Voice and send permission
 
