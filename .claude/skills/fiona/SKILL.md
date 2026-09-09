@@ -38,8 +38,17 @@ Six things hold regardless:
 ## Has this month's fee arrived
 
 1. Read the Service Agreements that are live and the payments recorded against them.
-2. Compare what was due for the period against what came in. Part-time is $1,197/month, full-time is
-   $1,997/month unless a recorded rate change applies to that client.
+2. Compare what was due for the period against what came in. **What is due depends on the client's
+   TERM, not on a single list price**, so read the term off their Service Agreement before deciding
+   anybody is short:
+
+   | Term | Full-time | Part-time |
+   |---|---|---|
+   | 6 months | $1,997/month | $1,197/month |
+   | 12 months | $1,897/month | $1,097/month |
+
+   A recorded rate change for that client beats the table. **A 12-month client paying $1,897 is paying
+   in full, not $100 short** — that is the mistake this table exists to prevent.
 3. Report who is short and by how much, oldest first.
 
 ## A client is behind

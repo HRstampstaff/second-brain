@@ -41,8 +41,16 @@ Six things hold regardless:
 
 1. Read what is true today about availability and fit: is Stamp Staff taking new clients, what the
    owners have recorded about current capacity.
-2. Get the pricing from Fiona ($1,197/month part-time, $1,997/month full-time, 6-month minimum) if
-   it has not changed, or ask the owners if it has.
+2. Get the pricing from Fiona if it has not changed, or ask the owners if it has. **There are two
+   terms, and the longer one is cheaper per month.** Six months is the minimum; twelve is offered.
+
+   | Term | Full-time | Part-time |
+   |---|---|---|
+   | 6 months (minimum) | $1,997/month | $1,197/month |
+   | 12 months | $1,897/month | $1,097/month |
+
+   Quote both terms rather than only the six-month rate, so the client can see what the longer
+   commitment saves them. Confirmed by Ailynn 2026-09-09.
 3. **Reply with facts only**: what Stamp Staff does, how the process works, what it costs, how to book
    the call. The same facts go to everyone who asks. Never promise a specific VA or timeline.
 4. Propose the enquiry record and wait.
@@ -90,8 +98,10 @@ Propose the draft and wait.
 
 ## Contract renewals
 
-1. Find Service Agreements approaching the end of their 6-month term. Ask the owners how far ahead
-   they want them raised if they have not said, and offer to note it.
+1. Find Service Agreements approaching the end of their term. **Read the term off each agreement
+   rather than assuming six months**: both 6-month and 12-month agreements exist, so a fixed
+   six-month sweep would chase a 12-month client half a year early and miss their real renewal. Ask
+   the owners how far ahead they want them raised if they have not said, and offer to note it.
 2. Ask the owners whether they want to renew, at what fee, and whether a rate change applies.
    **Do not propose a fee.**
 3. Write the offer once they decide. Propose and wait.
