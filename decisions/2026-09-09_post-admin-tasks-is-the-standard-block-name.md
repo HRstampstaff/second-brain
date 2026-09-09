@@ -37,23 +37,48 @@ a time. The parent series was never touched.
 Renaming a single occurrence by its instance id only affects that occurrence. Never rename the parent
 series to fix an instance.
 
+## An Onboarding gets THREE blocks, not one
+
+Ailynn's design, 2026-09-09. The three process docs map to three moments, so each one sits on its own
+block at the moment it is used, rather than all three piling onto one.
+
+| Block | When | Doc |
+|---|---|---|
+| `Pre Onboarding Prep` | 15 min ending as the call starts | New Client Pre-Onboarding Procedure (plus: make your copy of the checklist now) |
+| `Onboarding Checklist` | exactly the same slot as the call | Onboarding_Checklist — make a copy |
+| `Post Admin Tasks — Onboarding` | 15 min after the call ends | Post Onboarding Call Internal Process, then the usual admin |
+
+The middle one deliberately sits on top of the real meeting and is set to **free** rather than busy,
+so the coach does not read as double-booked to anyone checking their calendar.
+
+## ⛔ The docs never go on the onboarding event itself
+
+**Onboarding calls have the client as an attendee.** Rafael's 10 Sep call has
+`cthompson@nationpointfs.com` on it. All three docs are internal, one is titled "Post Onboarding Call
+**Internal** Process", and editing an event description also fires an update email to every attendee.
+Putting them there would expose internal process to a client and announce it in the same move.
+
+The general rule this is an instance of: **read the attendee list before editing any event.** A
+coach's calendar is not an internal space. Client-facing events sit on it beside internal blocks, and
+the description is the part the client reads.
+
 ## Standing work
 
-Kept current by the routine **"Post Admin Tasks blocks on the coaches' calendars"** in the Routines
-table, running **daily** inside the daily pass. Ailynn set it daily rather than weekly on 2026-09-09:
-meetings get booked daily and sometimes same-day, so a weekly sweep would leave a new meeting with no
-block after it. The routine is idempotent, so most days it finds nothing and that is the expected
-result.
+Kept current by the routine **"Post Admin Tasks and onboarding blocks on the coaches' calendars"** in
+the Routines table, running **daily** inside the daily pass. Ailynn set it daily rather than weekly on
+2026-09-09: meetings get booked daily and sometimes same-day, so a weekly sweep would leave a new
+meeting with no block. The routine is idempotent, so most days it finds nothing and that is the
+expected result.
 
 It creates internal blocks only and sends nothing, so it is not prepare-and-wait.
 
-## Open
+## Notes for next time
 
-**Ann's 7:00am daily `Post TLVA` series keeps its name** until Ailynn says otherwise. That is the only
-thing outstanding.
+**Rafael's calendar does not appear in `list_calendars` even now that it is shared.** It has to be
+reached by naming `rafael.gvaco@gmail.com` directly, the same quirk that applies to Ailynn's own
+calendar. A calendar missing from that list is not evidence it is unshared; the `accessRole` on a
+direct read is the only reliable test of whether a write will land.
 
-Rafael's calendar was read-only when this was first built and is no longer: he shared it on
-2026-09-09, and his 18 blocks went in the same day. Worth knowing for next time - **his calendar does
-not appear in `list_calendars` even now that it is shared.** It has to be reached by naming
-`rafael.gvaco@gmail.com` directly, the same quirk that already applies to Ailynn's own calendar. A
-missing calendar in that list is not evidence that it is unshared.
+**Renaming a recurring block:** pass the parent series id to rename every instance including future
+ones, or an instance id (`series_id` + `_` + UTC start) to rename just one occurrence. Ann's needed
+both, because she drags single instances of a daily series out to sit after meetings.
