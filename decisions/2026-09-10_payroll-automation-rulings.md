@@ -53,3 +53,18 @@ cannot be mistaken for a real figure.
 that `humanresources@stampstaff.com` was the account to open the Zap in.
 
 **Verified the same day, from Zapier's own account data:** that login is Mark Stampini's, workspace "Personal Account" (id 23593249), on **Pro 1500**: Professional, billed annually, 1,500 tasks a month, not a trial. It is not unlimited. **The original Payroll Zap is not in it**, so the Zap is being rebuilt there. The other Zapier logins found in the browsers that day ("Stamp", reached through humanresources@stampstaff.com) are on free trials and must not be built in.
+
+## 6. A Client Paid Holiday pays the hours BambooHR states: 8, not the VA's schedule
+
+**Decided later on 2026-09-10 by Ailynn: "8 hours only".**
+
+BambooHR records "Client Paid Holidays" in hours (`amount.unit: "hours"`, one date worth 8). The
+holiday pays **exactly those 8 hours**, even for a VA whose schedule is 9 hours a day. On a day the
+VA works for more than one client, the 8 hours are shared across those clients by their scheduled
+hours, so the total is still 8.
+
+**Scope, and what it does not cover:** this ruling is about hours-based holidays. **Ordinary PTO
+recorded in days** for a placed VA still follows the 2026-09-07 decision (each client gets the hours
+that client lost from the schedule), which can mean 9 hours for a 9-hour day. In-house staff are
+already 8 hours a PTO day (4 for Key Bantola). Whether a placed VA's ordinary PTO day should also be
+capped at 8 was not asked and is not decided.
