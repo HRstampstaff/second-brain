@@ -63,7 +63,13 @@ if (fmt(pullA) === today) {
   cutoffLabel = periodStart + ' to ' + periodEnd + ' (paid on the 5th)';
 }
 
+// The Revenue StampStaff tab the coach lookup reads: the pull date's month,
+// written the way Ailynn's recent tabs are named ("Aug 2026", "Sep 2026").
+const MONTHS_SHORT = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const revenueTab = MONTHS_SHORT[month] + ' ' + year;
+
 return {
+  revenueTab: revenueTab,
   isPullDay: periodStart ? 'true' : 'false',
   periodStart: periodStart,
   periodEnd: periodEnd,
