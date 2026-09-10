@@ -8,7 +8,9 @@ Set by Ailynn, 2026-09-01. Applies to BambooHR punches when calculating VA payro
   a late clock-out from the first client pushes the clock-in to the second client later too, that
   is not treated as an unexcused late. The VA is still made aware of it.
 - **No clock-out means unpaid.** If a VA forgot to clock out, that day's hours do not count as
-  paid.
+  paid. **The VA can file a dispute, and if it is accepted the day is paid on the next cutoff**
+  (Ailynn, 2026-09-10). The payroll pull does not pay the day itself. It marks the row so the
+  dispute can be matched later.
 - **Exception: shifts that cross midnight.** Some VAs (e.g. Matthew) work shifts that legitimately
   span midnight. Clocking out a few minutes after 12:00 AM is expected for these and is not
   treated as a missed clock-out under the rule above.
