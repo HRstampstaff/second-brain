@@ -56,6 +56,21 @@ sheetRows = sheetRows.map(r => (Array.isArray(r) ? r : Object.values(r)));
 const flags = [];
 const flag = (kind, detail) => flags.push({ kind, detail });
 
+// Cutoff window for PTO. BambooHR's time_off/requests returns every approved
+// request that OVERLAPS the period, with ALL of its dates attached, so a long
+// request touching the cutoff would otherwise be counted in full. Found on the
+// first full end-to-end run, 2026-09-10: VAs showed 8 PTO days / 72 hours on
+// top of a full schedule worked in the same 16-day cutoff.
+// Dates are YYYY-MM-DD strings, so plain string comparison orders them.
+const P_START = String(inputData.periodStart || '').trim();
+const P_END = String(inputData.periodEnd || '').trim();
+let ptoDatesOutsidePeriod = 0;
+function inPeriod(d) {
+  if (!P_START || !P_END) return true;   // no window supplied: count everything, and the diagnostics say so
+  if (d < P_START || d > P_END) { ptoDatesOutsidePeriod++; return false; }
+  return true;
+}
+
 // ------------------------------------------------- Form Responses layout
 // 0-indexed against the 22-column header, after the 2026-09-02 header rename.
 const COL = {
@@ -390,6 +405,7 @@ for (const req of pto) {
     const t = bucket(email, ih.name, IN_HOUSE_CLIENT);
     t.inHouse = true;
     for (const date of Object.keys(dates)) {
+      if (!inPeriod(date)) continue;
       const amt = Number(dates[date]) || 0;
       t.ptoDays += amt;
       if (ih.ptoHoursPerDay !== null && ih.ptoHoursPerDay !== undefined) {
@@ -407,6 +423,7 @@ for (const req of pto) {
   if (!sched) { flag('pto-no-schedule-row', email + ' (' + (req.name || '?') + ')'); continue; }
 
   for (const date of Object.keys(dates)) {
+    if (!inPeriod(date)) continue;
     const dayAmount = Number(dates[date]) || 0;      // 1 = full day, 0.5 = half
     const p = date.split('-').map(Number);
     const weekday = new Date(Date.UTC(p[0], p[1] - 1, p[2])).getUTCDay();
@@ -530,6 +547,8 @@ return {
     inHouseListed: Object.keys(IN_HOUSE).length,
     inHouseSeenInPeriod: rows.filter(r => r.inHouse).length,
     utcDateMismatches: utcDateMismatches,
+    ptoDatesOutsidePeriod: ptoDatesOutsidePeriod,
+    ptoWindow: P_START && P_END ? P_START + ' to ' + P_END : 'NOT SUPPLIED - all PTO dates counted',
     timestampReading: utcDateMismatches > 0
       ? 'start/end carry a real UTC offset - times were converted'
       : 'no mismatches: start/end are almost certainly already local time'
