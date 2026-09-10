@@ -13,7 +13,7 @@ don't guess.**
 
 ## Platform decision, 2026-09-02: building in Zapier, not n8n
 
-**⚠️ Corrected 2026-09-10:** Stamp Staff's paid Zapier plan is on **teamasst@gmail.com** (Ailynn). The claim below that it is Professional with unlimited Zaps was never verified, and Mark's separate Zapier account shows a 1,500-task plan. Confirm the tier before relying on task volume.
+**⚠️ Corrected and verified 2026-09-10:** Stamp Staff's paid Zapier plan is **Pro 1500** (Professional, billed annually, 1,500 tasks a month, **not unlimited**) on the Zapier login **teamasst@gmail.com**, which is Mark Stampini's, workspace "Personal Account", id 23593249. Read from Zapier's own account data, not assumed. The original Payroll Zap (378947092) is not in that account and is being rebuilt there. **Two other Zapier logins turn up in the browsers, both on free trials** ("Stamp", reached through humanresources@stampstaff.com): never build in those.
 
 **A partial workflow (schedule + date logic + both BambooHR calls + the Form Responses read) was
 built and proven live in n8n first, on n8n's 14-day free trial. That n8n workflow is being abandoned,
@@ -261,7 +261,7 @@ Full record: [decisions/2026-09-10_payroll-automation-rulings.md](../../../decis
 2. **Pending PTO is solved upstream: coaches are reminded to approve before the pull.** The "Approve leaves in BambooHR" calendar events already do this. **⚠️ They only work if they land BEFORE the pull, and nothing enforces that.** Checked against the real calendar 2026-09-10: Ann and Raf on Fri 9/11 before the Sat 9/12 pull, fine; **Kate's was moved to Mon 9/14 for birthday leave, two days AFTER the pull.** The 9/28 reminders precede the 9/29 pull. **Any time a reminder moves, check it against the pull date.** Those invites also still carried the stale "Sep 25 pay date" and "Sep 11 - 26" wording that policies/payroll-cutoff.md had corrected.
 3. **Two addresses for one VA: the Stamp Staff one wins.** `EMAIL_ALIASES` maps six VAs, and `canon()` runs on both the BambooHR directory and the form rows. Osaimi Hassan has no Stamp Staff address; his `gvaco` one stands in, unresolved.
 4. **`workedHoursApproved` is ignored** and removed from the output. The output sheet's `Approved hrs` column has to be deleted to match: 12 columns, not 13.
-5. **The paid Zapier plan is on teamasst@gmail.com.** Not yet verified: that the Payroll Zap lives in that account.
+5. **The paid Zapier plan is on teamasst@gmail.com** (Mark's login, Pro 1500, verified). The Payroll Zap was not in it, so it is being rebuilt there.
 
 ## The write-back, step 9
 

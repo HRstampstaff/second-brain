@@ -52,5 +52,4 @@ cannot be mistaken for a real figure.
 **That is the account holding Stamp Staff's paid Zapier plan.** It supersedes the 2026-09-08 guess
 that `humanresources@stampstaff.com` was the account to open the Zap in.
 
-**Still not verified:** that the Payroll Zap (`zapier.com/editor/378947092/draft`, owned by Kristin
-Stampini) lives in that account, and what the plan tier actually includes.
+**Verified the same day, from Zapier's own account data:** that login is Mark Stampini's, workspace "Personal Account" (id 23593249), on **Pro 1500**: Professional, billed annually, 1,500 tasks a month, not a trial. It is not unlimited. **The original Payroll Zap is not in it**, so the Zap is being rebuilt there. The other Zapier logins found in the browsers that day ("Stamp", reached through humanresources@stampstaff.com) are on free trials and must not be built in.
