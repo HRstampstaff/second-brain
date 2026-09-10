@@ -68,3 +68,21 @@ recorded in days** for a placed VA still follows the 2026-09-07 decision (each c
 that client lost from the schedule), which can mean 9 hours for a 9-hour day. In-house staff are
 already 8 hours a PTO day (4 for Key Bantola). Whether a placed VA's ordinary PTO day should also be
 capped at 8 was not asked and is not decided.
+
+## 7. A day-by-day timesheet tab, laid out like the coaches' cutoff sheet
+
+**Decided later on 2026-09-10 by Ailynn**, from a screenshot of the sheet the coaches already use
+(Coach, Client, Employee Number, Employee Name, Date, Schedule TimeIn/TimeOut, Actual TimeIn/TimeOut,
+Final Working Hours, Remarks):
+
+- **Where it goes:** a new tab in Payroll Automation Output, next to Automated Pull. The Zap does not
+  write into any sheet people edit by hand.
+- **Automated Pull keeps running.** Both tabs come from the same run: the detail tab is for coaches to
+  check, the totals tab is for payroll.
+- **Coach comes from the Revenue 2026 tracker, current month tab.** It is looked up per VA and client,
+  because one VA can have a different coach for each client.
+- **Final Working Hours** is the scheduled block, minus lateness past the 5-minute grace
+  (policies/va-clock-in-out-rules.md), **minus any minutes left early**. Time worked past the
+  scheduled end is not paid. These were read from the screenshot: a 3-minute-late start pays 4.00, a
+  7-minute-late start pays 3.88 with the remark "7mins LATE", and 7:00-11:55 on a 7-11 block pays 4.00.
+  **The early clock-out deduction was confirmed separately**, and it gets no grace.
