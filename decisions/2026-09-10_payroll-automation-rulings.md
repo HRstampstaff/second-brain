@@ -86,3 +86,11 @@ Final Working Hours, Remarks):
   scheduled end is not paid. These were read from the screenshot: a 3-minute-late start pays 4.00, a
   7-minute-late start pays 3.88 with the remark "7mins LATE", and 7:00-11:55 on a 7-11 block pays 4.00.
   **The early clock-out deduction was confirmed separately**, and it gets no grace.
+- **Lunch for placed VAs: 1 hour comes off any scheduled block of 9 hours or longer.** Shorter
+  blocks (4 hours, 2 hours) are paid in full. Chosen by Ailynn after seeing Emmanuel Abapo's row in
+  the coaches' day-by-day tab: scheduled 8:00 AM to 5:00 PM, clocked 7:52 to 5:03, paid 8.00. The
+  free-text lunch notes on the schedule form ("No lunch", "30-minute lunch") are **not** used.
+- **A day with no clock-out is paid 0**, with a remark. The VA can dispute it for the next cutoff
+  (policies/va-clock-in-out-rules.md).
+- **Times are shown in Eastern.** Not asked; read from the coaches' own tab. John Lloyd Gaza's form
+  says D. Brasel 6-10 AM Central, and the coaches' tab shows 7:00-11:00 AM.
