@@ -65,6 +65,10 @@ const flag = (kind, detail) => flags.push({ kind, detail });
 const P_START = String(inputData.periodStart || '').trim();
 const P_END = String(inputData.periodEnd || '').trim();
 let ptoDatesOutsidePeriod = 0;
+// Dates taken from requests whose amount is in HOURS, not days. BambooHR records
+// 'Client Paid Holidays' this way: one date whose value is 8 means 8 HOURS.
+// Reading that 8 as days produced 8 PTO days / 72 hours per VA on 2026-09-10.
+let ptoHoursUnitDates = 0;
 function inPeriod(d) {
   if (!P_START || !P_END) return true;   // no window supplied: count everything, and the diagnostics say so
   if (d < P_START || d > P_END) { ptoDatesOutsidePeriod++; return false; }
@@ -395,6 +399,11 @@ for (const req of pto) {
     continue;
   }
   const dates = req.dates || {};
+  const unit = String((req.amount && req.amount.unit) || 'days').toLowerCase();
+  if (unit !== 'days' && unit !== 'hours') {
+    flag('pto-unknown-unit', 'employeeId ' + id + ' request ' + req.id + ': unit "' + unit + '", skipped');
+    continue;
+  }
 
   // In-house PTO. What a PTO day is WORTH for these people is not decided
   // (a 5-9pm shift is plainly 4 hours; a flexi day has no fixed length at
@@ -407,6 +416,7 @@ for (const req of pto) {
     for (const date of Object.keys(dates)) {
       if (!inPeriod(date)) continue;
       const amt = Number(dates[date]) || 0;
+      if (unit === 'hours') { t.ptoDays += 1; t.ptoHours += amt; ptoHoursUnitDates++; continue; }
       t.ptoDays += amt;
       if (ih.ptoHoursPerDay !== null && ih.ptoHoursPerDay !== undefined) {
         t.ptoHours += ih.ptoHoursPerDay * amt;
@@ -435,12 +445,21 @@ for (const req of pto) {
     }
     if (candidates.length > 1) {
       flag('pto-split-across-clients',
-        email + ' ' + date + ': ' + candidates.map(c => c.client + ' ' + (c.hoursPerDay * dayAmount).toFixed(2) + 'h').join(', '));
+        email + ' ' + date + ': ' + candidates.map(c => c.client + ' ' + (unit === 'hours' ? dayAmount * c.hoursPerDay / (candidates.reduce((a, x) => a + x.hoursPerDay, 0) || 1) : c.hoursPerDay * dayAmount).toFixed(2) + 'h').join(', '));
     }
+    if (unit === 'hours') ptoHoursUnitDates++;
     for (const b of candidates) {
       const t = bucket(email, sched.fullName, b.client);
-      t.ptoHours += b.hoursPerDay * dayAmount;
-      t.ptoDays += dayAmount;
+      if (unit === 'hours') {
+        // dayAmount is already HOURS here. Shared across that day's clients by scheduled hours.
+        const totalSched = candidates.reduce((a, c) => a + c.hoursPerDay, 0) || 1;
+        const share = b.hoursPerDay / totalSched;
+        t.ptoHours += dayAmount * share;
+        t.ptoDays += share;
+      } else {
+        t.ptoHours += b.hoursPerDay * dayAmount;
+        t.ptoDays += dayAmount;
+      }
       // A schedule declared in a different timezone from the punches is not
       // handled; surface it rather than quietly assuming they match.
       if (b.tz && !/new[_ ]?york|est|edt|eastern/i.test(b.tz)) {
@@ -548,6 +567,7 @@ return {
     inHouseSeenInPeriod: rows.filter(r => r.inHouse).length,
     utcDateMismatches: utcDateMismatches,
     ptoDatesOutsidePeriod: ptoDatesOutsidePeriod,
+    ptoHoursUnitDates: ptoHoursUnitDates,
     ptoWindow: P_START && P_END ? P_START + ' to ' + P_END : 'NOT SUPPLIED - all PTO dates counted',
     timestampReading: utcDateMismatches > 0
       ? 'start/end carry a real UTC offset - times were converted'

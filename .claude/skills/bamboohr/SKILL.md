@@ -371,7 +371,7 @@ if (fmt(pullA) === today) {
 ## Endpoints proven live
 
 - **`GET /v1/time_off/requests?start=YYYY-MM-DD&end=YYYY-MM-DD&status=approved`** — approved PTO for
-  a date range. **Gives whole days off only**: `amount: {unit: "days", amount: "1"}`. No client, no
+  a date range. **⚠️ Corrected 2026-09-10: NOT whole days only.** Ordinary PTO comes as `amount: {unit: "days"}`, but **"Client Paid Holidays" come as `unit: "hours"`, and each date's value is then HOURS** (e.g. one date worth `"8"`). On the first full run the join read that 8 as 8 days and paid it at the VA's scheduled hours, so 14 VAs showed 8 PTO days / 72 hours (68 on an 8.5-hour day, 64 on a 4-hour block). In the Aug 26 - Sep 10 data, 17 of the first 18 requests were hours-based holidays. The join now reads `amount.unit` on every request. No client, no
   hours, no notes field populated. `type.name` is either "Paid Time Off" (generic) or "Client Paid
   Time Off" (still doesn't say *which* client) — confirmed on real data, 2026-09-02.
 - **`GET /v1/time_tracking/timesheet_entries?start=YYYY-MM-DD&end=YYYY-MM-DD`** — real clock
