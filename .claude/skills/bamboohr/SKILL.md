@@ -292,7 +292,7 @@ makes the review actually happen.
 were removed when the Code step stopped fetching BambooHR itself, and the `Cutoff` column needs them.
 
 **The destination, created by Ailynn 2026-09-08:** a separate spreadsheet, **"Payroll Automation
-Output"**, id `1_jLgIlNhRkC_WUqLFc0QYBNqJXyLtOPZRTXsU1fjPOo`, tab `Sheet1`, owned by
+Output"**, id `1_jLgIlNhRkC_WUqLFc0QYBNqJXyLtOPZRTXsU1fjPOo`, tab `Automated Pull`, owned by
 humanresources@stampstaff.com and **private, no link sharing** (unlike the payroll sheet itself).
 Header row already in place, matching the `col*` fields in order.
 
