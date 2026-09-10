@@ -92,6 +92,34 @@ const DAY = { sunday: 0, monday: 1, tuesday: 2, wednesday: 3, thursday: 4, frida
 // She is NOT "regular in house" and must never be moved to 8, which would
 // pay her PTO at double.
 const IN_HOUSE_CLIENT = 'IN HOUSE';
+
+// Ailynn, 2026-09-10: a punch that fits no scheduled window is held for a
+// person to assign. Never charged to a guessed client.
+// decisions/2026-09-10_payroll-automation-rulings.md
+const REVIEW_CLIENT = 'FOR REVIEW';
+
+// Ailynn, 2026-09-10: when one VA has two addresses, the Stamp Staff one
+// wins. Each group is one person; the first entry is the address used.
+// The join keys everybody by email, so both the BambooHR directory and the
+// Form Responses rows go through canon() and land on the same key whichever
+// address each system happens to hold.
+// Osaimi Hassan has NO Stamp Staff address; his payroll address stands in
+// until that is resolved.
+const EMAIL_ALIASES = [
+  ['emmanuel.stampstaff@gmail.com',     'emmanuel.abpo@gmail.com'],
+  ['june.stampstaff@gmail.com',         'annehilgaga15@gmail.com'],
+  ['nhorbert.stampstaff@gmail.com',     'enjeybalcera2025@gmail.com'],
+  ['princehaidee.stampstaff@gmail.com', 'phaideeramos@gmail.com'],
+  ['johngonzalo.stampstaff@gmail.com',  'rejohn.gonzalo@gmail.com'],
+  ['osaimi.gvaco@gmail.com',            'mike@markarianrealty.com']
+];
+const CANON = {};
+EMAIL_ALIASES.forEach(group => group.forEach(addr => { CANON[addr] = group[0]; }));
+// Whitespace is stripped too: a form row once held "myka. stampstaff@gmail.com".
+function canon(addr) {
+  const k = String(addr || '').replace(/\s+/g, '').toLowerCase();
+  return CANON[k] || k;
+}
 const IN_HOUSE = {
   'annfpg@gmail.com':                  { name: 'Eydie Ann Embuscado Lugay', schedule: 'flexi 9am-8pm ET', ptoHoursPerDay: 8 },
   'katherineba.gvaco@gmail.com':       { name: 'Katherine Barin',           schedule: 'flexi 9am-8pm ET', ptoHoursPerDay: 8 },
@@ -164,7 +192,7 @@ function parseStamp(text) {
 // One schedule per VA email, taken from that VA's MOST RECENT submission.
 const schedules = {};
 for (const row of sheetRows) {
-  const email = String(row[COL.email] || '').trim().toLowerCase();
+  const email = canon(row[COL.email]);
   if (!email) continue;
   const stamp = parseStamp(row[COL.timestamp]);
   if (schedules[email] && schedules[email].stamp >= stamp) continue;
@@ -252,7 +280,7 @@ for (const row of sheetRows) {
 const emailById = {};
 const nameById = {};
 for (const e of (directory.employees || [])) {
-  if (e.workEmail) emailById[String(e.id)] = String(e.workEmail).trim().toLowerCase();
+  if (e.workEmail) emailById[String(e.id)] = canon(e.workEmail);
   nameById[String(e.id)] = e.displayName || '';
 }
 
@@ -263,7 +291,7 @@ function bucket(email, fullName, client) {
   if (!totals[key]) {
     totals[key] = {
       email: email, fullName: fullName, client: client, inHouse: false,
-      workedHours: 0, workedHoursApproved: 0, ptoHours: 0, punches: 0, ptoDays: 0
+      workedHours: 0, ptoHours: 0, punches: 0, ptoDays: 0
     };
   }
   return totals[key];
@@ -296,7 +324,6 @@ for (const entry of timesheet) {
     t.inHouse = true;
     const h = Number(entry.hours) || 0;
     t.workedHours += h;
-    if (entry.approved) t.workedHoursApproved += h;
     t.punches++;
     continue;
   }
@@ -322,9 +349,13 @@ for (const entry of timesheet) {
         ? punchMin >= b.startMin && punchMin < b.endMin
         : punchMin >= b.startMin || punchMin < b.endMin));
     if (!chosen) {
-      chosen = candidates[0];
+      // Held for review, never charged to a guessed client (Ailynn, 2026-09-10).
+      const held = bucket(email, sched.fullName, REVIEW_CLIENT);
+      held.workedHours += Number(entry.hours) || 0;
+      held.punches++;
       flag('punch-outside-every-window',
-        email + ' ' + entry.date + ' ' + entry.start + ' -> assigned to ' + chosen.client + ' as first scheduled');
+        email + ' ' + entry.date + ' ' + entry.start + ' (' + entry.hours + 'h) held FOR REVIEW, no scheduled window fits');
+      continue;
     }
   } else {
     flag('punch-on-unscheduled-day', email + ' ' + entry.date + ' (' + entry.hours + 'h) not on any schedule');
@@ -334,7 +365,6 @@ for (const entry of timesheet) {
   const b = bucket(email, sched.fullName, chosen.client);
   const hrs = Number(entry.hours) || 0;
   b.workedHours += hrs;
-  if (entry.approved) b.workedHoursApproved += hrs;
   b.punches++;
 }
 
@@ -413,7 +443,6 @@ const rows = Object.keys(totals).map(k => totals[k]).map(r => ({
   inHouse: r.inHouse,
   punches: r.punches,
   workedHours: round2(r.workedHours),
-  workedHoursApproved: round2(r.workedHoursApproved),
   ptoDays: round2(r.ptoDays),
   ptoHours: round2(r.ptoHours),
   totalHours: round2(r.workedHours + r.ptoHours)
@@ -431,7 +460,7 @@ const flagsForEmail = {};
 flags.forEach(f => {
   const m = String(f.detail).match(/[\w.+-]+@[\w.-]+/);
   if (!m) return;
-  const e = m[0].toLowerCase();
+  const e = canon(m[0]);
   (flagsForEmail[e] = flagsForEmail[e] || []).push(f.kind);
 });
 
@@ -441,7 +470,7 @@ const runAt = new Date().toISOString().slice(0, 16).replace('T', ' ') + ' UTC';
 // Parallel arrays. Zapier reads same-length arrays as line items, which is
 // what lets one "Create Multiple Spreadsheet Rows" step write every row.
 const colCutoff = [], colRunAt = [], colName = [], colEmail = [], colClient = [];
-const colInHouse = [], colPunches = [], colWorked = [], colApproved = [];
+const colInHouse = [], colPunches = [], colWorked = [];
 const colPtoDays = [], colPtoHours = [], colTotal = [], colFlags = [];
 rows.forEach(r => {
   colCutoff.push(cutoff);
@@ -452,7 +481,6 @@ rows.forEach(r => {
   colInHouse.push(r.inHouse ? 'yes' : '');
   colPunches.push(r.punches);
   colWorked.push(r.workedHours);
-  colApproved.push(r.workedHoursApproved);
   colPtoDays.push(r.ptoDays);
   colPtoHours.push(r.ptoHours);
   colTotal.push(r.totalHours);
@@ -488,7 +516,6 @@ return {
   colInHouse: colInHouse,
   colPunches: colPunches,
   colWorked: colWorked,
-  colApproved: colApproved,
   colPtoDays: colPtoDays,
   colPtoHours: colPtoHours,
   colTotal: colTotal,

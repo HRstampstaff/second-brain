@@ -13,6 +13,8 @@ don't guess.**
 
 ## Platform decision, 2026-09-02: building in Zapier, not n8n
 
+**⚠️ Corrected 2026-09-10:** Stamp Staff's paid Zapier plan is on **teamasst@gmail.com** (Ailynn). The claim below that it is Professional with unlimited Zaps was never verified, and Mark's separate Zapier account shows a 1,500-task plan. Confirm the tier before relying on task volume.
+
 **A partial workflow (schedule + date logic + both BambooHR calls + the Form Responses read) was
 built and proven live in n8n first, on n8n's 14-day free trial. That n8n workflow is being abandoned,
 not finished.** Reason: Stamp Staff already pays for Zapier Professional (unlimited Zaps, billed on a
@@ -161,7 +163,7 @@ totals are NOT fit for payroll until that is fixed.
 | Count | Flag | What it is |
 |---|---|---|
 | **335** | `no-schedule-row` | Punches from VAs with **no row at all** in the Form Responses tab |
-| **125** | `punch-outside-every-window` | Punch outside every scheduled window on a multi-client day, assigned to the first client as a fallback and possibly billed to the wrong one |
+| **125** | `punch-outside-every-window` | Punch outside every scheduled window on a multi-client day, assigned to the first client as a fallback and possibly billed to the wrong one. **Since 2026-09-10 held as `FOR REVIEW` instead** |
 | **23** | `schedule-span-implausible` | Impossible spans, excluded from PTO totals |
 | 17 | `no-email-for-employee` | In BambooHR with no `workEmail`, so nothing can match them |
 | 12 | `punch-on-unscheduled-day` | Worked a day they are not rostered for |
@@ -179,7 +181,7 @@ totals are NOT fit for payroll until that is fixed.
   the literal text `N/A`.
 - `annalyn.stampinigroup@gmail.com / NA: start "undefined" end "undefined"`.
 
-**`workedHoursApproved` came back 0 on every single row**, because no punch in the period carries
+**Ignored and removed from the output since 2026-09-10, by Ailynn's ruling.** `workedHoursApproved` came back 0 on every single row, because no punch in the period carries
 `approved: true`. Either coaches had not approved yet when this ran, or that field does not mean what
 it looks like. Do not build a payroll rule on it until that is settled.
 
@@ -251,6 +253,16 @@ scheduled window, PTO on an unscheduled day, a VA with no Form Responses row, an
 day list, and a schedule declaring a timezone other than Eastern. **Read `flagCount` before trusting
 `rows`.**
 
+## Rulings of 2026-09-10
+
+Full record: [decisions/2026-09-10_payroll-automation-rulings.md](../../../decisions/2026-09-10_payroll-automation-rulings.md). All five are applied in `join-step.js`.
+
+1. **A punch outside every scheduled window goes to a `FOR REVIEW` line**, never to a guessed client.
+2. **Pending PTO is solved upstream: coaches are reminded to approve before the pull.** The "Approve leaves in BambooHR" calendar events already do this. **⚠️ They only work if they land BEFORE the pull, and nothing enforces that.** Checked against the real calendar 2026-09-10: Ann and Raf on Fri 9/11 before the Sat 9/12 pull, fine; **Kate's was moved to Mon 9/14 for birthday leave, two days AFTER the pull.** The 9/28 reminders precede the 9/29 pull. **Any time a reminder moves, check it against the pull date.** Those invites also still carried the stale "Sep 25 pay date" and "Sep 11 - 26" wording that policies/payroll-cutoff.md had corrected.
+3. **Two addresses for one VA: the Stamp Staff one wins.** `EMAIL_ALIASES` maps six VAs, and `canon()` runs on both the BambooHR directory and the form rows. Osaimi Hassan has no Stamp Staff address; his `gvaco` one stands in, unresolved.
+4. **`workedHoursApproved` is ignored** and removed from the output. The output sheet's `Approved hrs` column has to be deleted to match: 12 columns, not 13.
+5. **The paid Zapier plan is on teamasst@gmail.com.** Not yet verified: that the Payroll Zap lives in that account.
+
 ## The write-back, step 9
 
 **Design settled 2026-09-08. The code side is built; the Zapier step is not.**
@@ -261,7 +273,7 @@ shows as visible duplicate rows rather than silently overwriting a good pull. **
 Payroll Main**, per the google-sheets skill: never overwrite a sheet the owner maintains by hand.
 
 **Step 8 now emits parallel arrays** (`colCutoff`, `colName`, `colEmail`, `colClient`, `colInHouse`,
-`colPunches`, `colWorked`, `colApproved`, `colPtoDays`, `colPtoHours`, `colTotal`, `colFlags`),
+`colPunches`, `colWorked`, `colPtoDays`, `colPtoHours`, `colTotal`, `colFlags`),
 same length and same order. Zapier reads same-length arrays as **line items**, so a single Google
 Sheets **Create Multiple Spreadsheet Rows** step writes the whole cutoff in one task instead of
 fanning out one task per VA.
