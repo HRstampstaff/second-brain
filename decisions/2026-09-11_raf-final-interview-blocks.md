@@ -21,6 +21,10 @@ so Raf gets the time back.
 
 Series id: `ohkiei3htpf1djgo7envlipg9k`.
 
+**The week of 14 Sep gets one-off blocks instead**, because its Monday and Friday were not clear:
+**Tue 15 Sep and Wed 16 Sep, 4:00-6:00pm ET** (series `l0bksle53fv1p9ovm265s45ajg`, two instances
+only). The removal rule applies to them the same way.
+
 ## How the slot was found
 
 Every 2-hour window from 9am to 6pm ET, Monday to Friday, was checked against all of Raf's events from
@@ -65,7 +69,9 @@ has landed inside a future block, it goes to Ailynn. Finding another slot is her
   rebuilt.
 - EA Finals, which are Kate's.
 
-## No note to Key
+## Telling the bookers
 
-A note asking Key to book Raf's Finals in the blocks was drafted, then removed at Ailynn's request,
-because Key does not book them.
+- **No note to Key.** One was drafted, then removed at Ailynn's request, because Key does not book
+  Raf's Finals.
+- **A note to Marmil and Ben: yes.** It tells them where and when to book, including next week's
+  one-off days. Drafted in humanresources@stampstaff.com and held for Ailynn to send.
