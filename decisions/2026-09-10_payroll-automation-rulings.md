@@ -101,5 +101,11 @@ Final Working Hours, Remarks):
 - **Revenue StampStaff month tabs are named "Mon YYYY"** ("Oct 2026", "Nov 2026"), confirmed by
   Ailynn 2026-09-10. The Zap picks the coach tab by that name from the pull date, so a tab named
   any other way ("October 2026", "Sept 2026") will not be found.
+- **The coach lookup follows the month automatically (Ailynn chose "A", 2026-09-11).** Zapier's
+  Google Sheets step can only read a worksheet by its fixed tab ID, so it cannot follow a month name.
+  Instead a "Coach Lookup" tab in Payroll Automation Output copies the current month's Revenue
+  StampStaff tab with IMPORTRANGE, choosing the tab with TEXT(TODAY(),"mmm yyyy"). It falls back to
+  last month's tab if this month's does not exist yet. Step 9 reads Coach Lookup as a fixed tab.
+  Ailynn clicks "Allow access" once to connect the two sheets.
 - **Times are shown in Eastern.** Not asked; read from the coaches' own tab. John Lloyd Gaza's form
   says D. Brasel 6-10 AM Central, and the coaches' tab shows 7:00-11:00 AM.
