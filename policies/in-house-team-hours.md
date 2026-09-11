@@ -45,7 +45,18 @@ check rather than the hours.
 | Marmil | Marmil Olorga | listed as VA, but in-house |
 | Benjomin | Benjomin Kristian Reyes | in-house |
 
-**Assumed Eastern** for the 9-6. It was not stated with a timezone; confirm before it reaches a person.
+**Eastern** for the 9-6, read from Raf's detail rows (9:00 AM-6:00 PM ET). Not stated outright.
+
+## How they are paid
+
+**Ailynn, 2026-09-11** (ruling 8 in
+[the payroll automation rulings](../decisions/2026-09-10_payroll-automation-rulings.md)):
+
+- **Flexible:** every punched hour, **capped at 10 hours a day**.
+- **Fixed 9-6:** their schedule, the same as a placed VA. Late past the 5-minute grace and early out
+  come off, 1 hour of lunch is unpaid, and a day with no clock-out pays 0. A normal day pays 8.
+
+PTO is unchanged: 8 hours a day, Key 4.
 
 ## What an approved PTO day is worth
 

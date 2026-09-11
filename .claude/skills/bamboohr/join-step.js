@@ -209,8 +209,10 @@ const DAY = { sunday: 0, monday: 1, tuesday: 2, wednesday: 3, thursday: 4, frida
 // She was moved to flexible on 2026-09-11; her PTO stays at 4.
 // schedIn / schedOut: shown on the detail tab. Blank for flexi schedules.
 // fixed: paid the 9-6 Eastern block like a placed VA (late, early out and the
-// unpaid lunch hour come off). Everyone else is paid as punched.
+// unpaid lunch hour come off). Everyone else is paid as punched, up to
+// IN_HOUSE_FLEX_CAP_HOURS a day (Ailynn, 2026-09-11: "cap 10 hours a day").
 const IN_HOUSE_CLIENT = 'IN HOUSE';
+const IN_HOUSE_FLEX_CAP_HOURS = 10;
 
 // Ailynn, 2026-09-10: a punch that fits no scheduled window is held for a
 // person to assign. Never charged to a guessed client.
@@ -714,6 +716,17 @@ for (const entry of timesheet) {
   }
 }
 
+// Flexible in-house staff are paid as punched up to 10 hours a day. Payroll
+// already paid Ann and Janet 110 and Kate 109 for Aug 11-25: 10h x 11 days.
+for (const k of Object.keys(inHouseDays)) {
+  const g = inHouseDays[k];
+  const over = g.hours - IN_HOUSE_FLEX_CAP_HOURS;
+  if (over <= 0) continue;
+  bucket(g.email, IN_HOUSE[g.email].name, IN_HOUSE_CLIENT).workedHours -= over;
+  flag('in-house-day-capped',
+    g.email + ' ' + g.date + ': ' + round2(g.hours) + 'h worked, paid ' + IN_HOUSE_FLEX_CAP_HOURS + 'h');
+}
+
 // ---------------------------------------------------------------- PTO
 // Decision 2026-09-07: each client gets the hours THAT client lost, from the
 // VA's declared schedule. Decision 2026-09-10 (ruling 6): an hours-based
@@ -905,11 +918,14 @@ for (const k of Object.keys(inHouseDays)) {
   row.schedOut = ih.schedOut;
   row.actIn = fmtClock(g.firstIn);
   row.actOut = g.lastOut ? fmtClock(g.lastOut) : '--';
-  row.final = round2(g.hours);
+  row.final = round2(Math.min(g.hours, IN_HOUSE_FLEX_CAP_HOURS));
   const remarks = [];
   const ptoH = ptoNote[g.email + '|' + g.date + '|' + IN_HOUSE_CLIENT];
   if (ptoH) remarks.push('Approved PTO ' + round2(ptoH) + 'h');
   if (g.open) remarks.push('No clock-out on one punch');
+  if (g.hours > IN_HOUSE_FLEX_CAP_HOURS) {
+    remarks.push('Worked ' + round2(g.hours) + 'h, paid the ' + IN_HOUSE_FLEX_CAP_HOURS + 'h daily cap');
+  }
   row.remarks = remarks.join('; ');
   detail.push(row);
 }

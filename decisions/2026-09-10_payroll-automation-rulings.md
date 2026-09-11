@@ -109,3 +109,20 @@ Final Working Hours, Remarks):
   Ailynn clicks "Allow access" once to connect the two sheets.
 - **Times are shown in Eastern.** Not asked; read from the coaches' own tab. John Lloyd Gaza's form
   says D. Brasel 6-10 AM Central, and the coaches' tab shows 7:00-11:00 AM.
+
+## 8. In-house pay: flexible staff capped at 10 hours a day, fixed 9-6 staff paid their schedule
+
+**Decided 2026-09-11 by Ailynn**, after the Aug 11-25 comparison showed in-house staff 12 to 20 hours
+over the hand-built payroll because the join paid every punched hour.
+
+- **Flexible:** Ann (Eydie Ann Embuscado Lugay), Kate (Katherine Barin), Janet Mangrobang, Key
+  Bantola and Marfil Ganelo ("in house ann kate janet - flexible, keyverly marfil flexible"). Paid as
+  punched, **capped at 10 hours a day** ("cap 10 hours a day"). Payroll already paid Ann and Janet 110
+  and Kate 109 for Aug 11-25, which is 10 hours x 11 days. Key was a fixed 5-9pm shift until this
+  answer; her PTO day stays 4 hours.
+- **Fixed 9-6, Monday to Friday:** Rafael Reyes, Marmil Olorga and Benjomin Kristian Reyes. **Paid
+  their schedule like a placed VA** (confirmed "yes"): late past the 5-minute grace and early out come
+  off, 1 hour of unpaid lunch comes off the 9-hour block, and a day with no clock-out pays 0. A normal
+  day pays 8, matching payroll's 88 for 11 days. PTO stays 8 hours a day.
+- **Eastern for the 9-6 was not stated.** It is read from Raf's detail rows, which clock
+  9:00 AM-6:00 PM ET.
