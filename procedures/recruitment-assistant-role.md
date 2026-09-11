@@ -64,6 +64,9 @@ Work through these in order every day so nothing silently stalls in the pipeline
 7. **Send Interview Notice (Final) and schedule via WhatsApp.** Same process as step 3, using the
    Final templates. Assign the Final interviewer: Kate for EA, Raf for SMM. Update status to
    "Final Interview Scheduled."
+   **SMM exception (Ailynn, 2026-09-11):** Key does not book Raf's Finals. Marmil or Ben, whoever
+   passed the applicant at the Initial interview, plots the Final on Raf's calendar inside a Final
+   Interview Block (Tuesday or Wednesday, 4-6pm ET).
 8. **Check for completed Final Interviews.** Send the matching outcome email (Pass + Training Date,
    Pass + Pooled, or Regret/Redirect) within 24-48 hours.
 9. **Check pooled candidates.** Filter for status = "Pooled." Anyone pooled 60+ days gets flagged
