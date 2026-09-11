@@ -5,8 +5,11 @@
 ## The decision
 
 Raf's calendar (rafael.gvaco@gmail.com) carries a recurring **`Final Interview Block`** every
-**Tuesday and Wednesday, 4:00-6:00pm ET**, starting Tue 2026-09-15. It is one consecutive two-hour
-block, busy, no attendees, colour 11.
+**Monday and Friday, 4:00-6:00pm ET**, starting Mon 2026-09-21. It is one consecutive two-hour block,
+busy, no attendees, colour 11.
+
+**A block must never overlap a meeting.** Ailynn's words: "if it overlaps a meeting, of course,
+definitely, it's not gonna be it."
 
 **Marmil or Ben books the SMM Finals into it, not Key.** Whoever passes an applicant at the Initial
 interview plots the Final on Raf's calendar. Ailynn's words: "since raf is the final interview, the
@@ -16,15 +19,29 @@ an applicant on the initial interview."
 **On the day, if nothing is booked in the block by the 9am morning run, that day's block is removed**
 so Raf gets the time back.
 
-Series id: `4rsulnb4v4hdv3948hafgdpris`.
+Series id: `ohkiei3htpf1djgo7envlipg9k`.
 
-## Why these days and this time
+## How the slot was found
 
-- **4-6pm ET is where Raf's interviews have always been booked.** Every "Scheduled Interview w/ ..."
-  event from July through August sits in that window, in 30-minute slots.
-- **Tuesday and Wednesday were the only weekdays clear at 4-6pm** in both weeks checked (14-25 Sep).
-  Monday has a Post Admin Tasks block at 4pm, Thursday 24 Sep has a Monthly TLVA at 4pm, and Friday
-  has the VA Optional recording from 3 to 5pm.
+Every 2-hour window from 9am to 6pm ET, Monday to Friday, was checked against all of Raf's events from
+14 Sep to 30 Oct.
+
+- **No window was clear in all seven weeks.**
+- **From the week of 21 Sep, Monday 4-6pm and Friday 4-6pm are clear every week.** The only clashes
+  were before that: Mon 14 Sep (a Post Admin Tasks block at 4pm) and Fri 18 Sep (VA Optional
+  recording, 3-5pm).
+- 4-6pm is also where Raf's interviews have historically been booked.
+- Other windows clear from 21 Sep, if these ever stop working: Mon 3-5pm, Mon 3:30-5:30pm, and any
+  2 hours inside Fri 2-6pm.
+
+## The first attempt, rejected
+
+Tuesday and Wednesday 4-6pm ET (series `4rsulnb4v4hdv3948hafgdpris`) was built first, because those
+days were clear in the two weeks checked then. A wider check found two overlaps: Wed 30 Sep (TL David
+and VA Elison monthly, 4-5pm) and Tue 6 Oct (Szakos monthly TLVA and its Post Admin block,
+4:30-5:15pm). Ailynn rejected it, and the series was deleted the same day.
+
+**Lesson: check the whole horizon before choosing a recurring slot, not two weeks.**
 
 ## The one routine that may delete
 
@@ -38,14 +55,8 @@ was created or organized by Marmil, Ben or Key. The second test exists because, 
 neither Marmil nor Ben had ever put an interview on Raf's calendar, so nobody knows yet how they title
 one.
 
-## Overlaps found when it was built
-
-Checked through 28 Oct. Two existing meetings already sit inside a block:
-
-- Wed 30 Sep, 4:00-5:00pm: TL David and VA Elison Monthly meeting
-- Tue 6 Oct, 4:30-5:00pm: MONTHLY TLVA with Team Szakos, then its Post Admin Tasks block 5:00-5:15pm
-
-The blocks were left in place. Neither meeting counts as booked.
+**New overlaps get reported, not fixed.** Each run looks two weeks ahead. If a non-interview meeting
+has landed inside a future block, it goes to Ailynn. Finding another slot is her call.
 
 ## What this does NOT cover
 

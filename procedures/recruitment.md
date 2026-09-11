@@ -67,7 +67,7 @@ the start of the call.
 
 **SMM Finals are booked by the Initial interviewer, not Key** (Ailynn, 2026-09-11). When Marmil or Ben
 passes an applicant at the Initial interview, they plot the Final straight onto Raf's calendar, inside
-one of his **Final Interview Blocks: Tuesday and Wednesday, 4-6pm ET**. A block with nothing booked by
+one of his **Final Interview Blocks: Monday and Friday, 4-6pm ET**. A block with nothing booked by
 9am ET that day is removed. See `decisions/2026-09-11_raf-final-interview-blocks.md`.
 
 ## Step 10: Final interview
