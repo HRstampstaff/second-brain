@@ -204,9 +204,12 @@ const DAY = { sunday: 0, monday: 1, tuesday: 2, wednesday: 3, thursday: 4, frida
 // here nor in Form Responses already raises `no-schedule-row`.
 //
 // ptoHoursPerDay: what one approved PTO day is worth. Ailynn, 2026-09-08:
-// "for regular in house 8". Key Bantola is 4, matching her 5-9pm shift, and
-// must never be moved to 8, which would pay her PTO at double.
+// "for regular in house 8". Key Bantola is 4, set when she worked a 5-9pm
+// shift, and must never be moved to 8, which would pay her PTO at double.
+// She was moved to flexible on 2026-09-11; her PTO stays at 4.
 // schedIn / schedOut: shown on the detail tab. Blank for flexi schedules.
+// fixed: paid the 9-6 Eastern block like a placed VA (late, early out and the
+// unpaid lunch hour come off). Everyone else is paid as punched.
 const IN_HOUSE_CLIENT = 'IN HOUSE';
 
 // Ailynn, 2026-09-10: a punch that fits no scheduled window is held for a
@@ -238,10 +241,10 @@ const IN_HOUSE = {
   'katherineba.gvaco@gmail.com':       { name: 'Katherine Barin',           schedule: 'flexi 9am-8pm ET', ptoHoursPerDay: 8, schedIn: '',        schedOut: '' },
   'janet2.gvaco@gmail.com':            { name: 'Janet Mangrobang',          schedule: 'flexi 9am-8pm ET', ptoHoursPerDay: 8, schedIn: '',        schedOut: '' },
   'marf.ganelo@gmail.com':             { name: 'Marfil Ganelo',             schedule: 'flexi',            ptoHoursPerDay: 8, schedIn: '',        schedOut: '' },
-  'rafael.gvaco@gmail.com':            { name: 'Rafael Reyes',              schedule: 'fixed 9-6',        ptoHoursPerDay: 8, schedIn: '9:00 AM', schedOut: '6:00 PM' },
-  'shainaolarga.stampstaff@gmail.com': { name: 'Marmil Olorga',             schedule: 'fixed 9-6',        ptoHoursPerDay: 8, schedIn: '9:00 AM', schedOut: '6:00 PM' },
-  'benjkris.stampstaff@gmail.com':     { name: 'Benjomin Kristian Reyes',   schedule: 'fixed 9-6',        ptoHoursPerDay: 8, schedIn: '9:00 AM', schedOut: '6:00 PM' },
-  'keyverlybantola@gmail.com':         { name: 'Key Bantola',               schedule: 'fixed 5-9pm ET',   ptoHoursPerDay: 4, schedIn: '5:00 PM', schedOut: '9:00 PM' }
+  'rafael.gvaco@gmail.com':            { name: 'Rafael Reyes',              schedule: 'fixed 9-6',        ptoHoursPerDay: 8, schedIn: '9:00 AM', schedOut: '6:00 PM', fixed: true },
+  'shainaolarga.stampstaff@gmail.com': { name: 'Marmil Olorga',             schedule: 'fixed 9-6',        ptoHoursPerDay: 8, schedIn: '9:00 AM', schedOut: '6:00 PM', fixed: true },
+  'benjkris.stampstaff@gmail.com':     { name: 'Benjomin Kristian Reyes',   schedule: 'fixed 9-6',        ptoHoursPerDay: 8, schedIn: '9:00 AM', schedOut: '6:00 PM', fixed: true },
+  'keyverlybantola@gmail.com':         { name: 'Key Bantola',               schedule: 'flexi',            ptoHoursPerDay: 4, schedIn: '',        schedOut: '' }
 };
 
 function parseDays(text) {
@@ -389,6 +392,22 @@ for (const row of sheetRows) {
     });
   }
   schedules[email] = { stamp: stamp, fullName: String(row[COL.fullName] || '').trim(), blocks: blocks };
+}
+
+// Fixed 9-6 in-house staff get a built-in schedule instead of a form row, so
+// their days run through the same late / early-out / lunch rules as a placed
+// VA. Read from Ailynn's 2026-09-11 answer naming who is flexible (Ann, Kate,
+// Janet, Key, Marfil), after the Aug 11-25 comparison showed Raf, Marmil and
+// Benjomin paid every punched hour against payroll's 8 a day. Eastern: Raf's
+// detail rows clock 9:00 AM-6:00 PM ET.
+const IN_HOUSE_FIXED_DAYS = parseDays('monday, tuesday, wednesday, thursday, friday');
+for (const email of Object.keys(IN_HOUSE)) {
+  const ih = IN_HOUSE[email];
+  if (!ih.fixed) continue;
+  schedules[email] = { stamp: 0, fullName: ih.name, blocks: [{
+    client: IN_HOUSE_CLIENT, empType: 'In house', days: IN_HOUSE_FIXED_DAYS,
+    startMin: 9 * 60, endMin: 18 * 60, spanMin: 9 * 60, hoursPerDay: 9, tzLabel: 'Eastern', tz: ET
+  }] };
 }
 
 // ------------------------------------------------ employeeId -> workEmail
@@ -581,7 +600,7 @@ function bucket(email, fullName, client) {
   const key = email + '||' + client;
   if (!totals[key]) {
     totals[key] = {
-      email: email, fullName: fullName, client: client, inHouse: false,
+      email: email, fullName: fullName, client: client, inHouse: client === IN_HOUSE_CLIENT,
       workedHours: 0, ptoHours: 0, punches: 0, ptoDays: 0
     };
   }
@@ -617,8 +636,9 @@ for (const entry of timesheet) {
     flag('no-clock-out', email + ' ' + etDate + ': clocked in ' + fmtClock(ps) + ' ET, never clocked out');
   }
 
-  // In-house staff are totalled straight: no schedule lookup, no client matching.
-  if (IN_HOUSE[email]) {
+  // Flexible in-house staff are totalled straight: no schedule lookup, no client
+  // matching. Fixed 9-6 staff fall through to their built-in schedule below.
+  if (IN_HOUSE[email] && !IN_HOUSE[email].fixed) {
     const t = bucket(email, IN_HOUSE[email].name, IN_HOUSE_CLIENT);
     t.inHouse = true;
     t.workedHours += hrs;
@@ -854,7 +874,7 @@ const detail = [];
 
 // Placed VAs: one row per scheduled block per day, for VAs still in BambooHR.
 for (const email of Object.keys(schedules)) {
-  if (!activeEmails[email] || IN_HOUSE[email]) continue;
+  if (!activeEmails[email] || (IN_HOUSE[email] && !IN_HOUSE[email].fixed)) continue;
   let prev = null;
   for (const inst of instancesFor(email)) {
     const ps = inst.punches.slice().sort((a, b) => a.ps - b.ps);
@@ -895,7 +915,8 @@ for (const k of Object.keys(inHouseDays)) {
 }
 for (const nk of Object.keys(ptoNote)) {
   const [email, date, client] = nk.split('|');
-  if (client !== IN_HOUSE_CLIENT || inHouseDays[email + '|' + date]) continue;
+  // Fixed staff already carry the PTO remark on their scheduled row.
+  if (client !== IN_HOUSE_CLIENT || IN_HOUSE[email].fixed || inHouseDays[email + '|' + date]) continue;
   const row = baseRow(email, IN_HOUSE[email].name, IN_HOUSE_CLIENT, date, Date.parse(date + 'T12:00:00Z'));
   row.schedIn = IN_HOUSE[email].schedIn;
   row.schedOut = IN_HOUSE[email].schedOut;

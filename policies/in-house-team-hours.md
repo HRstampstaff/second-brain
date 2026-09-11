@@ -27,9 +27,15 @@ A **window** they may work anywhere inside, not a shift. A punch anywhere in it 
 | Kate | Katherine Barin | COO |
 | Janet | Janet Mangrobang | Coach |
 | Marfil | Marfil Ganelo | Project |
+| Key | Key Bantola | in-house |
 
 **Marfil was confirmed as "flexible hour" without the window being restated**, so she is assumed to
 share the 9am-8pm window. Confirm before any figure built on it reaches a person.
+
+**Key moved to flexible on 2026-09-11** (Ailynn: "keyverly marfil flexible"). Until then she was
+recorded as a fixed 5:00pm to 9:00pm Eastern shift. Her window was not restated. Her payroll rate is
+$2.50/hr, unlike everyone else here, so if a figure for Key looks wrong that is the first thing to
+check rather than the hours.
 
 ## Fixed, 9 to 6
 
@@ -39,17 +45,7 @@ share the 9am-8pm window. Confirm before any figure built on it reaches a person
 | Marmil | Marmil Olorga | listed as VA, but in-house |
 | Benjomin | Benjomin Kristian Reyes | in-house |
 
-## Fixed, 5:00pm to 9:00pm Eastern
-
-| Person | Payroll name | Role |
-|---|---|---|
-| Key | Key Bantola | in-house |
-
-A four-hour evening shift. Her payroll rate is $2.50/hr, unlike everyone else here, so if a figure
-for Key looks wrong that is the first thing to check rather than the hours.
-
-**Assumed Eastern** for the 9-6 and confirmed Eastern for Key. The 9-6 was not stated with a
-timezone; confirm before it reaches a person.
+**Assumed Eastern** for the 9-6. It was not stated with a timezone; confirm before it reaches a person.
 
 ## What an approved PTO day is worth
 

@@ -201,6 +201,12 @@ client and they will never appear in the Form Responses tab.** See
 are totalled straight into a single `IN HOUSE` client bucket, with no schedule lookup, no
 day-of-week or time-of-day matching, and no `no-schedule-row` flag.
 
+**Changed 2026-09-11: only the flexible staff are totalled straight.** Ann, Kate, Janet, Key and
+Marfil are flexible. Raf, Marmil and Benjomin carry `fixed: true` and get a built-in 9-6 Eastern
+Monday-Friday schedule, so their days go through the placed-VA rules: late past grace and early out
+deducted, 1h unpaid lunch off the 9h block, a no-clock-out day paid 0. Their PTO still pays
+`ptoHoursPerDay` (8). The bucket stays `IN HOUSE`.
+
 **Why a list in the code and not a read of the payroll sheet.** This reverses the earlier
 recommendation in this file, deliberately. Keying off the payroll sheet's `Contract Type` column was
 the obvious answer and it is wrong: **that column identifies only five of the eight.** Benjomin
