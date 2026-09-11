@@ -94,8 +94,10 @@ Final Working Hours, Remarks):
   (policies/va-clock-in-out-rules.md).
 - **Ailynn's own hours are left out of the pull entirely** ("leave me out", 2026-09-10). Her
   BambooHR punches had been showing as NO SCHEDULE FORM rows.
-- **Employee Number is created by HR** (Ailynn, 2026-09-10). Payroll Main's Emp# is blank for many
-  VAs, so the Zap must read it from where HR records it, not from Payroll Main alone.
+- **Employee Number is created manually by HR** (Ailynn, 2026-09-10: "HR manually creates it").
+  No system generates it, so the Zap copies it from Payroll Main's Emp# by email. A blank Employee
+  Number on the detail tab means HR has not entered one in Payroll Main yet: 21 of the 53 rows the
+  connector returned on 2026-09-10, John Lloyd Gaza among them.
 - **Revenue StampStaff month tabs are named "Mon YYYY"** ("Oct 2026", "Nov 2026"), confirmed by
   Ailynn 2026-09-10. The Zap picks the coach tab by that name from the pull date, so a tab named
   any other way ("October 2026", "Sept 2026") will not be found.
