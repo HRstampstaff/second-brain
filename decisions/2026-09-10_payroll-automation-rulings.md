@@ -92,5 +92,12 @@ Final Working Hours, Remarks):
   free-text lunch notes on the schedule form ("No lunch", "30-minute lunch") are **not** used.
 - **A day with no clock-out is paid 0**, with a remark. The VA can dispute it for the next cutoff
   (policies/va-clock-in-out-rules.md).
+- **Ailynn's own hours are left out of the pull entirely** ("leave me out", 2026-09-10). Her
+  BambooHR punches had been showing as NO SCHEDULE FORM rows.
+- **Employee Number is created by HR** (Ailynn, 2026-09-10). Payroll Main's Emp# is blank for many
+  VAs, so the Zap must read it from where HR records it, not from Payroll Main alone.
+- **Revenue StampStaff month tabs are named "Mon YYYY"** ("Oct 2026", "Nov 2026"), confirmed by
+  Ailynn 2026-09-10. The Zap picks the coach tab by that name from the pull date, so a tab named
+  any other way ("October 2026", "Sept 2026") will not be found.
 - **Times are shown in Eastern.** Not asked; read from the coaches' own tab. John Lloyd Gaza's form
   says D. Brasel 6-10 AM Central, and the coaches' tab shows 7:00-11:00 AM.

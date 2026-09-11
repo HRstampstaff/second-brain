@@ -393,6 +393,17 @@ for (const e of (directory.employees || [])) {
   }
   nameById[String(e.id)] = e.displayName || '';
 }
+// People who clock in to BambooHR but are not part of payroll at all.
+// Ailynn, 2026-09-10: "leave me out". Matched by BambooHR display name as well
+// as email, because her work email in BambooHR is not recorded here.
+const EXCLUDED_NAMES = ['ailynn perez'];
+const EXCLUDED_EMAILS = ['ailynnfpg@gmail.com', 'humanresources@stampstaff.com'];
+let excludedPunches = 0;
+Object.keys(emailById).forEach(id => {
+  if (EXCLUDED_NAMES.indexOf(String(nameById[id] || '').trim().toLowerCase()) !== -1) EXCLUDED_EMAILS.push(emailById[id]);
+});
+function isExcluded(email) { return EXCLUDED_EMAILS.indexOf(email) !== -1; }
+
 const activeEmails = {};
 Object.keys(emailById).forEach(id => { activeEmails[emailById[id]] = true; });
 
@@ -579,6 +590,7 @@ for (const entry of timesheet) {
     flag('no-email-for-employee', 'employeeId ' + id + ' (' + (nameById[id] || 'unknown') + ')');
     continue;
   }
+  if (isExcluded(email)) { excludedPunches++; continue; }
   const ps = Date.parse(entry.start);
   const pe = entry.end ? Date.parse(entry.end) : null;
   if (isNaN(ps) || (pe !== null && isNaN(pe))) {
@@ -683,6 +695,7 @@ for (const req of pto) {
     flag('pto-no-email-for-employee', 'employeeId ' + id + ' (' + (req.name || '?') + ')');
     continue;
   }
+  if (isExcluded(email)) continue;
   const dates = req.dates || {};
   const unit = String((req.amount && req.amount.unit) || 'days').toLowerCase();
   if (unit !== 'days' && unit !== 'hours') {
@@ -972,6 +985,7 @@ return {
   diagnostics: JSON.stringify({
     timesheetEntries: timesheet.length,
     openPunches: openPunches,
+    excludedPunches: excludedPunches,
     ptoRequests: pto.length,
     directoryEmployees: (directory.employees || []).length,
     sheetRows: sheetRows.length,
