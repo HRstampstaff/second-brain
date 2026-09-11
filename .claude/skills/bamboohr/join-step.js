@@ -460,6 +460,26 @@ if (revenueRows.length) {
     }
   }
 }
+// The Revenue tab also carries typos ("Grizelle Manze", "Marenzo Oolorga",
+// "Shaunn Barnales", "Analynn Apostol" on Sep 2026, found 2026-09-10), so a name
+// word also matches one a letter or two off. Two matching words are still
+// required, which keeps "Mark"/"Marc" from pairing strangers.
+function nearWord(a, b) {
+  if (a === b) return true;
+  const shorter = Math.min(a.length, b.length);
+  const max = shorter >= 7 ? 2 : (shorter >= 4 ? 1 : 0);
+  if (!max || Math.abs(a.length - b.length) > max) return false;
+  let prev = [];
+  for (let j = 0; j <= b.length; j++) prev.push(j);
+  for (let i = 1; i <= a.length; i++) {
+    const cur = [i];
+    for (let j = 1; j <= b.length; j++) {
+      cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+    }
+    prev = cur;
+  }
+  return prev[b.length] <= max;
+}
 const coachMemo = {};
 const coachMissing = {};
 const SPECIAL_CLIENTS = [REVIEW_CLIENT, UNSCHEDULED_CLIENT, NO_FORM_CLIENT];
@@ -469,8 +489,9 @@ function coachFor(email, names, client) {
   if (key in coachMemo) return coachMemo[key];
   const mine = {};
   names.forEach(n => tokens(n).forEach(t => { mine[t] = true; }));
+  const mineList = Object.keys(mine);
   let rows = coachRows
-    .map(r => ({ r: r, s: r.vaTok.filter(t => mine[t]).length }))
+    .map(r => ({ r: r, s: r.vaTok.filter(t => mine[t] || mineList.some(m => nearWord(t, m))).length }))
     .filter(x => x.r.vaTok.length && x.s >= Math.min(2, x.r.vaTok.length));
   if (rows.length) {
     // Keep only the best-matching VA name, then prefer active rows.
