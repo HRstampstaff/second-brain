@@ -56,7 +56,8 @@ check rather than the hours.
 - **Fixed 9-6:** their schedule, the same as a placed VA. Late past the 5-minute grace and early out
   come off, 1 hour of lunch is unpaid, and a day with no clock-out pays 0. A normal day pays 8.
 
-PTO is unchanged: 8 hours a day, Key 4.
+PTO is unchanged: 8 hours a day, Key 4. **Confirmed 2026-09-11 for the flexible staff too** ("PTO for
+in house stays at 8 hours"), even though their worked days can pay up to 10.
 
 ## What an approved PTO day is worth
 

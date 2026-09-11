@@ -126,3 +126,24 @@ over the hand-built payroll because the join paid every punched hour.
   day pays 8, matching payroll's 88 for 11 days. PTO stays 8 hours a day.
 - **Eastern for the 9-6 was not stated.** It is read from Raf's detail rows, which clock
   9:00 AM-6:00 PM ET.
+
+## 9. PTO pay, and one VA's client change
+
+**Decided 2026-09-11 by Ailynn**, from questions raised by the Aug 11-25 comparison.
+
+- **In-house PTO stays at 8 hours a day** ("PTO for in house stays at 8 hours"). That includes the
+  flexible staff, even though a worked day for them can pay up to 10. Key Bantola stays at 4. So Eydie
+  Ann's Aug 11-25 reads 108.02 against payroll's 110, and that gap is expected.
+- **A placed VA's PTO day depends on their schedule with the client, and on whether they have
+  already earned it** ("depends on their schedule with the client and if they alreayd earned it").
+  - **The schedule half is what the join already does** (decision of 2026-09-07): Kathreen Briones's
+    9-hour block gives a 9-hour PTO day, not 8.
+  - **The earned half is [the PTO policy](../policies/va-paid-time-off.md):** eligible after 1 year
+    with the client, accruing 5/12 of a day a month, and only accrued days can be taken. **The Zap
+    does not check this.** It pays any request that is approved in BambooHR, so today the check is
+    the approval itself.
+- **Jomel Hernandez has moved to Chris Thompson.** His newest schedule form is correct and he is not
+  chased. His Aug 11-25 hours were worked for Dimitrios Lynch, 10 AM-2 PM ET, which his current form
+  no longer shows, so he reads 0 on that cutoff.
+- **Not answered:** whether Rafael Reyes's 8 hours of approved PTO for Aug 11-25 should have been
+  paid. The Zap pays it; payroll's 71.57 appears not to.

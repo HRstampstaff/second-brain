@@ -16,3 +16,9 @@ Set by Ailynn, 2026-09-01.
 - **Unplanned absence:** the VA can make up the missed hours with the client's approval, and must
   let their coach know.
 - **Client-granted extra time off or client-paid holiday:** gets filed in BambooHR too.
+- **What a PTO day pays (Ailynn, 2026-09-11):** it follows the VA's schedule with that client, so a
+  9-hour block pays 9, and it pays only days the VA has already earned. The payroll Zap pays any
+  request approved in BambooHR and does not check the accrual itself, so the approval is the check.
+  In-house staff are different: 8 hours a day (Key Bantola 4), see
+  [in-house team hours](in-house-team-hours.md). Detail: ruling 9 in
+  [the payroll automation rulings](../decisions/2026-09-10_payroll-automation-rulings.md).
