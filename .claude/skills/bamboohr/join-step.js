@@ -370,6 +370,17 @@ for (const row of sheetRows) {
       tz = ET;
       flag('schedule-timezone-assumed-eastern', email + ' / ' + client + ': timezone "' + tzLabel + '"');
     }
+    // Some VAs repeat the same client in all three boxes (Keith Jimenez, Aug
+    // 11-25: Nick Field three times). Identical blocks cover the same minutes,
+    // so each one took the same punches and his hours came out tripled.
+    const dupe = blocks.some(o =>
+      o.client.toLowerCase() === client.toLowerCase() && o.startMin === startMin &&
+      o.spanMin === spanMin && o.tz === tz && o.days.join() === days.join());
+    if (dupe) {
+      flag('schedule-block-repeated',
+        email + ' / ' + client + ': client ' + (i + 1) + ' repeats an earlier block, counted once');
+      continue;
+    }
     blocks.push({
       client,
       empType: String(row[COL.empType[i]] || '').trim(),
