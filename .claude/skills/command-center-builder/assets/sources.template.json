@@ -1,0 +1,60 @@
+{
+  "_readme": "SOURCE MAP for the Command Center. Maps each data source to a company so the morning routine knows which inbox/workspace/calendar/base feeds which page, and records which METRICS each page shows. START CONNECTOR-ONLY: every 'via' below should say 'connector' on day one — the student connects Airtable, Slack, Gmail, Calendar and (optionally) QuickBooks in their claude.ai connector settings, and the routine reads them from their own morning session where those connections are signed in. No tokens, no secrets, no self-hosted servers to begin with. The '_advanced' block at the bottom documents the token-based paths for LATER, once a student outgrows a single inbox or workspace — do not start there. This file lives OUTSIDE public/ so addresses are never served, and it holds NO secrets, only secret NAMES.",
+
+  "companies": ["companyA", "companyB", "companyC"],
+  "_companies_note": "List EVERY business, including ones with nothing wired yet. A company with no sources still gets its own tab, rendered with 🔒 placeholders naming what it needs. An empty tab that says what it's waiting for is the to-do list for the rest of the build; a missing tab is a business the student forgets they meant to add.",
+
+  "metrics": {
+    "_readme": "What each company page tracks. The STUDENT chooses these from Vera's suggestions — see references/metrics.md. Four to six per company. A metric whose source isn't connected yet renders 🔒 naming the connection it needs, never a zero.",
+    "companyA": ["occupancy", "money-owed", "contracts-ending-90d", "open-work", "today"],
+    "companyB": ["today", "waiting-on-reply", "pipeline"],
+    "companyC": []
+  },
+
+  "airtable": {
+    "_readme": "The student's hub/base. Read their ACTUAL schema before choosing metrics — never assume field names. On day one this is the connector; if they later want the 2-hourly baked refresh in data.json, that needs a read-only API token as a build secret (see _advanced).",
+    "companyA": { "via": "connector", "base": "<base name or id>" }
+  },
+
+  "gmail": {
+    "_readme": "One line per company. A student with ONE mailbox uses the same account for every company plus a 'filter' (a label their Gmail filters already apply) and 'llmFallback': true so the routine also classifies recent unlabeled mail.",
+    "companyA": [{ "account": "me@example.com", "via": "connector", "filter": "label:CompanyA", "llmFallback": true }],
+    "companyB": [{ "account": "me@example.com", "via": "connector", "filter": "label:CompanyB", "llmFallback": true }],
+    "companyC": []
+  },
+
+  "slack": {
+    "_readme": "The connected workspace, via connector. If one workspace serves several companies, add a 'channels' array per company instead of a workspace each.",
+    "companyA": { "via": "connector", "channels": ["#ops", "#alerts"] },
+    "companyB": { "via": "connector", "channels": ["#cohort"] },
+    "companyC": []
+  },
+
+  "calendar": {
+    "_readme": "Most solo operators keep ONE calendar. Each company page shows only its relevant events; the routine LLM-classifies each event using the hints. If they genuinely have a calendar per business, list them per company like gmail instead.",
+    "shared": {
+      "account": "me@example.com",
+      "via": "connector",
+      "classify": "llm",
+      "hints": {
+        "companyA": ["tenant", "showing", "inspection", "lease", "property"],
+        "companyB": ["cohort", "waitlist", "office hours", "content"],
+        "companyC": ["demo", "investor", "product", "customer"]
+      }
+    }
+  },
+
+  "accounting": {
+    "_readme": "OPTIONAL — omit this whole block unless the student asked for money in/out on the page. QuickBooks holds ONE company file, so map it to the single company page that owns the books; if several businesses run through one QBO file, ask which page it belongs on. Read references/quickbooks.md FIRST: check the books are current (a QBO report shows posted transactions only, so uncategorized deposits read as $0 income), and never trust the connector's computed totals.",
+    "companyA": { "system": "quickbooks", "via": "connector", "showInHqPulse": true, "monthsBack": 6 }
+  },
+
+  "_advanced": {
+    "_readme": "NOT for day one. These are the paths a student grows into once a single connector per source stops fitting. Introduce them one at a time, only when the student hits the actual limit — see references/source-map.md.",
+    "dedicated_inboxes": "A mailbox per business routes entirely to one company: { \"account\": \"ops@companyA.example\", \"via\": \"connector\" } with no filter.",
+    "multi_gmail_server": "A self-hosted multi-inbox server reached by URL + bearer token: { \"via\": \"multi-gmail-server\" }, with the URL and token stored as routine secrets and named here by SECRET NAME only.",
+    "slack_per_workspace_api": "A separate Slack workspace per business, each with its own API token: { \"via\": \"api\", \"tokenSecret\": \"SLACK_TOKEN_COMPANYA\" }.",
+    "airtable_baked": "A read-only Airtable API token as a GitHub Action build secret, so structured KPIs refresh into data.json every 2 hours instead of once each morning. This is the ONLY half of the system that can run truly unattended.",
+    "quickbooks_api": "A real Intuit developer app + production keys. Better data and it can run in the baker, but it needs a compliance questionnaire Intuit reviews over days. Do not send a student here."
+  }
+}

@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Command Center</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
+<style>
+  :root{color-scheme:light;
+    --green:#c4622d;--green-d:#1c1c1c;--gold:#c4622d;--cream:#f9f7f4;--ink:#1c1c1c;
+    --muted:#6b6b6b;--line:#e0deda;--card:#fff;--red:#c0392b;--amber:#b8823a;--blue:#6b6b6b}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased}
+  header{background:#fbf9f4;color:var(--ink);padding:18px 28px 0;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:12px}
+  .htop{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+  header h1{margin:0;font-size:25px;font-weight:600;font-family:'Fraunces',Georgia,'Times New Roman',serif;letter-spacing:-.01em}
+  header .stamp{font-size:12px;color:var(--muted);margin-top:3px}
+  .edition{font-size:11px;font-weight:600;background:#f2e7de;color:var(--green);border-radius:20px;padding:4px 11px}
+  .tabs{display:flex;gap:4px;flex-wrap:wrap}
+  .tab{background:transparent;color:var(--muted);border:0;border-bottom:3px solid transparent;padding:10px 14px 12px;font-size:14px;font-weight:600;cursor:pointer}
+  .tab.active{color:var(--ink);border-bottom-color:var(--green)}
+  .wrap{max-width:1180px;margin:0 auto;padding:24px 20px 60px}
+  .st{font-size:13px;font-weight:700;color:var(--green-d);text-transform:uppercase;letter-spacing:.6px;margin:28px 0 12px;display:flex;align-items:center;gap:8px}
+  .st:first-child{margin-top:6px}
+  .st::before{content:"";width:16px;height:3px;background:var(--gold);border-radius:2px}
+  .kpis,.tiles{display:grid;gap:14px}
+  .kpis{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+  .tiles{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+  .kpi,.tile{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+  .kpi .l,.tile .l{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+  .kpi .v{font-size:30px;font-weight:800;margin-top:6px;color:var(--green-d)}
+  .tile .v{font-size:26px;font-weight:700;margin-top:5px;color:var(--green-d)}
+  .v.red{color:var(--red)} .v.green{color:var(--green)} .v.gold{color:var(--gold)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:16px}
+  .grid-donut{display:grid;grid-template-columns:340px 1fr;gap:16px}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+  .panel h3{margin:0 0 12px;font-size:14px;font-weight:600}
+  .chart-box{position:relative;height:280px}
+  .empty{color:var(--muted);font-size:13px;padding:10px 0}
+  .locked{color:var(--muted);font-size:13px;padding:10px 0;line-height:1.5}
+  ul.list{list-style:none;margin:0;padding:0}
+  ul.list li{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-top:1px solid var(--line);font-size:14px}
+  ul.list li:first-child{border-top:0}
+  .mailrow{display:flex;gap:28px}.mailrow a{flex:1;text-decoration:none;color:inherit}
+  .mailnum{font-size:40px;font-weight:800;color:var(--green-d)}
+  .mailcap{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+  .dot{width:11px;height:11px;border-radius:50%;flex:0 0 auto;margin-top:4px}
+  .dot.red{background:var(--red)}.dot.amber{background:var(--amber)}.dot.blue{background:var(--blue)}
+  .badge{display:inline-block;font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px;margin-left:6px}
+  .badge.green{background:#e3efe7;color:var(--green-d)}.badge.red{background:#f7e3db;color:var(--red)}
+  .badge.neutral{background:#eef1ee;color:var(--muted)}.badge.gold{background:#f5ead0;color:#8a6a1e}
+  .taskmeta{font-size:12px;margin-top:2px}
+  .due.red{color:var(--red)}.due.amber{color:var(--amber)}.due.muted{color:var(--muted)}
+  .more{font-size:12px;color:var(--blue);text-decoration:none;display:inline-block;margin-top:10px}
+  .note{font-size:12px;color:var(--muted);margin-top:10px}
+  .flag{background:#fdf6e3;border:1px solid #e8d9a8;border-radius:12px;padding:12px 14px;font-size:13px;color:#6b5a1e;margin:14px 0}
+  .flag b{color:#5a4a12}
+  .frame{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--green);border-radius:12px;padding:16px 18px;font-size:14px;line-height:1.65}
+  .frame h4{margin:0 0 8px;font-family:'Fraunces',Georgia,serif;font-size:15px;font-weight:600;color:var(--green)}
+  .quote{font-family:'Fraunces',Georgia,serif;font-size:19px;font-style:italic;line-height:1.45;color:var(--green-d);border-left:3px solid var(--gold);padding:4px 0 4px 18px;margin:0 0 8px}
+  .slab{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.5px;padding:2px 7px;border-radius:4px;margin-right:8px;vertical-align:middle}
+  .slab.URGENT{background:#f7e3db;color:var(--red)}.slab.BUG{background:#f5ead0;color:#8a6a1e}
+  .slab.FYI{background:#eef1ee;color:var(--muted)}.slab.ENGAGEMENT{background:#eadfd6;color:var(--green)}
+  .slab.FOCUS{background:#eadfd6;color:var(--green)}.slab.OPEN{background:#eef1ee;color:var(--muted)}
+  .slab.REVENUE{background:#e3efe7;color:var(--green-d)}.slab.DECISION{background:#f5ead0;color:#8a6a1e}.slab.GOAL{background:#eadfd6;color:var(--green)}
+  .pm{background:#fbf3ec;border:1px solid #ecd9c9;border-radius:12px;padding:8px 20px}
+  .pm ul{margin:8px 0}
+  .maintbox{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;display:flex;align-items:center;gap:22px}
+  .maintbox .n{font-size:40px;font-weight:800;color:var(--red)}
+  .pulses{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+  .pulse{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;cursor:pointer;transition:border-color .15s}
+  .pulse:hover{border-color:var(--green)}
+  .pulse .co{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--green)}
+  .pulse .pl{font-size:13px;color:var(--ink);margin-top:6px;line-height:1.5}
+  .pulse .go{font-size:11px;color:var(--muted);margin-top:8px}
+  .cohead{font-family:'Fraunces',Georgia,serif;font-size:23px;font-weight:600;color:var(--ink);margin:6px 0 10px}
+  #err{display:none;background:#fdece7;border:1px solid #e7b9a8;color:#8a3a1e;padding:14px 16px;border-radius:12px;margin:18px 0;font-size:14px}
+  #loading{padding:46px;text-align:center;color:var(--muted)}
+  .hidden{display:none}
+  footer{max-width:1180px;margin:0 auto;padding:0 20px 44px;color:var(--muted);font-size:12px}
+  @media(max-width:820px){.grid2,.grid-donut{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+  <div class="htop">
+    <div><h1 id="greeting">Command Center</h1><div class="stamp" id="stamp">Loading…</div></div>
+    <span class="edition">Hosted &middot; auto-refreshed</span>
+  </div>
+  <div class="tabs">
+    <button class="tab active" id="tabbtn-hq" onclick="showTab('hq')">HQ</button>
+    <button class="tab" id="tabbtn-sunrise" onclick="showTab('sunrise')">Sunrise</button>
+    <button class="tab" id="tabbtn-leanlandlord" onclick="showTab('leanlandlord')">The Lean Landlord</button>
+    <button class="tab" id="tabbtn-pam" onclick="showTab('pam')">PAM</button>
+  </div>
+</header>
+<div class="wrap">
+  <div id="err"></div>
+  <div id="loading">Loading dashboard…</div>
+
+  <!-- HQ -->
+  <div id="tab-hq" class="hidden">
+    <div class="st">Across the companies</div>
+    <div class="pulses" id="pulses"></div>
+    <div id="hqBrief">
+      <div class="st">Daily mindset</div>
+      <blockquote class="quote" id="hqMindQuote"></blockquote>
+      <div class="note" id="hqMindNote"></div>
+      <div class="st">High Leverage / Long-Term Payoff</div>
+      <div class="frame" id="hqLeverage"></div>
+    </div>
+  </div>
+
+  <!-- SUNRISE -->
+  <div id="tab-sunrise" class="hidden">
+    <div class="st">Portfolio KPIs</div>
+    <div class="kpis" id="kpis"></div>
+    <div id="occflag"></div>
+    <div class="grid2" style="margin-top:18px">
+      <div class="panel"><h3>Wins since last report</h3><div id="wins"></div></div>
+      <div class="panel"><h3>Mail center (Airtable)</h3><div class="mailrow" id="airmail"></div></div>
+    </div>
+    <div class="st">Maintenance</div>
+    <div class="maintbox" id="maint"></div>
+    <div class="grid2" style="margin-top:18px">
+      <div class="panel"><h3>Tasks needing attention</h3><div id="tasks"></div></div>
+      <div class="panel"><h3>Lease expirations (next 90 days)</h3><div id="leases"></div></div>
+    </div>
+    <div class="st">Occupancy</div>
+    <div class="tiles" id="curTiles"></div>
+    <div class="grid-donut" style="margin-top:14px">
+      <div class="panel"><h3>Units by status</h3><div class="chart-box"><canvas id="occDonut"></canvas></div></div>
+      <div class="panel"><h3>Occupancy rate over time</h3><div class="chart-box"><canvas id="occLine"></canvas></div><div class="note" id="occNote"></div></div>
+    </div>
+    <div class="st">Today — Sunrise</div>
+    <div class="grid3">
+      <div class="panel"><h3>Calendar</h3><div id="sunriseCal"></div></div>
+      <div class="panel"><h3>Slack</h3><div id="sunriseSlack"></div></div>
+      <div class="panel"><h3>Email</h3><div id="sunriseMail"></div></div>
+    </div>
+    <div class="st">Power move</div>
+    <div class="pm"><ul class="list" id="sunrisePower"></ul></div>
+  </div>
+
+  <!-- THE LEAN LANDLORD -->
+  <div id="tab-leanlandlord" class="hidden">
+    <div class="cohead" id="leanlandlordHead"></div>
+    <div class="frame" id="leanlandlordStatus"></div>
+    <div class="st">Focus &amp; open items</div>
+    <div id="leanlandlordItems"></div>
+    <div class="st">Today — The Lean Landlord</div>
+    <div class="grid3">
+      <div class="panel"><h3>Calendar</h3><div id="leanlandlordCal"></div></div>
+      <div class="panel"><h3>Slack</h3><div id="leanlandlordSlack"></div></div>
+      <div class="panel"><h3>Email</h3><div id="leanlandlordMail"></div></div>
+    </div>
+    <div class="st">Power move</div>
+    <div class="pm"><ul class="list" id="leanlandlordPower"></ul></div>
+  </div>
+
+  <!-- PAM -->
+  <div id="tab-pam" class="hidden">
+    <div class="cohead" id="pamHead"></div>
+    <div class="frame" id="pamStatus"></div>
+    <div class="st">Focus &amp; open items</div>
+    <div id="pamItems"></div>
+    <div class="st">Today — PAM</div>
+    <div class="grid3">
+      <div class="panel"><h3>Calendar</h3><div id="pamCal"></div></div>
+      <div class="panel"><h3>Slack</h3><div id="pamSlack"></div></div>
+      <div class="panel"><h3>Email</h3><div id="pamMail"></div></div>
+    </div>
+    <div class="st">Power move</div>
+    <div class="pm"><ul class="list" id="pamPower"></ul></div>
+  </div>
+</div>
+<footer id="foot"></footer>
+<script>
+const BASE="appbDvSpJX6LKRkBc";
+const T={mail:"tblGf6XHuUbQEtNU7",tasks:"tblItFsQQGCjr0ffK",maint:"tblFSoSciqwR9vhYI",leases:"tbl5KW9x8Zu9H9WxE"};
+const C={green:"#c4622d",gold:"#1c1c1c",blue:"#6b6b6b"};
+let charts=[], P=null, P2=null, TODAY=null, chartsDone=false;
+const tableUrl=t=>`https://airtable.com/${BASE}/${t}`;
+const money=n=>"$"+Math.round(n||0).toLocaleString("en-US");
+const pct=n=>(n==null?"-":Math.round(n*100)+"%");
+const esc=s=>(s==null?"":String(s)).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+const fmtDate=iso=>{if(!iso)return"";const[y,m,d]=iso.split("-");return new Date(y,m-1,d).toLocaleDateString("en-US",{month:"short",day:"numeric"});};
+const monthLabel=iso=>{const[y,m]=iso.split("-");return new Date(y,m-1,1).toLocaleString("en-US",{month:"short",year:"2-digit"});};
+function showTab(t){
+  ["hq","sunrise","leanlandlord","pam"].forEach(x=>{
+    document.getElementById("tab-"+x).classList.toggle("hidden",x!==t);
+    document.getElementById("tabbtn-"+x).classList.toggle("active",x===t);
+  });
+  if(t==="sunrise") charts.forEach(c=>{try{c.resize();}catch(e){}});
+}
+const kpiCard=(l,v,cls)=>`<div class="kpi"><div class="l">${l}</div><div class="v ${cls||''}">${v}</div></div>`;
+const tile=(l,v,g)=>`<div class="tile"><div class="l">${l}</div><div class="v${g?" gold":""}">${v}</div></div>`;
+function dueLabel(due){
+  if(!due) return {txt:"No due date",cls:"muted"};
+  const days=Math.round((Date.parse(due+"T00:00:00Z")-Date.parse(TODAY+"T00:00:00Z"))/86400000);
+  if(days<0) return {txt:Math.abs(days)+"d overdue",cls:"red"};
+  if(days===0) return {txt:"Today",cls:"amber"};
+  if(days<=3) return {txt:"In "+days+"d",cls:"amber"};
+  return {txt:fmtDate(due),cls:"muted"};
+}
+const dotClass=d=>d<=30?"red":(d<=60?"amber":"blue");
+function greetWord(){const h=new Date().getHours();return h<12?"Good morning":h<18?"Good afternoon":"Good evening";}
+
+/* ---- shared renderers for the per-company panels ---- */
+function slab(x){const L=x&&x.label;return L?`<span class="slab ${/^(URGENT|BUG|FYI|ENGAGEMENT|FOCUS|OPEN|REVENUE|DECISION|GOAL)$/.test(L)?esc(L):"FYI"}">${esc(L)}</span>`:"";}
+function feedHtml(v,empty){
+  if(v&&v.pending) return '<div class="locked">🔒 '+esc(v.note||"Add this source's credential as a routine secret to enable.")+'</div>';
+  const arr=Array.isArray(v)?v:(v&&v.items)||null;
+  if(!arr||!arr.length) return '<div class="empty">'+esc(empty||"Nothing flagged.")+'</div>';
+  return '<ul class="list">'+arr.map(s=>`<li><div>${slab(s)}${esc((typeof s==="object")?(s.text||""):s)}</div></li>`).join("")+'</ul>';
+}
+function calHtml(v){
+  if(v&&v.pending) return '<div class="locked">🔒 '+esc(v.note||"Calendar not connected.")+'</div>';
+  const arr=Array.isArray(v)?v:null;
+  if(!arr||!arr.length) return '<div class="empty">Clear — protect the time.</div>';
+  return '<ul class="list">'+arr.map(e=>`<li><div style="flex:1"><div><b>${esc(e.time||"")}</b> ${esc(e.title||"")}</div>${e.prep?`<div class="taskmeta due muted">${esc(e.prep)}</div>`:""}</div></li>`).join("")+'</ul>';
+}
+function powerHtml(arr){ return (arr&&arr.length)?arr.map(x=>`<li>${esc(x)}</li>`).join(""):'<li style="color:var(--muted)">No power move yet.</li>'; }
+function itemsHtml(arr){
+  if(!arr||!arr.length) return '<div class="panel"><div class="empty">Nothing flagged.</div></div>';
+  return '<div class="panel"><ul class="list">'+arr.map(x=>`<li><div>${slab(x)}${esc((typeof x==="object")?(x.text||""):x)}</div></li>`).join("")+'</ul></div>';
+}
+
+/* ---------- SUNRISE ---------- */
+function renderSunrise(){
+  const d=P.daily,k=d.kpis;
+  document.getElementById("kpis").innerHTML=
+    kpiCard("Vacant units",k.vacant,k.vacant>0?"red":"green")+
+    kpiCard("Occupancy",pct(k.occupancyRate),"")+
+    kpiCard("Leases expiring (90d)",k.leasesExpiring90,"");
+  document.getElementById("occflag").innerHTML=(k.occupancyRate===1)
+    ? '<div class="flag"><b>Why 100%?</b> The only vacant units belong to a property flagged <code>Archive = Yes</code>, so they are excluded from the active count. If that property is actually active, clear its archive flag.</div>' : "";
+  const w=document.getElementById("wins");
+  w.innerHTML=(!d.wins||!d.wins.length)?'<div class="empty">Nothing new since '+fmtDate(P.windowStart)+'</div>':
+    '<ul class="list">'+d.wins.map(x=>`<li><span>${esc(x.icon)}</span><span>${esc(x.text)}</span></li>`).join("")+'</ul>'+
+    (d.winsTotal>d.wins.length?`<div class="more">+${d.winsTotal-d.wins.length} more</div>`:"");
+  document.getElementById("airmail").innerHTML=
+    `<a href="${tableUrl(T.mail)}" target="_blank" rel="noopener"><div class="mailnum">${d.mail.newItems}</div><div class="mailcap">New items</div></a>`+
+    `<a href="${tableUrl(T.mail)}" target="_blank" rel="noopener"><div class="mailnum">${d.mail.needsReview}</div><div class="mailcap">Ready for review</div></a>`;
+  document.getElementById("maint").innerHTML=
+    `<div class="n">${d.maintOpen}</div><div><div style="font-weight:600">open work orders</div>`+
+    `<div class="note" style="margin-top:2px">Airtable Maintenance table only — PAM portal tickets aren&rsquo;t synced yet, so this can understate the true total. `+
+    `<a class="more" href="${tableUrl(T.maint)}" target="_blank" rel="noopener">Open the table</a></div></div>`;
+  const tEl=document.getElementById("tasks");
+  if(!d.tasks||!d.tasks.length){tEl.innerHTML='<div class="empty">No tasks flagged for attention</div>';}
+  else{let h='<ul class="list">'+d.tasks.map(t=>{const dl=dueLabel(t.due);
+    const pr=t.priority?`<span class="badge ${t.priority==='Immediate'?'red':'gold'}">${esc(t.priority)}</span>`:"";
+    return `<li><div style="flex:1"><div>${esc(t.title)}${pr}</div><div class="taskmeta due ${dl.cls}">${dl.txt}</div></div></li>`;}).join("")+'</ul>';
+    if(d.taskTotal>d.tasks.length) h+=`<a class="more" href="${tableUrl(T.tasks)}" target="_blank" rel="noopener">+${d.taskTotal-d.tasks.length} more flagged &middot; ${d.taskBacklog} open in total</a>`;
+    tEl.innerHTML=h;}
+  const lEl=document.getElementById("leases");
+  if(!d.leases||!d.leases.length){lEl.innerHTML='<div class="empty">No leases expiring in the next 90 days</div>';}
+  else{lEl.innerHTML='<ul class="list">'+d.leases.map(l=>
+    `<li><span class="dot ${dotClass(l.days)}"></span><div style="flex:1"><div>${esc(l.id)}</div>`+
+    `<div class="taskmeta due muted">${fmtDate(l.expiration)} &middot; ${l.days}d</div></div></li>`).join("")+'</ul>'+
+    `<a class="more" href="${tableUrl(T.leases)}" target="_blank" rel="noopener">Open Leases in Airtable</a>`;}
+  const t=P.trends,cur=t.current;
+  document.getElementById("curTiles").innerHTML=
+    tile("Active units",cur.active)+tile("Occupied",cur.occupied)+tile("Vacant",cur.vacant)+
+    tile("Occupancy",pct(cur.occupancyRate))+tile("Monthly rent roll",money(cur.rentRoll),true);
+  if(!chartsDone){
+    charts.push(new Chart(document.getElementById("occDonut"),{type:"doughnut",
+      data:{labels:["Occupied","Vacant"],datasets:[{data:[cur.occupied,cur.vacant],backgroundColor:[C.green,C.gold],borderWidth:0}]},
+      options:{responsive:true,maintainAspectRatio:false,cutout:"62%",plugins:{legend:{position:"bottom"}}}}));
+    charts.push(new Chart(document.getElementById("occLine"),{type:"line",
+      data:{labels:t.withOcc.map(m=>monthLabel(m.m)),datasets:[{label:"Occupancy",data:t.withOcc.map(m=>m.v),
+        borderColor:C.green,backgroundColor:"rgba(196,98,45,.12)",fill:true,tension:.3,pointRadius:4,pointBackgroundColor:C.green}]},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>v+"%"},suggestedMin:75,suggestedMax:100}}}}));
+    chartsDone=true;
+  }
+  const co=(P2&&P2.companies&&P2.companies.sunrise)||{};
+  document.getElementById("sunriseCal").innerHTML=calHtml(co.calendar);
+  document.getElementById("sunriseSlack").innerHTML=feedHtml(co.slack,"Nothing flagged.");
+  document.getElementById("sunriseMail").innerHTML=feedHtml(co.mail,"Nothing flagged.");
+  document.getElementById("sunrisePower").innerHTML=powerHtml(co.powerMove);
+}
+
+/* ---------- HQ ---------- */
+function sunrisePulse(){
+  if(!P) return "—";
+  const k=P.daily.kpis;
+  return `${pct(k.occupancyRate)} occupancy · ${k.vacant} vacant · ${k.leasesExpiring90} leases expiring 90d · ${P.daily.maintOpen} open work orders`;
+}
+const pulseCard=(name,tab,text)=>`<div class="pulse" onclick="showTab('${tab}')"><div class="co">${name}</div><div class="pl">${esc(text)}</div><div class="go">Open ${name} →</div></div>`;
+function renderHQ(){
+  const co=(P2&&P2.companies)||{};
+  document.getElementById("pulses").innerHTML=
+    pulseCard("Sunrise","sunrise",sunrisePulse())+
+    pulseCard("The Lean Landlord","leanlandlord",(co.leanLandlord&&co.leanLandlord.pulse)||"No snapshot yet")+
+    pulseCard("PAM","pam",(co.pam&&co.pam.pulse)||"No snapshot yet");
+  const hq=P2&&P2.hq;
+  if(!hq){ document.getElementById("hqBrief").innerHTML='<div class="empty" style="padding:24px 4px">Today’s executive brief hasn’t been generated yet — your 5am routine publishes it each morning.</div>'; return; }
+  document.getElementById("hqMindQuote").textContent=(hq.mindset&&hq.mindset.quote)||"";
+  document.getElementById("hqMindNote").textContent=(hq.mindset&&hq.mindset.note)||"";
+  document.getElementById("hqLeverage").innerHTML='<h4>What is the one High Leverage / Long-Term Payoff action you’ll protect today?</h4>'+esc(hq.leverage||"");
+}
+
+/* ---------- COMPANY PAGES ---------- */
+function renderCompany(tabId,d,name){
+  if(!d){ document.getElementById("tab-"+tabId).innerHTML='<div class="empty" style="padding:28px 4px">No '+esc(name)+' snapshot yet — the 5am routine will fill this in.</div>'; return; }
+  document.getElementById(tabId+"Head").textContent=d.headline||name;
+  const s=document.getElementById(tabId+"Status"); if(d.status){s.innerHTML=esc(d.status);s.style.display="";}else{s.style.display="none";}
+  document.getElementById(tabId+"Items").innerHTML=itemsHtml(d.items);
+  document.getElementById(tabId+"Cal").innerHTML=calHtml(d.calendar);
+  document.getElementById(tabId+"Slack").innerHTML=feedHtml(d.slack,"Nothing flagged.");
+  document.getElementById(tabId+"Mail").innerHTML=feedHtml(d.mail,"Nothing flagged.");
+  document.getElementById(tabId+"Power").innerHTML=powerHtml(d.powerMove);
+}
+
+(async function(){
+  try{
+    const res=await fetch("./data.json?t="+Date.now());
+    if(!res.ok) throw new Error("data.json "+res.status);
+    P=await res.json();
+    TODAY=(P.snapshot||new Date().toISOString()).slice(0,10);
+    try{ const pr=await fetch("./personal.json?t="+Date.now()); P2=pr.ok?await pr.json():null; }catch(e){ P2=null; }
+    document.getElementById("loading").style.display="none";
+    document.getElementById("tab-hq").classList.remove("hidden");
+    document.getElementById("greeting").innerHTML=greetWord()+', <span style="color:var(--green)">Steph</span>';
+    document.getElementById("stamp").textContent="Updated "+P.snapLabel;
+    document.getElementById("foot").innerHTML="Command Center &middot; Sunrise data auto-refreshed from Airtable (last build "+esc(P.snapLabel)+"). HQ, Lean Landlord &amp; PAM are written by the 5am routine.";
+    renderSunrise();
+    renderHQ();
+    renderCompany("leanlandlord",(P2&&P2.companies&&P2.companies.leanLandlord)||null,"The Lean Landlord");
+    renderCompany("pam",(P2&&P2.companies&&P2.companies.pam)||null,"PAM");
+  }catch(e){
+    document.getElementById("loading").style.display="none";
+    const el=document.getElementById("err"); el.style.display="block";
+    el.textContent="Could not load dashboard data: "+(e&&e.message?e.message:e)+". If this is the first deploy, the build may not have run the baker yet.";
+  }
+})();
+</script>
+</body>
+</html>

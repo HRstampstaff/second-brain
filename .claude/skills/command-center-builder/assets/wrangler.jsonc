@@ -1,0 +1,11 @@
+{
+  // Cloudflare Workers config for the Sunrise Command Center (static-assets only).
+  // The build step (node command-center/bake.mjs) writes command-center/public/data.json;
+  // this deploys command-center/public/ as a static site. No secrets live here — the
+  // Airtable token is a build-time env var set in the Cloudflare dashboard.
+  "name": "sunrise-command-center",
+  "compatibility_date": "2025-09-01",
+  "assets": {
+    "directory": "./command-center/public"
+  }
+}

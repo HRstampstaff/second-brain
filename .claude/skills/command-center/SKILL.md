@@ -1,17 +1,28 @@
 ---
 name: command-center
-description: "Load when the owner wants ONE page that tells them how the whole portfolio is doing: what is empty, who is behind, what expires, what is broken, what needs them today. Covers what actually belongs on it and what does not, the two panels almost everyone gets wrong, building it as an Artifact rather than a website, keeping it honest when the underlying data is incomplete, and the routine that keeps it current. Trigger on 'command center', 'command centre', 'dashboard', 'my daily view', 'one page for everything', 'how is the portfolio doing', 'KPIs', 'occupancy', 'what needs my attention', or any request for a single overview of the business."
+description: "Load when the owner wants ONE page that tells them how the whole portfolio is doing: what is empty, who is behind, what expires, what is broken, what needs them today. Covers what actually belongs on it and what does not, the two panels almost everyone gets wrong, building it as a private hosted web page on Cloudflare through the `command-center-builder` skill (never as an Artifact), synthesizing every connected tool instead of listing it, keeping it honest when the underlying data is incomplete, and the routine that keeps it current. Trigger on 'command center', 'command centre', 'dashboard', 'my daily view', 'one page for everything', 'how is the portfolio doing', 'KPIs', 'occupancy', 'what needs my attention', or any request for a single overview of the business."
 ---
 
 # Command Center
 
-**Version: 1.0 - 2026-08-24**
+**Version: 1.1 - 09-10-2026** (Stephanie, after the Week 4 dry run: this page is NEVER an Artifact.
+1.0 said "build it as an Artifact" and on 09-10-2026 four students' assistants did exactly that,
+which is why nobody got a real command center. It is a private website on Cloudflare that updates
+itself, and `command-center-builder` is the skill that builds it. Also new: every connected tool is
+synthesized, never listed.) (1.0 - 2026-08-24: first version.)
 
 The Command Center is one page the owner opens in the morning that tells them what today looks like.
 It is the single most requested thing in this whole system, and the most commonly built badly.
 
-**Build it as an Artifact.** Read `artifacts` before starting. Only reach for `website-building` if
-one of the limits named there genuinely bites.
+**⛔ It is a private, hosted website, NOT an Artifact. Build it with `command-center-builder`.**
+When the owner says "build my command center", load `command-center-builder` and run it — that skill
+carries the whole build: a web page on Cloudflare behind the owner's own login, the numbers refreshed
+every two hours by a build script, the written briefing regenerated every morning by a scheduled
+cloud routine. This skill is the thinking about WHAT belongs on the page; that one is HOW it gets
+built. **Never build it as an Artifact, even as a preview, even if the owner has not finished the
+Cloudflare pre-work** — an Artifact does not refresh, cannot be opened from a phone bookmark without
+Claude, and has to be rebuilt by hand, which is the exact problem the page exists to remove. If the
+pre-work is missing, `command-center-builder` says what to do; follow it.
 
 ## The one rule that decides whether it gets used
 
@@ -42,6 +53,23 @@ Roughly in the order it should appear.
 - **Open maintenance.** What is outstanding and how long it has been outstanding. Age matters more
   than count.
 
+## Every connected tool is synthesized, never listed
+
+**A command center is not a to-do list (Stephanie, 09-10-2026).** For every tool the page reads —
+calendar, Slack, email, and ANY other tool the owner has connected (a task manager, a CRM, a project
+board) — the panel is a synthesis: what needs them today, what changed, what is stuck, what is
+winning, in a few lines, each one a judgement. It never reproduces the tool's own list of records.
+The owner already has the tool for that, and a page that repeats it gets closed within a week. Five
+items or fewer per panel; if there are more, say how many and point at the tool.
+
+**The one exception is a list the owner explicitly asks for** ("show me every lease expiring this
+quarter"). Then give them the list. That call is theirs, never the assistant's default.
+
+**Why it is written down:** on the Week 4 dry run one owner got every open Todoist item on her page
+and another got every transaction her coordinators were handling, because the assistant only had
+synthesis instructions for calendar, Slack and email and fell back to "here is everything, you
+decide" for everything else.
+
 ## The two panels almost everyone gets wrong
 
 - **Occupancy.** Easy to compute and almost never actionable, because by the time it moves the owner
@@ -67,14 +95,15 @@ Roughly in the order it should appear.
 
 ## Keeping it current
 
-An Artifact does not refresh itself. **Rebuild it as part of a routine**, daily or weekly, whichever
-matches how often the owner actually opens it. The routine reads the hub, regenerates the page, and
-says what changed since last time.
+The page refreshes itself; nobody rebuilds it by hand. The hard numbers are re-read from the
+owner's database every two hours by a build script that runs in the cloud, and the written briefing
+(calendar, Slack, email, other tools, the power move, the morning mindset) is regenerated at 5am
+every day by a scheduled cloud routine the assistant creates as the last step of the build. The owner
+can ask for a refresh any time ("refresh my command center") and gets to-the-minute data, but the
+point is that they never need to. `command-center-builder` → Phase 5 has the routine.
 
-**If it has been shared with anyone, rebuilding is only half the job.** The new version has to be
-selected as the shared one by hand or everyone else keeps seeing the old page. This is the trap in
-`artifacts`, and on a page that is rebuilt daily it bites daily. **On a page that changes this often,
-the honest advice is to keep it to the owner rather than sharing it around.**
+**It is private by design.** Cloudflare Access puts the owner's own login in front of it, because the
+page surfaces the most sensitive picture of the business there is. Keep it to the owner.
 
 ## Building it
 
@@ -84,7 +113,8 @@ the honest advice is to keep it to the owner rather than sharing it around.**
    the fastest way to lose the owner's trust in the whole page.
 3. **Build the smallest version that is useful and show it.** Four panels. Let them ask for more.
 4. **Make it work on a phone**, because that is where it will be opened.
-5. **Put it on a routine** so it stays current without anyone remembering.
+5. **Let the build create the refresh and the morning routine** so it stays current without anyone
+   remembering. `command-center-builder` does this as part of the build; it is not a separate task.
 
 ## Teaching it
 
@@ -92,9 +122,10 @@ This is a good thing to build with an owner rather than for them, once they alre
 populated and a routine or two running. It is visual, the payoff is immediate, and it is the moment
 the data-entry work of the earlier weeks suddenly pays off.
 
-The complementary skills, in the order they matter: `artifacts` first, because that is how it is
-built. `website-building` only if the limits bite. `netlify` only if they choose to host it
-themselves.
+The complementary skill is `command-center-builder`, which is how it is built: Cloudflare hosting,
+the login gate, the two-hourly data refresh and the morning routine. Do not reach for `artifacts`,
+`website-building` or `netlify` for this page; the builder already made those choices and explains
+why in its architecture notes.
 
 ## Diagnosis
 
@@ -102,7 +133,8 @@ themselves.
 |---|---|---|
 | The owner stopped opening it | Too many panels | Cut it to the four that change what they do today |
 | It says everything is fine and it is not | A panel rendered a zero from missing data | Make panels say what they do not know |
-| The numbers are stale | Nothing rebuilds it | Put the rebuild on a routine, and date the page |
-| Somebody else sees an old version | The new version was not selected as the shared one | Select it, or stop sharing a page that changes daily |
+| The numbers are stale | The cloud refresh or the morning routine stopped running | Check the refresh job and the routine's last run in `command-center-builder`, and date the page |
+| It was built as an Artifact | The assistant skipped `command-center-builder` | Rebuild it with the builder on Cloudflare; an Artifact is never the answer |
+| Every task from a connected tool is on the page | The panel listed instead of synthesized | Rewrite the panel as a synthesis, five items or fewer, per the rule above |
 | Two panels disagree | Two sources disagree, and one of them is wrong | Show both and say so. Do not average them |
 | It looks impressive and nobody acts on it | It shows status rather than what needs doing | Put their own open items at the top |

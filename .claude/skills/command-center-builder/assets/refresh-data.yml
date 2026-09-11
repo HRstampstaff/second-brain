@@ -1,0 +1,38 @@
+name: Refresh Command Center
+
+# Every 2 hours, a GitHub-hosted runner re-bakes the dashboard from live Airtable
+# and deploys it straight to Cloudflare with wrangler. Nothing is committed to the
+# repo, so this leaves no clutter in the vault history. Runs entirely in the cloud.
+#
+# Required repository secrets (Settings > Secrets and variables > Actions):
+#   AIRTABLE_TOKEN        - the read-only Airtable PAT (same value used in Cloudflare)
+#   CLOUDFLARE_API_TOKEN  - a Cloudflare API token with "Edit Cloudflare Workers" permission
+# The Cloudflare account id is not secret and is set inline below.
+
+on:
+  schedule:
+    - cron: "0 */2 * * *"   # every 2 hours (UTC)
+  workflow_dispatch: {}       # lets you refresh on demand from the Actions tab
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Bake data.json from live Airtable
+        env:
+          AIRTABLE_TOKEN: ${{ secrets.AIRTABLE_TOKEN }}
+        run: node command-center/bake.mjs
+
+      - name: Deploy to Cloudflare
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: "e8629207788bf5bd56ab587ea0c84fe9"
+        run: npx --yes wrangler@4 deploy
