@@ -11,7 +11,7 @@ consecutive two-hour block per day, busy, no attendees, colour 11.
 |---|---|
 | Week of 14 Sep | Tue 15 Sep and Thu 17 Sep, 4:00-6:00pm ET |
 | From Wed 23 Sep | Every **Wednesday and Friday, 4:00-6:00pm ET** (series `es30nnbshhp9bolksregikq6co`) |
-| Exception, PENDING | Wed 30 Sep should be 2:00-4:00pm ET, because a meeting starts at 4pm. The move was blocked by the Claude Code permission check on 2026-09-11, so the block is still 4-6pm and overlaps that meeting until Ailynn settles it. |
+| Exception | Week of 28 Sep: **Tue 29 Sep, 4:00-6:00pm ET** replaces Wed 30 Sep, which has a meeting at 4pm. Moving Wednesday to 2-4pm was refused by the Claude Code permission check, so Ailynn asked for another block that week. Tuesday/Friday is not consecutive, and Fri 25 Sep into Tue 29 Sep is not either. |
 
 **Marmil or Ben books the SMM Finals into it, not Key.** Whoever passes an applicant at the Initial
 interview plots the Final on Raf's calendar.
