@@ -66,7 +66,7 @@ Work through these in order every day so nothing silently stalls in the pipeline
    "Final Interview Scheduled."
    **SMM exception (Ailynn, 2026-09-11):** Key does not book Raf's Finals. Marmil or Ben, whoever
    passed the applicant at the Initial interview, plots the Final on Raf's calendar inside a Final
-   Interview Block (Monday or Friday, 4-6pm ET).
+   Interview Block (normally Wednesday or Friday, 4-6pm ET; check Raf's calendar for the exact blocks).
 8. **Check for completed Final Interviews.** Send the matching outcome email (Pass + Training Date,
    Pass + Pooled, or Regret/Redirect) within 24-48 hours.
 9. **Check pooled candidates.** Filter for status = "Pooled." Anyone pooled 60+ days gets flagged

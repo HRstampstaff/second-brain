@@ -4,67 +4,73 @@
 
 ## The decision
 
-Raf's calendar (rafael.gvaco@gmail.com) carries a recurring **`Final Interview Block`** every
-**Monday and Friday, 4:00-6:00pm ET**, starting Mon 2026-09-21. It is one consecutive two-hour block,
-busy, no attendees, colour 11.
+Raf's calendar (rafael.gvaco@gmail.com) carries a **`Final Interview Block`** twice a week: one
+consecutive two-hour block per day, busy, no attendees, colour 11.
 
-**A block must never overlap a meeting.** Ailynn's words: "if it overlaps a meeting, of course,
-definitely, it's not gonna be it."
+| When | Block |
+|---|---|
+| Week of 14 Sep | Tue 15 Sep and Thu 17 Sep, 4:00-6:00pm ET |
+| From Wed 23 Sep | Every **Wednesday and Friday, 4:00-6:00pm ET** (series `es30nnbshhp9bolksregikq6co`) |
+| Exception, PENDING | Wed 30 Sep should be 2:00-4:00pm ET, because a meeting starts at 4pm. The move was blocked by the Claude Code permission check on 2026-09-11, so the block is still 4-6pm and overlaps that meeting until Ailynn settles it. |
 
 **Marmil or Ben books the SMM Finals into it, not Key.** Whoever passes an applicant at the Initial
-interview plots the Final on Raf's calendar. Ailynn's words: "since raf is the final interview, the
-initial interviewers, marmil and ben would already plot the interview on raf's calendar if they pass
-an applicant on the initial interview."
+interview plots the Final on Raf's calendar.
 
 **On the day, if nothing is booked in the block by the 9am morning run, that day's block is removed**
 so Raf gets the time back.
 
-Series id: `ohkiei3htpf1djgo7envlipg9k`.
+## Ailynn's rules for placing a block
 
-**The week of 14 Sep gets one-off blocks instead**, because its Monday and Friday were not clear:
-**Tue 15 Sep and Wed 16 Sep, 4:00-6:00pm ET** (series `l0bksle53fv1p9ovm265s45ajg`, two instances
-only). The removal rule applies to them the same way.
+1. **Never overlap a meeting.** "if it overlaps a meeting, of course, definitely, it's not gonna be
+   it."
+2. **The two days are never consecutive working days**, and Friday into the next Monday counts.
+   Monday/Friday is out. "find as much as possible monday thursday, wed friday just not monday friday
+   not consecutive working days."
+3. **Prefer Wednesday/Friday or Monday/Thursday.** Tuesday/Thursday is the fallback.
+4. Each block is 2 consecutive hours inside Raf's 9am-6pm ET day.
 
-## How the slot was found
+## How Wednesday/Friday was chosen
 
-Every 2-hour window from 9am to 6pm ET, Monday to Friday, was checked against all of Raf's events from
-14 Sep to 30 Oct.
+Every 2-hour window from 9am to 6pm ET, Monday to Friday, was checked week by week against all of
+Raf's events from 14 Sep to 30 Oct.
 
-- **No window was clear in all seven weeks.**
-- **From the week of 21 Sep, Monday 4-6pm and Friday 4-6pm are clear every week.** The only clashes
-  were before that: Mon 14 Sep (a Post Admin Tasks block at 4pm) and Fri 18 Sep (VA Optional
-  recording, 3-5pm).
-- 4-6pm is also where Raf's interviews have historically been booked.
-- Other windows clear from 21 Sep, if these ever stop working: Mon 3-5pm, Mon 3:30-5:30pm, and any
-  2 hours inside Fri 2-6pm.
+- **Week of 14 Sep:** no clear Monday or Friday, so neither preferred pair works. Tuesday/Thursday is
+  the non-consecutive fallback, both clear at 4-6pm.
+- **Week of 21 Sep:** Monday/Thursday is impossible, because Thu 24 Sep has no clear two hours.
+  Wednesday/Friday works.
+- **A Wednesday/Friday week can't be followed by a Monday/Thursday week**, because Friday into Monday
+  is consecutive. So Wednesday/Friday continues. It is clear at 4-6pm every week through 30 Oct except
+  Wed 30 Sep (TL David and VA Elison monthly at 4pm), where 2-4pm is clear.
+- 4-6pm is where Raf's interviews have historically been booked.
 
-## The first attempt, rejected
+## Rejected the same day
 
-Tuesday and Wednesday 4-6pm ET (series `4rsulnb4v4hdv3948hafgdpris`) was built first, because those
-days were clear in the two weeks checked then. A wider check found two overlaps: Wed 30 Sep (TL David
-and VA Elison monthly, 4-5pm) and Tue 6 Oct (Szakos monthly TLVA and its Post Admin block,
-4:30-5:15pm). Ailynn rejected it, and the series was deleted the same day.
+- **Tuesday/Wednesday 4-6pm** (series `4rsulnb4v4hdv3948hafgdpris`, deleted). It overlapped two
+  meetings, and the days are consecutive.
+- **Monday/Friday 4-6pm** (series `ohkiei3htpf1djgo7envlipg9k`, deleted). Friday into Monday is
+  consecutive working days.
 
-**Lesson: check the whole horizon before choosing a recurring slot, not two weeks.**
+**Lessons:** check the whole horizon before choosing a recurring slot, not two weeks. And a
+twice-a-week block means spaced days, even when nobody says so.
 
 ## The one routine that may delete
 
 `how-we-work.md` rule 2 says a routine may never delete. **Ailynn made one exception on 2026-09-11:**
-the routine "Raf's Final Interview Block: remove empty days" may delete **today's single instance of
-this series, and only when nothing is booked in it.** Never the parent series, never another event,
-never a future day. The exception does not widen to any other routine.
+the routine "Raf's Final Interview Block: remove empty days" may delete **today's single block, and
+only when nothing is booked in it.** Never a parent series, never another event, never a future day.
+The exception does not widen to any other routine.
 
 **"Booked" means** another event overlapping the block that either has "Interview" in its title, or
 was created or organized by Marmil, Ben or Key. The second test exists because, as of 2026-09-11,
 neither Marmil nor Ben had ever put an interview on Raf's calendar, so nobody knows yet how they title
 one.
 
-**New overlaps get reported, not fixed.** Each run looks two weeks ahead. If a non-interview meeting
-has landed inside a future block, it goes to Ailynn. Finding another slot is her call.
+**New overlaps get reported, not fixed.** Each run looks two weeks ahead. If a meeting has landed
+inside a future block, it goes to Ailynn, and re-placing a block is her call.
 
 ## What this does NOT cover
 
-- Finals booked outside 4-6pm. The block is not moved to follow them.
+- Finals booked outside the blocks. The blocks are not moved to follow them.
 - Recreating a removed block if something is booked after the 9am run. That gets reported, not
   rebuilt.
 - EA Finals, which are Kate's.
@@ -73,5 +79,5 @@ has landed inside a future block, it goes to Ailynn. Finding another slot is her
 
 - **No note to Key.** One was drafted, then removed at Ailynn's request, because Key does not book
   Raf's Finals.
-- **A note to Marmil and Ben: yes.** It tells them where and when to book, including next week's
-  one-off days. Drafted in humanresources@stampstaff.com and held for Ailynn to send.
+- **A note to Marmil and Ben: yes.** It tells them where and when to book. Drafted in
+  humanresources@stampstaff.com and held for Ailynn to send.
